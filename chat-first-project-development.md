@@ -208,4 +208,4 @@ Areas where the methodology is least settled and most likely to refine with use:
 ---
 
 *Draft for iteration. Refine in place.*
-Home location is this gist: 
+Home location is this gist: https://gist.github.com/hooman/5811ee3bb7c235573299400167403985
