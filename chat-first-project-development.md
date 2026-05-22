@@ -334,4 +334,3 @@ Areas where the methodology is least settled and most likely to refine with use:
 ---
 
 *Draft for iteration. Refine in place.*
-The authoritative version of this document is here: https://gist.github.com/hooman/5811ee3bb7c235573299400167403985
