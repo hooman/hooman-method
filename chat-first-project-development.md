@@ -4,6 +4,8 @@
 
 **Status:** Draft v0.2 (May 21, 2026). Updated from v0.1 with: anti-bureaucracy guardrail, doc-audience layering principle, handbook artifact, glossary discipline and naming rules, findings-from-chat pattern, and refined operating rules. Distilled from one project's experience; will evolve as the methodology gets stress-tested across more projects.
 
+**Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
+
 ---
 
 ## Why this exists
