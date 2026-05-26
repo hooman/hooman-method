@@ -2,7 +2,7 @@
 
 *Working title — pick a real name when this gels.*
 
-**Status:** Draft v0.2 (May 21, 2026). Updated from v0.1 with: anti-bureaucracy guardrail, doc-audience layering principle, handbook artifact, glossary discipline and naming rules, findings-from-chat pattern, and refined operating rules. Distilled from one project's experience; will evolve as the methodology gets stress-tested across more projects.
+**Status:** Draft v0.3 (May 21, 2026). Updated from v0.2 with: AGENTS.md operational-policy framing, *docs-AIs-read-but-humans-don't* anti-pattern, ~200-line sprawl bound, context-file precedence rules, plan-mode binding for R1, sub-agent no-context warning, escalation pattern for large cycles, from-methodology-to-tooling section, and a *what's distinctive* section. Distilled from one project's experience plus a research-tool survey of the May 2026 ecosystem; will evolve as the methodology gets stress-tested across more projects.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -63,13 +63,26 @@ This applies equally to additions to this methodology doc, to the project handbo
 
 Project documents serve different audiences. Mixing audiences in one document leads to bloat and to docs nobody fully reads. The methodology distinguishes three categories:
 
-- **Agent-specific docs** — entry points for AI agents. Lean, pointer-heavy. Tell an agent how to operate in this workspace and where to find context. The canonical example is `AGENTS.md`.
+- **Agent-specific docs** — entry points for AI agents. Lean, pointer-heavy. Tell an agent how to operate in this workspace and where to find context. The canonical example is `AGENTS.md`, increasingly a project-root convention across AI coding tools. Its effectiveness depends on being **operational** rather than narrative: command-first (the exact commands an agent should run), task-organized (sections by what an agent does, not by topic), closure-defined (every section says how an agent knows the task is done). Keep it under roughly 200 lines — past that, neither humans nor agents reliably read it.
 - **Human-leaning docs** — entry points for humans (returning collaborators, new contributors). The canonical example is the project **handbook** (see below). Agents can read them, but they're optimized for humans.
 - **Hybrid docs** — content that serves both. Anchors (philosophy, invariants, personas), roadmap tracks, the glossary. Both audiences read them; both audiences benefit from the same content.
 
 **Companion principle: entry-point docs are thin and point outward; content lives in the docs that own the topic.** AGENTS.md doesn't restate the philosophy — it points to `PHILOSOPHY.md`. The handbook doesn't restate the rules — it points to the methodology doc. The glossary doesn't restate full architectural definitions — it points to anchors.
 
 This keeps duplication low and definitions canonical.
+
+### Anti-patterns to design against
+
+- **Prose paragraphs in AGENTS.md.** Operational policy reads as imperative bullets, not narrative.
+- **Ambiguous directives** ("be careful," "use good judgment"). Replace with concrete rules or remove.
+- **Contradictory priorities** across sections. If two sections imply different orderings, pick one and reconcile.
+- **"Docs AIs read but humans don't."** Files written entirely in agent-pleasing telegraphic style accrete around AI-heavy projects and quietly displace the human-readable doc surface. The handbook is the cure — keep it human-leaning and don't let it drift toward terse agent-style brevity.
+
+### Context-file precedence
+
+When multiple context files exist (AGENTS.md, CLAUDE.md, user-level memory, per-folder rules, overlays), they can contradict each other. Agents resolve such conflicts arbitrarily by default. Pick an explicit precedence rule for your workspace and document it in the handbook.
+
+Typical default: **user-level < workspace-level < repo-level < per-folder; later overrides earlier**. Whatever you choose, write it down — a sleeping precedence ambiguity is a future hour of debugging.
 
 ---
 
@@ -249,6 +262,8 @@ A brief is a markdown file written by Chat into `session-starters/`. The boilerp
 
 A cycle-opening brief asks Code to **think**, not to type. It explicitly forbids implementation.
 
+When the executor is Claude Code, **plan mode** is the natural substrate for R1: its read-only-by-design constraint enforces "don't implement" by tool rather than by honor system. The methodology stays portable across tools; the binding to a specific tool is platform-specific.
+
 ### Round 2+ — review and refine
 
 Code's feedback gets reviewed by Chat + human. The decisions surfaced by Code get answered. The plan gets refined. A round-2 brief may follow, narrower in scope. Iterate until scope is genuinely locked and implementable.
@@ -257,9 +272,15 @@ Code's feedback gets reviewed by Chat + human. The decisions surfaced by Code ge
 
 A locked-scope brief that Code executes. Show-diff-before-write discipline applies to any file changes. The feedback file remains the audit trail.
 
+**A note on sub-agent dispatch.** When a brief is handed off to a sub-agent (rather than the primary executor session continuing the work), include all needed context explicitly in the brief — sub-agents start fresh with no inherited conversation history. Treat brief files as self-contained when sub-agents are in play. This is the single most common cause of sub-agent failures.
+
 ### Closure mechanics (future)
 
 Today, briefs are produced as files in the cloud VM (or in Chat output), saved to the workspace manually, and Code is pointed at them. An end-state where Chat dispatches Code briefs directly via an MCP-style tool and reads the feedback inline is a natural evolution — closes the human-as-messenger loop. Worth a separate exploration once a reference implementation exists.
+
+### Escalation for large cycles
+
+The default cycle-brief protocol is single-actor conversational — R1 brief → review → R2+ refinement → implementation. For cycles too large to span comfortably in one session, escalate to a persistent multi-document shape: a spec doc (what we're building and why), a plan doc (how it decomposes), and a tasks doc (discrete trackable steps). This converges with what spec-driven tools like spec-kit and Kiro produce by default. Use it when the cycle clearly spans more than one working session; otherwise the conversational form is faster.
 
 ---
 
@@ -311,12 +332,45 @@ Realignment is gradual. The methodology survives partial adoption better than mo
 
 ---
 
+## From methodology to tooling
+
+Each concept in this methodology has an eventual **tool binding** — the encoded form that lets the rule run automatically rather than by discipline. As the methodology matures, the mapping fills in:
+
+| Concept | Tool binding |
+|---|---|
+| Session modes | Auto-loadable instruction packs (e.g. Claude Skills, `agents.md`-compatible equivalents) |
+| Cycle-brief R1 | Plan mode or equivalent read-only constraint |
+| Cycle-brief implement | Show-diff hooks, scoped tool allowlists |
+| Sub-agent roles (reviewer, auditor, implementer) | Configured sub-agent definitions with tight tool scopes |
+| Findings inbox | A standing log file today; eventually a structured-note tool |
+| Glossary discipline | A skill or gate that runs the naming rules as a checklist before any term is added |
+| Audit cycles | Scheduled agent runs against narrow-slice auditors |
+| Chat→Code dispatch | An MCP server exposing the executor as a callable tool |
+
+The methodology defines the rules and shapes; the tool binding makes them executable. **Adopt bindings only when the manual discipline shows friction.** Premature binding produces bureaucracy that drifts from the rules it was meant to encode — the rules become aspirational while the encoded version runs out of alignment with them.
+
+---
+
+## What's distinctive here
+
+Most of this methodology is novel framing of patterns the LLM-tooling ecosystem has converged on independently: the orchestrator/executor split, plan-then-implement, project-root agent files, structured note-taking, sub-agent context isolation. What's genuinely distinctive — worth naming as contributions rather than reinventions:
+
+- **The anti-bureaucracy guardrail.** Most methodologies accrete templates; very few have an explicit "must solve a real friction" rule as a precondition for adoption.
+- **The offload test.** "Does this produce content / inventory / details? → executor. Does it produce direction? → conversational role." Sharper than the implicit splits in most multi-agent frameworks.
+- **Glossary discipline as a gated artifact**, with naming rules that apply before a term is added.
+- **The findings inbox** as an explicit standing log for drive-by observations, swept on schedule.
+- **Doc-audience layering**, particularly the agent / human-leaning / hybrid split and the *entry-point docs are thin* companion rule.
+
+These are the parts most worth formalizing for reuse outside one project.
+
+---
+
 ## What this document is not
 
 - **Not a tooling spec.** It does not require any particular LLM, IDE, or platform. It works with whatever Chat-style assistant and whatever coding agent you have access to.
 - **Not a coding methodology.** It governs *how you collaborate with LLMs*, not *how you write code*. Pair it with whatever engineering practices your project already uses.
 - **Not a project-management methodology.** It is compatible with Agile, Shape Up, lazy-consensus, or whatever scheduling discipline your team prefers. It governs the *content* and *handoff* of work, not its *cadence*.
-- **Not finished.** This is an evolving draft, distilled from one project's experience. Expect it to evolve.
+- **Not finished.** This is an evolving draft, distilled from one project's experience plus an ecosystem survey. Expect it to evolve.
 
 ---
 
@@ -330,6 +384,7 @@ Areas where the methodology is least settled and most likely to refine with use:
 - **Multi-project user.** When one person runs several projects with this methodology, what convention reconciles user memory (which is account-scoped) with project context (which is project-scoped)? Probably project files do most of the work; worth confirming as the case grows.
 - **Team adoption.** Currently framed for a single principal working with LLMs. Adapting to multi-human teams — who writes the briefs, who reviews the feedback, how decisions get attributed — is unaddressed.
 - **Anti-bureaucracy in practice.** The guardrail is stated, not tested. Some artifacts in this doc may already fail the "what specific friction did this solve?" check. Worth a periodic audit.
+- **Verification of ecosystem claims.** This version absorbs framing from an LLM-research-tool survey of the May 2026 ecosystem. Key claims (AGENTS.md as a Linux-Foundation-stewarded open standard, adoption figures, SKILL.md cross-tool portability) warrant external verification before publication.
 
 ---
 
