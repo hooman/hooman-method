@@ -2,7 +2,7 @@
 
 *Working title — pick a real name when this gels.*
 
-**Status:** Draft v0.3 (May 21, 2026). Updated from v0.2 with: AGENTS.md operational-policy framing, *docs-AIs-read-but-humans-don't* anti-pattern, ~200-line sprawl bound, context-file precedence rules, plan-mode binding for R1, sub-agent no-context warning, escalation pattern for large cycles, from-methodology-to-tooling section, and a *what's distinctive* section. Distilled from one project's experience plus a research-tool survey of the May 2026 ecosystem; will evolve as the methodology gets stress-tested across more projects.
+**Status:** Draft v0.4 (May 26, 2026). Updated from v0.3 with: "table of contents, not textbook" maxim for persistent context files; offload-test extended with a contextual-weight axis; six-month test for the memory-vs-project-context split; degrees-of-freedom calibrated across cycle rounds; operational trigger for the MCP-dispatch closure; adversarial review gate with four lenses (Skeptic/Invariant/Scope/Omission); positive sub-agent interface specification (receives/returns/discards); nested-AGENTS.md pattern formalized; new *Session close* section; anchors named as the project's constitution with cycle-brief precedence; "Friction solved" column added to the methodology-to-tooling table; Spec-Kit and Kiro shapes mapped to the escalation pattern; friction audit added as the retrospective form of the anti-bureaucracy guardrail.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -45,6 +45,8 @@ The first role is the one most users underuse. Code is a remarkably effective de
 
 When Chat finds itself about to read a file, summarize a long doc, inventory a directory, or otherwise generate *details* rather than *direction*, that is the signal to write a Code brief instead. The test: is the content I'm about to produce **conceptual** (belongs in Chat) or **inventory / details** (belongs to Code)?
 
+**A second axis — contextual weight — applies to persistence.** Before adding anything to a context file that loads automatically into future sessions — AGENTS.md, project context file, SKILL.md frontmatter, anchor docs — ask whether the marginal signal justifies the marginal attention cost. Every line in a persistent context file claims a slice of every loader's attention budget, every session. Lines that aren't pulling their weight are net-negative. The directional axis asks where content goes *now*; the contextual-weight axis asks whether it earns persistence at all.
+
 ---
 
 ## Anti-bureaucracy guardrail
@@ -57,19 +59,21 @@ If the answer is hypothetical ("might be useful one day"), the rule isn't ready 
 
 This applies equally to additions to this methodology doc, to the project handbook, to the glossary, and to operational templates. Conventions earn their place by paying their way.
 
+**The retrospective form: friction audit.** The same test applied backwards on a recurring pass. Walk the existing artifact set — anchors, roadmap tracks, glossary entries, operational templates, any tool bindings adopted — and ask of each: what friction does this still solve? Items that no longer pay their way get deprecated or removed; items where the friction has shifted get re-scoped; items still earning their place stay. Treat the friction audit as one audit type among the others (see *Audits — review artifacts*); its findings seed a maintenance cycle the same way any audit does. Run on a slow cadence, or whenever accretion outpaces use.
+
 ---
 
 ## Doc-audience layering
 
-Project documents serve different audiences. Mixing audiences in one document leads to bloat and to docs nobody fully reads. The methodology distinguishes three categories:
+**Underlying principle: every persistent context file is a table of contents, not a textbook.** Anything that loads into a reader's working context — agent or human, entry-point doc or SKILL frontmatter or cycle-brief boilerplate — should point at content, not contain it. Detail lives in the doc that owns the topic and is loaded just-in-time. This keeps every reader's attention budget available for the work, not the navigation.
+
+Within this, project documents serve different audiences. Mixing audiences in one document leads to bloat and to docs nobody fully reads. The methodology distinguishes three categories:
 
 - **Agent-specific docs** — entry points for AI agents. Lean, pointer-heavy. Tell an agent how to operate in this workspace and where to find context. The canonical example is `AGENTS.md`, increasingly a project-root convention across AI coding tools. Its effectiveness depends on being **operational** rather than narrative: command-first (the exact commands an agent should run), task-organized (sections by what an agent does, not by topic), closure-defined (every section says how an agent knows the task is done). Keep it under roughly 200 lines — past that, neither humans nor agents reliably read it.
 - **Human-leaning docs** — entry points for humans (returning collaborators, new contributors). The canonical example is the project **handbook** (see below). Agents can read them, but they're optimized for humans.
 - **Hybrid docs** — content that serves both. Anchors (philosophy, invariants, personas), roadmap tracks, the glossary. Both audiences read them; both audiences benefit from the same content.
 
-**Companion principle: entry-point docs are thin and point outward; content lives in the docs that own the topic.** AGENTS.md doesn't restate the philosophy — it points to `PHILOSOPHY.md`. The handbook doesn't restate the rules — it points to the methodology doc. The glossary doesn't restate full architectural definitions — it points to anchors.
-
-This keeps duplication low and definitions canonical.
+Specific cases of the underlying principle: AGENTS.md doesn't restate the philosophy — it points to `PHILOSOPHY.md`. The handbook doesn't restate the rules — it points to the methodology doc. The glossary doesn't restate full architectural definitions — it points to anchors. Definitions stay canonical, duplication stays low.
 
 ### Anti-patterns to design against
 
@@ -83,6 +87,8 @@ This keeps duplication low and definitions canonical.
 When multiple context files exist (AGENTS.md, CLAUDE.md, user-level memory, per-folder rules, overlays), they can contradict each other. Agents resolve such conflicts arbitrarily by default. Pick an explicit precedence rule for your workspace and document it in the handbook.
 
 Typical default: **user-level < workspace-level < repo-level < per-folder; later overrides earlier**. Whatever you choose, write it down — a sleeping precedence ambiguity is a future hour of debugging.
+
+**Nested AGENTS.md as the natural application.** In a multi-repo workspace, AGENTS.md doesn't live at a single level — it's a tree. A workspace-root AGENTS.md owns cross-cutting concerns (where artifacts live, conventions common to all repos). Each sibling repo's own AGENTS.md owns repo-specific content (stack, package manager, test commands, non-obvious patterns). Repo-level files *extend* the root — they don't restate it. The precedence rule above makes the layering unambiguous: closer files win for rules they state; rules they don't state inherit from the next level out.
 
 ---
 
@@ -113,6 +119,8 @@ A workspace is a parent directory holding one or more repos as flat siblings, pl
 ### Anchors — durable reference
 
 Short, stable documents that capture the project's invariants, philosophy, audience, and contract direction. Anchors evolve slowly. They are the docs an agent reads first to understand what the project values and what trade-offs are intentional. Common examples: `PHILOSOPHY.md` (what we are and are not for), `INVARIANTS.md` (what must hold across the codebase), `AUDIENCE_PERSONAS.md` (whom we are designing for).
+
+Anchors function as the project's **constitution** — the same vocabulary used in spec-driven-development tooling. Cycle briefs cannot quietly override them: a plan that implies changing what an anchor states is a separate decision, a deliberate anchor revision, not a side effect of implementation. This precedence is what makes anchors worth reading first.
 
 ### Handbook — Tier 1 navigation
 
@@ -161,6 +169,8 @@ A single `GLOSSARY.md` at the workspace root. See the dedicated section below fo
 A single file (e.g. `<project>-context.md`) saved as a *project file* in the LLM platform (Anthropic project files, equivalent on other platforms). It is the document a fresh Chat session — including one started from mobile, with no filesystem access — reads to understand the project. It captures the platform shape, the audience, the work discipline, and the operating rules. It is **deliberately durable** — refresh on major shape changes, not per release.
 
 Pair this with whatever **persistent user memory** your LLM platform offers. Memory captures temporal, evolving facts (in-flight tracks, recent state, working preferences); the project context file captures durable shape. The two complement each other — don't try to make one do the other's job.
+
+**The six-month test.** If a fact will still be true six months from now, it belongs in the project context file. If it's the current state of a cycle, it belongs in memory. Borderline cases lean toward memory; promote to the context file only when stability is demonstrated.
 
 ---
 
@@ -242,6 +252,18 @@ Each mode shares the same Chat-Code split and the same offload discipline. What 
 
 ---
 
+## Session close
+
+Long Chat sessions accumulate context that's about to be discarded. Letting it die without a closing pass loses both the work and the loose threads. A short ritual makes the discard productive.
+
+- **Session summary.** For sessions whose mode doesn't already produce a durable artifact (primarily vision/strategy, some review sessions), write a brief summary before closing: what was decided, what was deferred, what the next concrete step is. Destination depends on what was discussed — an anchor update, a roadmap-track update, or a new session-starter. Modes that already produce a durable artifact (track scoping, cycle opening) don't need a separate summary; the artifact *is* the summary.
+
+- **Findings sweep.** Append any drive-by observations noticed during the session to `session-starters/findings-from-chat.md` (per *The findings inbox*). Doing this at session-close, not just inline, catches observations the inline discipline missed.
+
+The ritual applies to long sessions, not every session. The signal: if you'd be sad to lose the context, write something before you lose it.
+
+---
+
 ## The cycle-brief protocol
 
 The most-used pattern in the methodology.
@@ -262,11 +284,22 @@ A brief is a markdown file written by Chat into `session-starters/`. The boilerp
 
 A cycle-opening brief asks Code to **think**, not to type. It explicitly forbids implementation.
 
+R1's *high-freedom* register — open-ended text, conceptual goals, exploration permitted — is the point: it lets Code surface trade-offs the brief didn't anticipate. Implementation briefs invert this: *low freedom*, exact diff discipline, named files, tests required. R2+ briefs sit between. **Brief specificity matches the round.**
+
 When the executor is Claude Code, **plan mode** is the natural substrate for R1: its read-only-by-design constraint enforces "don't implement" by tool rather than by honor system. The methodology stays portable across tools; the binding to a specific tool is platform-specific.
 
 ### Round 2+ — review and refine
 
 Code's feedback gets reviewed by Chat + human. The decisions surfaced by Code get answered. The plan gets refined. A round-2 brief may follow, narrower in scope. Iterate until scope is genuinely locked and implementable.
+
+**The adversarial gate.** Structured scrutiny at the R1→R2 transition. Ad-hoc review tends to drift toward agreement with Code's plan; the gate's job is to force four specific checks before the plan moves forward. Apply each lens explicitly to Code's R1 feedback before drafting the next brief:
+
+- **Skeptic.** What does Code's plan assume that could be wrong? What did Code not question?
+- **Invariant.** Does the plan touch anything in `INVARIANTS.md`? Does any proposed change create a new assumption that belongs there?
+- **Scope.** Has Code proposed more than the brief asked? Is scope expanding beyond the roadmap track?
+- **Omission.** What did Code *not* say? Are there adjacent areas the plan silently affects?
+
+Note each lens's findings before drafting the next brief. Adopt when ad-hoc review starts letting issues through; ordinary review is enough until that pattern shows up.
 
 ### Final round — implementation
 
@@ -274,13 +307,21 @@ A locked-scope brief that Code executes. Show-diff-before-write discipline appli
 
 **A note on sub-agent dispatch.** When a brief is handed off to a sub-agent (rather than the primary executor session continuing the work), include all needed context explicitly in the brief — sub-agents start fresh with no inherited conversation history. Treat brief files as self-contained when sub-agents are in play. This is the single most common cause of sub-agent failures.
 
+**The positive form: specify the interface.** A sub-agent brief should state explicitly what the sub-agent **receives** (the brief plus named files, nothing else), what it **returns** (a condensed result document — plan, decisions, summary — not raw intermediate reasoning), and what it **discards** (exploration dead-ends, redundant tool outputs, anything the parent doesn't need to read). Without the interface specified, sub-agents either over-share — drowning the parent in noise — or under-share — omitting what the parent needs to decide.
+
 ### Closure mechanics (future)
 
-Today, briefs are produced as files in the cloud VM (or in Chat output), saved to the workspace manually, and Code is pointed at them. An end-state where Chat dispatches Code briefs directly via an MCP-style tool and reads the feedback inline is a natural evolution — closes the human-as-messenger loop. Worth a separate exploration once a reference implementation exists.
+Today, briefs are produced as files in the cloud VM (or in Chat output), saved to the workspace manually, and Code is pointed at them. An end-state where Chat dispatches Code briefs directly via an MCP-style tool and reads the feedback inline is a natural evolution — closes the human-as-messenger loop.
+
+**When to build it.** The signal is a single session that needs more than two rounds of human transcription — copying Code's feedback into a new brief, dispatching, transcribing the next feedback back. A vanilla R1 → R2 → implementation cycle already consumes two transcriptions; the trigger is when a normal cycle no longer fits and the human keeps shuttling. Below that threshold, the manual loop is fast enough; above it, the dispatch tooling starts paying its cost. Build on observed friction, not anticipated friction.
 
 ### Escalation for large cycles
 
-The default cycle-brief protocol is single-actor conversational — R1 brief → review → R2+ refinement → implementation. For cycles too large to span comfortably in one session, escalate to a persistent multi-document shape: a spec doc (what we're building and why), a plan doc (how it decomposes), and a tasks doc (discrete trackable steps). This converges with what spec-driven tools like spec-kit and Kiro produce by default. Use it when the cycle clearly spans more than one working session; otherwise the conversational form is faster.
+The default cycle-brief protocol is single-actor conversational — R1 brief → review → R2+ refinement → implementation. For cycles too large to span comfortably in one session, escalate to a persistent multi-document shape: a spec doc (what we're building and why), a plan doc (how it decomposes), and a tasks doc (discrete trackable steps).
+
+This converges with what spec-driven tools produce by default. **Spec-Kit** (GitHub) uses *constitution → specify → plan → tasks → implement*, with the constitution playing the role this methodology gives to anchors (see *Anchors — durable reference*). **Kiro** (AWS) uses the same three artifacts (`requirements.md`, `design.md`, `tasks.md`) with requirements written in **EARS** notation — `WHEN <condition> THE SYSTEM SHALL <behavior>` — for testability. The methodology's spec/plan/tasks shape sits in the same family without committing to either tool's specific format.
+
+Use the escalated form when the cycle clearly spans more than one working session; otherwise the conversational form is faster.
 
 ---
 
@@ -336,16 +377,16 @@ Realignment is gradual. The methodology survives partial adoption better than mo
 
 Each concept in this methodology has an eventual **tool binding** — the encoded form that lets the rule run automatically rather than by discipline. As the methodology matures, the mapping fills in:
 
-| Concept | Tool binding |
-|---|---|
-| Session modes | Auto-loadable instruction packs (e.g. Claude Skills, `agents.md`-compatible equivalents) |
-| Cycle-brief R1 | Plan mode or equivalent read-only constraint |
-| Cycle-brief implement | Show-diff hooks, scoped tool allowlists |
-| Sub-agent roles (reviewer, auditor, implementer) | Configured sub-agent definitions with tight tool scopes |
-| Findings inbox | A standing log file today; eventually a structured-note tool |
-| Glossary discipline | A skill or gate that runs the naming rules as a checklist before any term is added |
-| Audit cycles | Scheduled agent runs against narrow-slice auditors |
-| Chat→Code dispatch | An MCP server exposing the executor as a callable tool |
+| Concept | Tool binding | Friction solved |
+|---|---|---|
+| Session modes | Auto-loadable instruction packs (e.g. Claude Skills, `agents.md`-compatible equivalents) | Mode context re-pasted by hand each session; mode discipline drifts when not in muscle memory |
+| Cycle-brief R1 | Plan mode or equivalent read-only constraint | Code starts implementing during R1 despite the brief saying not to |
+| Cycle-brief implement | Show-diff hooks, scoped tool allowlists | Unreviewed file writes; scope creep through broad tool access |
+| Sub-agent roles (reviewer, auditor, implementer) | Configured sub-agent definitions with tight tool scopes | Ad-hoc dispatch with inconsistent isolation; sub-agents over- or under-scoped per session |
+| Findings inbox | A standing log file today; eventually a structured-note tool | Drive-by findings lost when not captured; conversation drift when absorbed inline |
+| Glossary discipline | A skill or gate that runs the naming rules as a checklist before any term is added | Naming-rule checks applied inconsistently; new terms drift before glossary entries land |
+| Audit cycles | Scheduled agent runs against narrow-slice auditors | Audits skipped indefinitely without explicit scheduling |
+| Chat→Code dispatch | An MCP server exposing the executor as a callable tool | Human-as-messenger overhead exceeds two transcriptions per session (see *Closure mechanics*) |
 
 The methodology defines the rules and shapes; the tool binding makes them executable. **Adopt bindings only when the manual discipline shows friction.** Premature binding produces bureaucracy that drifts from the rules it was meant to encode — the rules become aspirational while the encoded version runs out of alignment with them.
 
@@ -381,9 +422,9 @@ Areas where the methodology is least settled and most likely to refine with use:
 - **Naming.** "Chat" and "Code" are role labels here, not product names. They work in conversation but may need disambiguation in a published version (e.g. "high-level assistant" vs "coding agent").
 - **Session modes.** The mode list is descriptive of current practice, not prescriptive. Whether modes deserve their own brief templates, system-prompt variants, or context-loading recipes is open.
 - **Closure of the Chat→Code loop.** Today the human is the messenger. An MCP-style direct dispatch is the obvious end-state but the design isn't settled.
-- **Multi-project user.** When one person runs several projects with this methodology, what convention reconciles user memory (which is account-scoped) with project context (which is project-scoped)? Probably project files do most of the work; worth confirming as the case grows.
+- **Multi-project user.** The within-project memory/context split is now operational via the six-month test (see *Project context*). The remaining question for users running several projects: what content legitimately belongs in account-scoped user memory rather than per-project context? Likely candidates are durable cross-project preferences (working style, tool defaults), but those are also the easiest to over-claim into memory. Worth a separate audit as the multi-project case grows.
 - **Team adoption.** Currently framed for a single principal working with LLMs. Adapting to multi-human teams — who writes the briefs, who reviews the feedback, how decisions get attributed — is unaddressed.
-- **Anti-bureaucracy in practice.** The guardrail is stated, not tested. Some artifacts in this doc may already fail the "what specific friction did this solve?" check. Worth a periodic audit.
+- **Anti-bureaucracy in practice.** The friction audit is now described as a practice (see *Anti-bureaucracy guardrail*), but it hasn't been run against an actual artifact set. The remaining question is empirical: does the audit reliably distinguish pay-its-way artifacts from drift, and what cadence works? A useful first test would be the methodology doc itself.
 - **Verification of ecosystem claims.** This version absorbs framing from an LLM-research-tool survey of the May 2026 ecosystem. Key claims (AGENTS.md as a Linux-Foundation-stewarded open standard, adoption figures, SKILL.md cross-tool portability) warrant external verification before publication.
 
 ---
