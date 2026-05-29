@@ -2,7 +2,7 @@
 
 *How to run the method. The reasoning, provenance, and references live in the companion: **`hooman-notes.md`** (same gist).*
 
-**Status:** Draft v0.6 (2026-05-29). Reframes the method's optimization target around scarce attention and re-entry; renames the executor role and splits it into reconnaissance and mutation; adds output contracts, a direction check, and a failure-modes map; makes bootstrap incremental. Full changelog in the companion.
+**Status:** Draft v0.7 (2026-05-29). Frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -14,6 +14,22 @@
 - **The companion** (`hooman-notes.md`) holds the *why*: motivation, what's distinctive, ecosystem positioning, verified references, the candidate-binding roadmap, and open questions. Consult it when you want the reasoning behind a prescription.
 
 Each rule here keeps its short *why* inline; the extended rationale lives in the companion. (This is the method's own "table of contents, not textbook" rule applied to itself.)
+
+---
+
+## When to invoke — Hooman is an escalation protocol
+
+Hooman does not govern all AI-assisted work, and is not meant to. Below the threshold, work the normal way: chat, sketch, experiment, run ad-hoc reconnaissance and code sessions. **Invoke the method only when informal exploration stops being enough** — when the work is large or durable enough that re-entry, delegation, review, or mutation-safety start to cost you. Concretely, escalate when **two or more** hold:
+
+- you expect to return to this after a gap;
+- an Executor will inspect or mutate nontrivial material;
+- there is more than one plausible path;
+- mistakes are expensive or hard to reverse;
+- you need an audit trail.
+
+Below that line the apparatus is overhead; above it, its absence is. (This is *scale-to-stakes* from *Bootstrapping*, stated up front because it is the first operational decision — not a classification to file every effort into from the start.)
+
+**The scope-intake gate — big is allowed, undefined is not.** The failure this method most has to guard against is not premature invocation; it is **scope gravity** — a large, interesting effort entering the system as fog. So before the first real brief, name three things: the **smallest independently useful slice**, the **exclusion zone** (what is explicitly out), and the **first decision** that needs making. If you cannot name the slice, the next task is not setup or implementation — it is **scope decomposition**. (This is the *direction check* below, fired at the moment of escalation.)
 
 ---
 
@@ -66,7 +82,7 @@ Three contracts cover most work. Match the contract to the task, not to the role
 - **Mutation (implementation).** Returns: files changed; tests run and their result; risks remaining; manual checks still needed; rollback notes where relevant. Show-diff-before-write applies.
 - **Analysis (research, drafting, non-code synthesis).** Returns: source quality separated from speculation; the strongest *opposing* evidence, not just the supporting case; practical decision implications; uncertainty labeled. This is the contract for work the Executor does outside software — a bill of materials, an analytical brief, a literature scan — where "good output" differs from a code plan.
 
-A delegated task with no answer to "what does done-enough-to-decide look like?" isn't ready to dispatch.
+A delegated task with no answer to "what does done-enough-to-decide look like?" isn't ready to dispatch. Of the three, the **evidence map is the one to keep if you keep only one** — it is what makes a plausible plan auditable instead of merely trusted.
 
 ---
 
@@ -81,6 +97,8 @@ If the answer is hypothetical ("might be useful one day"), the rule isn't ready 
 This applies equally to additions to this methodology, to the project handbook, to the glossary, and to operational templates. Conventions earn their place by paying their way.
 
 **The retrospective form: friction audit.** The same test applied backwards on a recurring pass. Walk the existing artifact set — anchors, roadmap tracks, glossary entries, operational templates, any bindings adopted — and ask of each: what friction does this still solve? Items that no longer pay their way get deprecated or removed; items where the friction has shifted get re-scoped; items still earning their place stay. Treat the friction audit as one audit type among the others (see *Audits — review artifacts*); its findings seed a maintenance cycle the same way any audit does. Run on a slow cadence, or whenever accretion outpaces use.
+
+**Kill criteria — deletion triggers, not just adoption triggers.** "What friction does this still solve?" is necessary but not sufficient: without concrete signs to *delete*, the guardrail stays pure discipline, which is what the method otherwise tries to avoid. Treat these as heuristics that prompt a removal decision, not a tracking system — an artifact or mechanism is a candidate for deletion or merge when it has **not been consulted in several cycles**, when **you catch yourself avoiding it**, when it **duplicates what the project context file already says**, or when it has **too few live entries to earn its own file**. The friction audit is where they get applied.
 
 ---
 
@@ -204,6 +222,8 @@ A single file (e.g. `<project>-context.md`) saved as a *project file* in the LLM
 Pair this with whatever **persistent user memory** your LLM platform offers. Memory captures temporal, evolving facts (in-flight tracks, recent state, working preferences); the project context file captures durable shape. The two complement each other — don't try to make one do the other's job.
 
 **The six-month test.** If a fact will still be true six months from now, it belongs in the project context file. If it's the current state of a cycle, it belongs in memory. Borderline cases lean toward memory; promote to the context file only when stability is demonstrated. (The test is a heuristic, not a law — its job is to keep a stable, low-maintenance partition, not to second-guess the platform's own retrieval.)
+
+**Visible artifacts beat opaque memory.** Platform memory is convenient but often opaque, non-auditable, and silently mutated by the platform — a mismatch with an otherwise inspectable, artifact-centric system. So treat memory as a *convenience cache, not a source of truth*: if a fact matters for re-entry and the platform's memory can't be reliably inspected, exported, or corrected, that fact belongs in a **visible artifact** — the roadmap's next-action line, a `STATUS` header, or a session-close summary — and the visible artifact wins on any conflict.
 
 ---
 
@@ -388,6 +408,9 @@ The happy path — Chat briefs the Executor, reconnaissance surfaces decisions, 
 | Premature binding | A tool encodes a rule before friction proved the need | Anti-bureaucracy guardrail; friction audit |
 | Method leakage | Full apparatus applied to a small effort | Scale-to-stakes (see *Bootstrapping*) |
 | Re-entry stall | Context is all present but the session won't start | Re-entry surface leads with the single next action |
+| Process-as-avoidance | Building or refining the method substitutes for doing the work | Escalation threshold (don't invoke below it); scope-intake gate (name the slice); kill criteria |
+| Stale next action | The re-entry line points at a step already done or overtaken | Session-close rewrites the next action first; the roadmap is the re-entry surface, kept current |
+| Memory ⊥ artifacts | Platform memory contradicts the visible repo state | Visible artifacts win (see *Project context*); memory is a cache, not the source of truth |
 
 ---
 
@@ -409,7 +432,7 @@ These apply in Chat sessions regardless of mode.
 
 ## Bootstrapping a new project
 
-**First, scale the apparatus to the stakes.** The full workspace shape is for a durable system whose confusion is expensive — typically work that affects other people or that you'll carry for months. Most efforts need far less, and applying the full structure to a small one is the *method leakage* failure above. The governing rule: **adopt the smallest shape that keeps re-entry cheap and delegation clean.** As a descriptive guide, not a taxonomy to file every effort into:
+You are here because the work crossed the escalation threshold (see *When to invoke*); now **scale the apparatus to the stakes**. The full workspace shape is for a durable system whose confusion is expensive — work that affects others or that you'll carry for months. Most efforts need far less, and applying the full structure to a small one is the *method leakage* failure above. As a descriptive guide, not a taxonomy to file every effort into:
 
 - A one-off chore lives in a single chat — no workspace.
 - A recurring chore earns one checklist or note.
@@ -448,7 +471,7 @@ Realignment is gradual. The methodology survives partial adoption better than mo
 
 ## Tool bindings
 
-Every rule here has an eventual **tool binding** — the encoded form that runs it automatically rather than by discipline (a Skill, a plan-mode constraint, a scoped sub-agent, a scheduled audit run). **Adopt a binding only when the manual discipline shows real friction.** Premature binding produces bureaucracy that drifts from the rule it was meant to encode.
+Some rules may eventually earn a **tool binding** — the encoded form that runs a rule automatically rather than by discipline (a Skill, a plan-mode constraint, a scoped sub-agent, a scheduled audit run). Not every rule wants embodiment. **Adopt a binding only when the manual discipline shows real friction.** Premature binding produces bureaucracy that drifts from the rule it was meant to encode.
 
 Two bindings are deliberately **deferred** in this version and should not be built yet: the **Chat→Executor MCP dispatch** loop (deferred on a cost-based friction trigger) and **auto-synthesis of canonical artifacts** (deferred on a stronger ground — auto-writing the constitution destroys the curation that makes it canonical; use propose-then-commit instead). The full concept → binding → trigger roadmap, and both deferral rationales, live in the companion.
 
@@ -465,3 +488,4 @@ The full version of these boundaries, what's distinctive about the method, and w
 ---
 
 *Operating guide. The why, provenance, and references: see **`hooman-notes.md`** (same gist).*
+
