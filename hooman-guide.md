@@ -2,7 +2,7 @@
 
 *How to run the method. The reasoning, provenance, and references live in the companion: **`hooman-notes.md`** (same gist).*
 
-**Status:** Draft v0.5 (2026-05-29). Split from the single-document v0.4 into this operating guide plus a companion. Full changelog in the companion.
+**Status:** Draft v0.6 (2026-05-29). Reframes the method's optimization target around scarce attention and re-entry; renames the executor role and splits it into reconnaissance and mutation; adds output contracts, a direction check, and a failure-modes map; makes bootstrap incremental. Full changelog in the companion.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -11,7 +11,7 @@
 ## How to use these two documents
 
 - **This guide** is operational: how to set up a workspace and run the method day to day. Read it to operate.
-- **The companion** (`hooman-notes.md`) holds the *why*: motivation, what's distinctive, ecosystem positioning, verified references, the tool-binding roadmap, and open questions. Consult it when you want the reasoning behind a prescription.
+- **The companion** (`hooman-notes.md`) holds the *why*: motivation, what's distinctive, ecosystem positioning, verified references, the candidate-binding roadmap, and open questions. Consult it when you want the reasoning behind a prescription.
 
 Each rule here keeps its short *why* inline; the extended rationale lives in the companion. (This is the method's own "table of contents, not textbook" rule applied to itself.)
 
@@ -19,34 +19,54 @@ Each rule here keeps its short *why* inline; the extended rationale lives in the
 
 ## The two-role split
 
-Working on a non-trivial project with an LLM hits a predictable ceiling: a single conversation can't hold the project's full context, detail work pollutes the attention budget, and decisions get re-derived each session. The response that actually works is **role separation with mechanical artifacts** — a high-level conversational assistant (*Chat*) that holds strategy, a coding agent (*Code*) that investigates and implements, and artifacts in the project tree that survive across sessions and across handoffs to entirely new agents.
+Working with an LLM on anything non-trivial hits a predictable ceiling: a single conversation can't hold the project's full context, detail work pollutes the attention budget, and decisions get re-derived each session.
 
-### Chat — primary collaborator
+But the ceiling that actually governs this method is sharper than that, and stating it explicitly explains most of what follows. **This method is built for a single principal doing intermittent, high-stakes work across many unrelated domains, whose main job is not this project and whose attention is the scarce resource.** The dominant cost in that situation is not bad output — it is *re-entry*: picking a project back up after a three-week gap and reconstructing what was decided, what was half-done, and what must not be touched. So the method optimizes for re-entry being cheap, delegation being the default, and the principal's scarce attention going to judgment rather than to rediscovering context or shuttling handoffs.
 
-A high-level conversational assistant. Default register: conceptual, strategic, architectural, decision-focused. Chat's job is to:
+The response that works is **role separation with mechanical artifacts**: a conversational assistant (*Chat*) that holds strategy and direction, a tool-equipped agent (*the Executor*) that investigates and implements, and artifacts in the project tree that survive across sessions and across handoffs to entirely new agents. The human stays in the seat that can't be delegated — priorities, constraints, final decisions — and pushes reconnaissance, implementation, inventory, and cleanup outward.
+
+### Chat — orchestration
+
+A high-level conversational assistant. Default register: conceptual, strategic, architectural, decision-focused. Chat's job:
 
 - Hold the project's vision and direction.
 - Frame problems and surface decisions.
-- Translate user intent into well-shaped work for Code.
-- Review Code's output and weigh trade-offs.
+- Translate intent into well-shaped briefs for the Executor.
+- Review Executor output, weigh trade-offs, decide.
 - Keep the long arc visible across sessions.
 
-What Chat **does not** do: read raw codebases page-by-page, generate file inventories, summarize CHANGELOGs in detail, or do any work whose output is *content* rather than *direction*. That work is offloaded.
+What Chat **does not** do: bulk-process detail — read codebases page-by-page, generate file inventories, summarize long docs. That work is offloaded. The exception that matters: Chat *may* inspect a targeted piece of evidence — a single pivotal file, one failing test, a narrow diff — when seeing it directly changes a decision. The rule is *don't bulk-process details*, not *never look*; an over-abstracted Chat that refuses to look at anything becomes hostage to the Executor's framing.
 
-### Code — research and design partner, then implementer
+### Executor — investigate, then implement
 
-A coding agent (e.g. Claude Code) with full filesystem and execution access. Code's job is twofold:
+A tool-equipped agent (e.g. Claude Code) with filesystem and execution access. The distinction from Chat is **embodiment, not subject matter**: the Executor has hands — it can read, run, and write — and it fills this role whether the work is code, a bill of materials, or a research brief.
 
-1. **Research and design partner.** Given a high-level brief from Chat, investigate the relevant slice of the codebase, draft a plan, and surface trade-offs and decisions that need human input — *without implementing yet*.
-2. **Implementer.** Once scope is locked through Chat iteration, execute the work.
+The role runs in two modes with **different safety profiles**, and the method keeps them separate:
 
-The first role is the one most users underuse. Code is a remarkably effective design partner *when given an open-ended brief that asks it to think, not just to type*.
+1. **Reconnaissance.** Given a brief, investigate the relevant slice, surface trade-offs and the decisions that need human input, and recommend a path — *without mutating anything*. Read-only. This is the mode most users underuse: the Executor is a remarkably effective design partner when the brief asks it to think, not to type.
+2. **Mutation.** Once scope is locked through Chat iteration, execute. Writes are real; the discipline tightens accordingly (show-diff, tests, rollback).
+
+The two modes carry different review requirements (see *Output contracts*) and, on a capable tool, different enforcement: reconnaissance maps to a read-only constraint like plan mode; mutation maps to show-diff-before-write. Treating them as one undifferentiated "do the work" role is the most common way unreviewed writes slip through.
 
 ### The offload test
 
-When Chat finds itself about to read a file, summarize a long doc, inventory a directory, or otherwise generate *details* rather than *direction*, that is the signal to write a Code brief instead. The test: is the content I'm about to produce **conceptual** (belongs in Chat) or **inventory / details** (belongs to Code)?
+When Chat finds itself about to read a file, summarize a long doc, inventory a directory, or otherwise generate *details* rather than *direction*, that is the signal to write an Executor brief instead. The test: is the content I'm about to produce **conceptual** (belongs in Chat) or **inventory / details** (belongs to the Executor)?
 
-**A second axis — contextual weight — applies to persistence.** Before adding anything to a context file that loads automatically into future sessions — AGENTS.md, project context file, SKILL.md frontmatter, anchor docs — ask whether the marginal signal justifies the marginal attention cost. Every line in a persistent context file claims a slice of every loader's attention budget, every session. Lines that aren't pulling their weight are net-negative. The directional axis asks where content goes *now*; the contextual-weight axis asks whether it earns persistence at all.
+**A second axis — contextual weight — applies to persistence.** Before adding anything to a context file that loads automatically into future sessions — AGENTS.md, the project context file, SKILL.md frontmatter, anchor docs — ask whether the marginal signal justifies the marginal attention cost. Every line in a persistent context file claims a slice of every loader's attention budget, every session. Lines that aren't pulling their weight are net-negative. The directional axis asks where content goes *now*; the contextual-weight axis asks whether it earns persistence at all.
+
+---
+
+## Output contracts
+
+Scarce attention makes **review cost the real bottleneck**, not execution. Vague delegated output forces you to reconstruct context just to judge it — the exact cost the method exists to avoid. So every delegated task carries a contract: *what "done enough to decide quickly" looks like for this kind of work.* The contract is stated in the brief and is what you check the response against.
+
+Three contracts cover most work. Match the contract to the task, not to the role.
+
+- **Reconnaissance (read-only investigation).** Returns: decision points surfaced; an **evidence map** tagging every material claim as *inspected* (read directly), *inferred* (reasoned from adjacent evidence), or *unverified* (assumed, not checked); assumptions marked; a recommended path; non-recommended paths briefly rejected; and an explicit statement that nothing was implemented. The evidence map is the load-bearing field — agents reliably produce plausible plans that under-report what they never actually looked at, and the tag forces that distinction into the open.
+- **Mutation (implementation).** Returns: files changed; tests run and their result; risks remaining; manual checks still needed; rollback notes where relevant. Show-diff-before-write applies.
+- **Analysis (research, drafting, non-code synthesis).** Returns: source quality separated from speculation; the strongest *opposing* evidence, not just the supporting case; practical decision implications; uncertainty labeled. This is the contract for work the Executor does outside software — a bill of materials, an analytical brief, a literature scan — where "good output" differs from a code plan.
+
+A delegated task with no answer to "what does done-enough-to-decide look like?" isn't ready to dispatch.
 
 ---
 
@@ -60,7 +80,7 @@ If the answer is hypothetical ("might be useful one day"), the rule isn't ready 
 
 This applies equally to additions to this methodology, to the project handbook, to the glossary, and to operational templates. Conventions earn their place by paying their way.
 
-**The retrospective form: friction audit.** The same test applied backwards on a recurring pass. Walk the existing artifact set — anchors, roadmap tracks, glossary entries, operational templates, any tool bindings adopted — and ask of each: what friction does this still solve? Items that no longer pay their way get deprecated or removed; items where the friction has shifted get re-scoped; items still earning their place stay. Treat the friction audit as one audit type among the others (see *Audits — review artifacts*); its findings seed a maintenance cycle the same way any audit does. Run on a slow cadence, or whenever accretion outpaces use.
+**The retrospective form: friction audit.** The same test applied backwards on a recurring pass. Walk the existing artifact set — anchors, roadmap tracks, glossary entries, operational templates, any bindings adopted — and ask of each: what friction does this still solve? Items that no longer pay their way get deprecated or removed; items where the friction has shifted get re-scoped; items still earning their place stay. Treat the friction audit as one audit type among the others (see *Audits — review artifacts*); its findings seed a maintenance cycle the same way any audit does. Run on a slow cadence, or whenever accretion outpaces use.
 
 ---
 
@@ -72,9 +92,19 @@ Within this, project documents serve different audiences. Mixing audiences in on
 
 - **Agent-specific docs** — entry points for AI agents. Lean, pointer-heavy. Tell an agent how to operate in this workspace and where to find context. The canonical example is `AGENTS.md`, increasingly a project-root convention across AI coding tools. Its effectiveness depends on being **operational** rather than narrative: command-first (the exact commands an agent should run), task-organized (sections by what an agent does, not by topic), closure-defined (every section says how an agent knows the task is done). Keep it under roughly 200 lines — past that, neither humans nor agents reliably read it.
 - **Human-leaning docs** — entry points for humans (returning collaborators, new contributors). The canonical example is the project **handbook** (see below). Agents can read them, but they're optimized for humans.
-- **Hybrid docs** — content that serves both. Anchors (philosophy, invariants, personas), roadmap tracks, the glossary. Both audiences read them; both audiences benefit from the same content.
+- **Hybrid docs** — content that serves both. Anchors (philosophy, invariants, personas), roadmap tracks, the glossary. Both audiences read them; both benefit from the same content.
 
 Specific cases of the underlying principle: AGENTS.md doesn't restate the philosophy — it points to `PHILOSOPHY.md`. The handbook doesn't restate the rules — it points to this guide. The glossary doesn't restate full architectural definitions — it points to anchors. Definitions stay canonical, duplication stays low.
+
+### When AGENTS.md exceeds its budget — pruning order
+
+A line limit without a pruning order invites arbitrary cuts. When AGENTS.md grows past its budget, remove in this order until it fits:
+
+1. **Narrative rationale** — move to the handbook or an anchor.
+2. **Duplicated rules** — keep one canonical statement, delete the rest.
+3. **Stale setup notes** — anything describing a state the repo has left behind.
+4. **Repo-specific content** — move down into that repo's nested AGENTS.md (see below).
+5. **Commands that belong in repo docs** — point to them rather than inlining them.
 
 ### Anti-patterns to design against
 
@@ -95,7 +125,7 @@ Typical default: **user-level < workspace-level < repo-level < per-folder; later
 
 ## The workspace shape
 
-The artifacts that make the methodology work, in roughly the order you would create them in a new project.
+The artifacts that make the methodology work, in roughly the order you would create them. They appear **on friction, not on day one** — see *Bootstrapping*.
 
 ### Project tree
 
@@ -111,7 +141,7 @@ A workspace is a parent directory holding one or more repos as flat siblings, pl
 ├── GLOSSARY.md            # project vocabulary
 ├── anchors/               # durable reference docs (often inside a workspace-tooling repo)
 ├── roadmap/               # feature work, one file per track
-├── session-starters/      # Chat→Code briefs, including audit-driven cycles
+├── session-starters/      # Chat→Executor briefs, including audit-driven cycles
 ├── audits/                # audit reports, mechanically linked to cycles
 ├── overlays/              # workspace-tracked storage for files that don't belong in any single repo
 └── <project>-context.md   # portable orientation; also loaded as a platform-level project file
@@ -121,7 +151,9 @@ A workspace is a parent directory holding one or more repos as flat siblings, pl
 
 Short, stable documents that capture the project's invariants, philosophy, audience, and contract direction. Anchors evolve slowly. They are the docs an agent reads first to understand what the project values and what trade-offs are intentional. Common examples: `PHILOSOPHY.md` (what we are and are not for), `INVARIANTS.md` (what must hold across the codebase), `AUDIENCE_PERSONAS.md` (whom we are designing for).
 
-Anchors function as the project's **constitution** — the same vocabulary used in spec-driven-development tooling. Cycle briefs cannot quietly override them: a plan that implies changing what an anchor states is a separate decision, a deliberate anchor revision, not a side effect of implementation. This precedence is what makes anchors worth reading first.
+Anchors function as the project's **constitution** — the same vocabulary used in spec-driven-development tooling. Cycle briefs cannot quietly override them: a plan that implies changing what an anchor states is a separate decision, a deliberate anchor revision, not a side effect of implementation.
+
+**Propose-then-commit.** An agent may *draft* an anchor revision inside a cycle, but anchors change only by deliberate human commit — never auto-written by an end-of-session synthesis pass. The friction of committing them by hand is the feature: it is the gate that keeps them canonical. (The same rule governs the glossary.)
 
 ### Handbook — Tier 1 navigation
 
@@ -136,11 +168,11 @@ Don't bootstrap Tiers 2 and 3 preemptively. The Tier 1 handbook is enough for mo
 
 ### Roadmap — feature work
 
-One file per **track**. Tracks have explicit lifecycle states: *idea → proposed → ready → in-flight → shipped → parked → retired*. Each track captures the problem, scope, non-scope, dependencies, and the current next concrete step. Roadmap docs persist across the whole life of the track — they are the durable record of intent.
+One file per **track**. Tracks have explicit lifecycle states: *idea → proposed → ready → in-flight → shipped → parked → retired*. Each track captures the problem, scope, non-scope, dependencies, and — first, where re-entry will find it — the **current next concrete step**. Roadmap docs persist across the whole life of the track; they are the durable record of intent.
 
-### Session-starters — Chat→Code briefs
+### Session-starters — Chat→Executor briefs
 
-The folder where Chat-produced briefs land. Loose files at the root are one-off handoffs. Subfolders are **maintenance cycles** seeded from a review artifact (see *Audits* below). Code's response to any brief is written next to the input as `<brief-name>-feedback.md`.
+The folder where Chat-produced briefs land. Loose files at the root are one-off handoffs. Subfolders are **maintenance cycles** seeded from a review artifact (see *Audits* below). The Executor's response to any brief is written next to the input as `<brief-name>-feedback.md`.
 
 A `findings-from-chat.md` lives at the root of this folder as a standing append-only log — see *The findings inbox* below.
 
@@ -171,7 +203,7 @@ A single file (e.g. `<project>-context.md`) saved as a *project file* in the LLM
 
 Pair this with whatever **persistent user memory** your LLM platform offers. Memory captures temporal, evolving facts (in-flight tracks, recent state, working preferences); the project context file captures durable shape. The two complement each other — don't try to make one do the other's job.
 
-**The six-month test.** If a fact will still be true six months from now, it belongs in the project context file. If it's the current state of a cycle, it belongs in memory. Borderline cases lean toward memory; promote to the context file only when stability is demonstrated.
+**The six-month test.** If a fact will still be true six months from now, it belongs in the project context file. If it's the current state of a cycle, it belongs in memory. Borderline cases lean toward memory; promote to the context file only when stability is demonstrated. (The test is a heuristic, not a law — its job is to keep a stable, low-maintenance partition, not to second-guess the platform's own retrieval.)
 
 ---
 
@@ -187,7 +219,7 @@ Three categories:
 - **Industry terms with project-specific meaning** — borrowed words where the project's meaning is narrower, wider, or different from the common ecosystem meaning.
 - **Deprecated and superseded names** — every rename leaves an entry, marked with supersession date. Old docs and conversations need to keep resolving.
 
-What stays out: any term used once and not recurring. The trigger for an entry is **recurrence in more than one place**, not first use.
+What stays out: any term used once and not recurring.
 
 ### Structure
 
@@ -199,10 +231,11 @@ When a term has a natural home in an anchor doc or a roadmap track, the glossary
 
 ### Update discipline
 
-- **Add when** the term appears in a second place. Single use stays informal.
+- **Add when** the term appears in a second place *and* ambiguity, reuse, or future lookup is likely. Recurrence alone isn't the trigger — many terms appear twice without earning an entry, and a glossary of low-value labels is its own cost.
 - **Update when** scope shifts; date the edit in the git log.
 - **Mark deprecated when** superseded. Format: `superseded by X (YYYY-MM-DD)`. Don't delete — old material needs the old name to resolve.
 - **Same-commit rule**: a new term coined in a roadmap track gets its glossary entry in the same change. Catching it later means it drifts.
+- **Propose-then-commit**: an agent may draft an entry, but the human commits it (the same-commit rule still applies). The glossary is canonical; it is not auto-written.
 
 ### Naming rules
 
@@ -229,9 +262,9 @@ Chat sessions regularly notice issues in passing — undocumented features, dead
 - **YYYY-MM-DD** — <description>. [<status>]
 ```
 
-Status values: `open`, `dispatched` (Code brief written), `closed`.
+Status values: `open`, `dispatched` (Executor brief written), `closed`.
 
-Discipline: append when noticed, never debate in line. Code does periodic sweeps and either closes findings directly or escalates them into briefs. The file is lightweight by design — if a finding deserves more than one line, it deserves its own brief.
+Discipline: append when noticed, never debate in line. The Executor does periodic sweeps and either closes findings directly or escalates them into briefs. The file is lightweight by design — if a finding deserves more than one line, it deserves its own brief.
 
 ---
 
@@ -243,13 +276,13 @@ The categories of Chat session distinguishable so far. The list is descriptive o
 |---|---|---|
 | **Vision / strategy** | Long-arc direction, new bets, positioning | Roadmap entries, anchor updates |
 | **Track scoping** | Turning an intent into a defined feature track | `roadmap/<track>.md` |
-| **Cycle opening** | Translating a need into a Code investigation brief | `session-starters/<brief>.md` |
-| **Review** | Processing Code feedback, weighing trade-offs | Decisions committed to roadmap, anchors, or a next-round brief |
+| **Cycle opening** | Translating a need into an Executor investigation brief | `session-starters/<brief>.md` |
+| **Review** | Processing Executor feedback, weighing trade-offs | Decisions committed to roadmap, anchors, or a next-round brief |
 | **Architecture decision** | Committing to a design with documented rationale | An ADR or equivalent decision record |
 | **Audit triage** | Reading audit findings, deciding what becomes a cycle | A maintenance-cycle scaffold |
 | **Realignment** | Restructuring an existing project to fit this methodology | A migration plan, new anchors, retroactive roadmap |
 
-Each mode shares the same Chat-Code split and the same offload discipline. What differs is what context the session needs loaded and what output shape it produces.
+Each mode shares the same Chat–Executor split and the same offload discipline. What differs is what context the session needs loaded and what output shape it produces.
 
 ---
 
@@ -257,11 +290,16 @@ Each mode shares the same Chat-Code split and the same offload discipline. What 
 
 Long Chat sessions accumulate context that's about to be discarded. Letting it die without a closing pass loses both the work and the loose threads. A short ritual makes the discard productive.
 
-- **Session summary.** For sessions whose mode doesn't already produce a durable artifact (primarily vision/strategy, some review sessions), write a brief summary before closing: what was decided, what was deferred, what the next concrete step is. Destination depends on what was discussed — an anchor update, a roadmap-track update, or a new session-starter. Modes that already produce a durable artifact (track scoping, cycle opening) don't need a separate summary; the artifact *is* the summary.
-
+- **Session summary.** For sessions whose mode doesn't already produce a durable artifact (primarily vision/strategy, some review sessions), write a brief summary before closing. Its **first line is the single next concrete action** (this is what re-entry will read first); then what was decided and what was deferred. Destination depends on what was discussed — an anchor update, a roadmap-track update, or a new session-starter. Modes that already produce a durable artifact (track scoping, cycle opening) don't need a separate summary; the artifact *is* the summary.
 - **Findings sweep.** Append any drive-by observations noticed during the session to `session-starters/findings-from-chat.md` (per *The findings inbox*). Doing this at session-close, not just inline, catches observations the inline discipline missed.
 
 The ritual applies to long sessions, not every session. The signal: if you'd be sad to lose the context, write something before you lose it.
+
+---
+
+## Re-entry
+
+Re-entry is the method's central use case (see *The two-role split*), and it is not only an information problem. After a long gap, the facts being *available* is necessary but not sufficient — a status dump still leaves you to *decide* what to do next, and for intermittent work the deciding is itself the cost. So the re-entry surface leads with the **single next concrete action**, not a state summary. The roadmap track's *current next concrete step* and the session-close summary's first line both exist for this. You re-enter by reading one line and moving, then pull more context only if the next step needs it. A re-entry surface that opens with a wall of state, forcing you to re-derive the next move, has lost the point of the method.
 
 ---
 
@@ -279,32 +317,42 @@ A brief is a markdown file written by Chat into `session-starters/`. The boilerp
 - **Goal** — what we want, conceptually, in a paragraph.
 - **Read first** — anchor docs and adjacent material.
 - **Don't touch** — exclusions, exclusion zones, out-of-scope adjacent surfaces.
-- **What to produce** — for R1 briefs, the shape of the response: plan, decision points, open questions, what would NOT be done without go-ahead.
+- **What to produce** — for R1 briefs, the reconnaissance contract (see *Output contracts*): plan, decision points, the evidence map, assumptions, what would NOT be done without go-ahead.
 - **Output** — `<this-file>-feedback.md` adjacent.
 - **Discipline guardrails** — for R1: *do not implement*. For implementation rounds: show diffs, run tests, etc.
 
-A cycle-opening brief asks Code to **think**, not to type. It explicitly forbids implementation.
+A cycle-opening brief asks the Executor to **think**, not to type. It explicitly forbids implementation.
 
-R1's *high-freedom* register — open-ended text, conceptual goals, exploration permitted — is the point: it lets Code surface trade-offs the brief didn't anticipate. Implementation briefs invert this: *low freedom*, exact diff discipline, named files, tests required. R2+ briefs sit between. **Brief specificity matches the round.**
+R1's *high-freedom* register — open-ended text, conceptual goals, exploration permitted — is the point: it lets the Executor surface trade-offs the brief didn't anticipate. Implementation briefs invert this: *low freedom*, exact diff discipline, named files, tests required. R2+ briefs sit between. **Brief specificity matches the round.**
 
-When the executor is Claude Code, **plan mode** is the natural substrate for R1: its read-only-by-design constraint enforces "don't implement" by tool rather than by honor system. The methodology stays portable across tools; the binding to a specific tool is platform-specific.
+When the executor tool is Claude Code, **plan mode** is the natural substrate for R1: its read-only-by-design constraint enforces the reconnaissance/mutation separation by tool rather than by honor system. The methodology stays portable across tools; the binding to a specific tool is platform-specific.
+
+**The direction check.** The adversarial gate (below) scrutinizes the Executor's plan. Nothing otherwise scrutinizes *yours* — and for a single principal, your own framing is the unguarded single point of failure: the method routes all judgment to one person and then never checks it. Before a cycle-opening brief goes out, run a short check on the brief itself. It is far cheaper to catch a mis-framed brief here than after the Executor spends a cycle answering the wrong question:
+
+- **Frame.** Am I solving the right problem, or the first one that came to mind?
+- **Adjacent domains.** What neighboring domain — flagged by the project's personas or invariants — bears on this that I haven't pulled in?
+- **Assumption.** What am I treating as settled that isn't?
+
+This is the same instinct as a domain-scan pass turned on your own direction. Adopt it when a cycle has come back well-executed but aimed at the wrong target; until then, ordinary framing is enough.
 
 ### Round 2+ — review and refine
 
-Code's feedback gets reviewed by Chat + human. The decisions surfaced by Code get answered. The plan gets refined. A round-2 brief may follow, narrower in scope. Iterate until scope is genuinely locked and implementable.
+The Executor's feedback gets reviewed by Chat + human. The decisions surfaced get answered. The plan gets refined. A round-2 brief may follow, narrower in scope. Iterate until scope is genuinely locked and implementable.
 
-**The adversarial gate.** Structured scrutiny at the R1→R2 transition. Ad-hoc review tends to drift toward agreement with Code's plan; the gate's job is to force four specific checks before the plan moves forward. Apply each lens explicitly to Code's R1 feedback before drafting the next brief:
+**The adversarial gate.** Structured scrutiny at the R1→R2 transition, aimed at the Executor's plan. Ad-hoc review tends to drift toward agreement; the gate's job is to force four specific checks before the plan moves forward. Apply each lens explicitly to the R1 feedback before drafting the next brief:
 
-- **Skeptic.** What does Code's plan assume that could be wrong? What did Code not question?
+- **Skeptic.** What does the plan assume that could be wrong? What did the Executor not question?
 - **Invariant.** Does the plan touch anything in `INVARIANTS.md`? Does any proposed change create a new assumption that belongs there?
-- **Scope.** Has Code proposed more than the brief asked? Is scope expanding beyond the roadmap track?
-- **Omission.** What did Code *not* say? Are there adjacent areas the plan silently affects?
+- **Scope.** Has the Executor proposed more than the brief asked? Is scope expanding beyond the roadmap track?
+- **Omission.** What did the Executor *not* say? Are there adjacent areas the plan silently affects?
 
 Note each lens's findings before drafting the next brief. Adopt when ad-hoc review starts letting issues through; ordinary review is enough until that pattern shows up.
 
+**Trust calibration.** Uniform review every cycle doesn't compound; calibrated review does. As cycles accumulate, note where the Executor has been reliable and where it has burned you, and let that shift review weight — lighter scrutiny on proven-reliable zones, concentrated scrutiny on the rest. This is the attention-preservation goal applied to review itself. Keep the record informal (a few lines, not a system) until it earns more; a heavyweight reliability tracker is its own bureaucracy.
+
 ### Final round — implementation
 
-A locked-scope brief that Code executes. Show-diff-before-write discipline applies to any file changes. The feedback file remains the audit trail.
+A locked-scope brief the Executor runs in **mutation** mode, against the mutation contract (see *Output contracts*): files changed, tests run, risks, manual checks, rollback. Show-diff-before-write applies to any file changes. The feedback file remains the audit trail.
 
 **A note on sub-agent dispatch.** When a brief is handed off to a sub-agent (rather than the primary executor session continuing the work), include all needed context explicitly in the brief — sub-agents start fresh with no inherited conversation history. Treat brief files as self-contained when sub-agents are in play. This is the single most common cause of sub-agent failures.
 
@@ -312,7 +360,7 @@ A locked-scope brief that Code executes. Show-diff-before-write discipline appli
 
 ### Closure mechanics (future)
 
-The end-state where Chat dispatches Code briefs directly and reads the feedback inline — closing the human-as-messenger loop — is a design direction, not yet built. The trigger for building it, and the current thinking, are in the companion's *Closure mechanics* note.
+The end-state where Chat dispatches Executor briefs directly and reads the feedback inline — closing the human-as-messenger loop — is a design direction, not yet built. It is one of two deliberately deferred bindings; the trigger (re-expressed in cost terms) and the reasoning are in the companion's *Closure mechanics* and *Deferred bindings* notes.
 
 ### Escalation for large cycles
 
@@ -322,16 +370,37 @@ This converges with what spec-driven tools produce by default (Spec-Kit, Kiro �
 
 ---
 
+## Failure modes
+
+The happy path — Chat briefs the Executor, reconnaissance surfaces decisions, Chat reviews, mutation proceeds — is the easy case to document. These are the failures that actually bite, each mapped to the mechanism that catches it. If a failure recurs and *no* mechanism catches it, that is the friction that justifies a new rule.
+
+| Failure | Symptom | Caught by |
+|---|---|---|
+| Stale Executor context | Plan references code or conventions that have since changed | Reconnaissance + evidence map (*inspected* vs *unverified*) |
+| Over-confident feedback | Plausible plan, unstated unknowns | Evidence map; Skeptic + Omission lenses |
+| Over-scoped plan | Executor proposes more than the brief asked | Scope lens; locked-scope implementation brief |
+| Hallucinated conventions | Executor invents repo patterns that don't exist | Evidence map; Invariant lens |
+| Wrong target, well executed | Cycle comes back clean but answers the wrong question | The direction check (run *before* dispatch) |
+| Duplicate artifacts | A second doc or term created for an existing concept | Glossary discipline; handbook as the locational index |
+| Glossary overgrowth | Low-value terms accumulate; the glossary becomes a graveyard | Tightened add-trigger (recurrence *and* likely reuse) |
+| Anchor conflict | A plan quietly implies changing an invariant | Anchors-as-constitution precedence; Invariant lens |
+| Silent artifact drift | An agent edits a canonical doc without review | Propose-then-commit (anchors/glossary change only by human commit) |
+| Premature binding | A tool encodes a rule before friction proved the need | Anti-bureaucracy guardrail; friction audit |
+| Method leakage | Full apparatus applied to a small effort | Scale-to-stakes (see *Bootstrapping*) |
+| Re-entry stall | Context is all present but the session won't start | Re-entry surface leads with the single next action |
+
+---
+
 ## Operating rules
 
 These apply in Chat sessions regardless of mode.
 
-1. **Step by step.** Don't solve ahead of the conversation. Wait for direction.
+1. **Step by step.** Don't solve ahead of the conversation. Wait for direction. (This governs session behaviour, not project-structure design — the workspace shape is deliberate, not solved-ahead.)
 2. **Direct register.** No hedging, no diplomatic softening. If reasoning has a gap, say so plainly.
-3. **High-level and conceptual.** Default register for Chat. Push details to Code briefs.
+3. **High-level and conceptual.** Default register for Chat. Push details to Executor briefs — but inspect a targeted piece of evidence directly when it changes a decision (see *Chat*).
 4. **Sharpen, don't guess.** Vague description? Ask a pointed question rather than infer.
 5. **Track the arc.** Notice when conversation drifts; ask if it's intentional.
-6. **Don't assume cached internals.** Codebases change fast. Verify current state — or ask Code to investigate — before proposing changes.
+6. **Don't assume cached internals.** Codebases change fast. Verify current state — or ask the Executor to investigate — before proposing changes.
 7. **Bias toward concrete deliverables.** Working artifacts shape design more than planning documents do.
 8. **Explicit exclusion zones.** If parts of the project are out of scope for Chat conversations (proprietary domain, third-party material, etc.), the project context file declares them. Filter ruthlessly when reading material adjacent to these zones.
 9. **Drop findings, don't carry them.** When Chat notices an issue that isn't the topic of the current session, append to `findings-from-chat.md` and move on. Don't expand the current conversation to absorb it.
@@ -340,25 +409,32 @@ These apply in Chat sessions regardless of mode.
 
 ## Bootstrapping a new project
 
-Day one. Minimum viable setup:
+**First, scale the apparatus to the stakes.** The full workspace shape is for a durable system whose confusion is expensive — typically work that affects other people or that you'll carry for months. Most efforts need far less, and applying the full structure to a small one is the *method leakage* failure above. The governing rule: **adopt the smallest shape that keeps re-entry cheap and delegation clean.** As a descriptive guide, not a taxonomy to file every effort into:
 
-1. **Create the workspace tree.** `anchors/`, `roadmap/`, `session-starters/`, `audits/`, `overlays/`, `AGENTS.md`, `HANDBOOK.md`, `GLOSSARY.md`, project context file.
-2. **Write two anchors.** A `PHILOSOPHY.md` (what this project is for and not for) and an `AUDIENCE_PERSONAS.md` (whom you're designing for, even if it's a list of one). Both can be stubs at first.
-3. **Write the project context file.** A 1–2 page conceptual orientation. Load it as a project file in your LLM platform so it persists across sessions and devices.
-4. **Write the handbook.** A 1-page navigation index pointing at the artifacts above.
-5. **Seed the glossary.** Even with just a handful of entries, it establishes the discipline.
-6. **Define the first roadmap track.** Pick one substantive feature. Use it to exercise the cycle-brief pattern end-to-end.
-7. **Start a Chat session** with the project context loaded. Frame the first cycle-opening brief together. Hand to Code. Review the feedback. Iterate.
+- A one-off chore lives in a single chat — no workspace.
+- A recurring chore earns one checklist or note.
+- A research or analysis thread earns a context note, a source log, and the findings inbox — but no implementation structure.
+- A small software or process improvement earns a project context file, a brief, and a feedback file.
+- A durable internal system earns the full shape below.
 
-That's the bootstrap. The rest accrues as the project grows.
+**For a durable system, bootstrap incrementally** — the same philosophy as realignment, not a day-one file-creation marathon. The single highest-leverage artifact is the project context file; write it and you can start working. The rest accrues on friction:
+
+1. **Write the project context file.** A 1–2 page conceptual orientation. Load it as a platform project file so it persists across sessions and devices. This alone lets every Chat session start oriented.
+2. **Write a one-page handbook** pointing at what exists so far. It grows as artifacts appear.
+3. **Stub one anchor** — usually `PHILOSOPHY.md` (what this is and isn't for). Add `INVARIANTS.md` and `AUDIENCE_PERSONAS.md` when a decision or a breakage demands them, not before.
+4. **Define one roadmap track** and use it to exercise the cycle-brief pattern end to end.
+5. **Seed the glossary on demand** — entries as terminology negotiations arise.
+6. **Start a Chat session** with the context loaded, frame the first cycle brief together, dispatch to the Executor, review the feedback, iterate.
+
+The folders (`anchors/`, `roadmap/`, `session-starters/`, `audits/`, `overlays/`) and the remaining root files appear when the work calls for them. The structure that survives partial adoption is the structure that gets adopted.
 
 ---
 
 ## Realigning an existing project
 
-For projects already in motion, retrofit incrementally:
+For projects already in motion, retrofit incrementally — the same incremental philosophy that now governs bootstrap:
 
-1. **Inventory what exists.** Where does design intent currently live (issues, docs, README, scattered Slack)? Where does maintenance get planned? What's the current AI-agent collaboration pattern, if any?
+1. **Inventory what exists.** Where does design intent currently live (issues, docs, README, scattered chat)? Where does maintenance get planned? What's the current AI-agent collaboration pattern, if any?
 2. **Write the project context file first.** It is the single highest-leverage artifact. It lets every Chat session start oriented.
 3. **Write the handbook second.** Once you know what's where, capture it. The handbook is fast to write once the inventory is done.
 4. **Add anchors as you reference them.** Don't write the full set up front. Write `PHILOSOPHY.md` when a decision needs the project's values stated. Write `INVARIANTS.md` when something gets broken that shouldn't have been.
@@ -372,13 +448,19 @@ Realignment is gradual. The methodology survives partial adoption better than mo
 
 ## Tool bindings
 
-Every rule here has an eventual **tool binding** — the encoded form that runs it automatically rather than by discipline (a Skill, a plan-mode constraint, a scoped sub-agent, a scheduled audit run). **Adopt a binding only when the manual discipline shows real friction.** Premature binding produces bureaucracy that drifts from the rule it was meant to encode. The full concept → binding → friction roadmap lives in the companion.
+Every rule here has an eventual **tool binding** — the encoded form that runs it automatically rather than by discipline (a Skill, a plan-mode constraint, a scoped sub-agent, a scheduled audit run). **Adopt a binding only when the manual discipline shows real friction.** Premature binding produces bureaucracy that drifts from the rule it was meant to encode.
+
+Two bindings are deliberately **deferred** in this version and should not be built yet: the **Chat→Executor MCP dispatch** loop (deferred on a cost-based friction trigger) and **auto-synthesis of canonical artifacts** (deferred on a stronger ground — auto-writing the constitution destroys the curation that makes it canonical; use propose-then-commit instead). The full concept → binding → trigger roadmap, and both deferral rationales, live in the companion.
 
 ---
 
 ## Scope — what this is and isn't
 
-This is a methodology for *how you collaborate with LLMs on a project*, not how you write code and not how you schedule work. It requires no particular LLM, IDE, or platform; it's compatible with whatever engineering and project-management practices you already use. It is an evolving draft. The full version of these boundaries, what's distinctive about the method, and where it sits in the ecosystem are in the companion (`hooman-notes.md`).
+This is a methodology for *how you collaborate with LLMs on a project*, not how you write code and not how you schedule work. It requires no particular LLM, IDE, or platform; it's compatible with whatever engineering and project-management practices you already use. It is an evolving draft.
+
+It is built for a **single principal**. Multi-human team adoption — who writes briefs, who accepts feedback, who arbitrates the glossary, who decides an artifact pays its way — is an explicit **non-goal** of this version, not an unsolved part of it. If the method ever generalizes to teams, that is later work.
+
+The full version of these boundaries, what's distinctive about the method, and where it sits in the ecosystem are in the companion (`hooman-notes.md`).
 
 ---
 
