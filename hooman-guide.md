@@ -2,7 +2,7 @@
 
 *How to run the method. The reasoning, provenance, and references live in the companion: **`hooman-notes.md`** (same gist).*
 
-**Status:** Draft v0.7 (2026-05-29). Frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
+**Status:** Draft v0.7.1 (2026-06-01). *v0.7.1 — consistency fix: Chat maintains a working representation of the project's direction but the human owns it; a proposed v0.8 package was considered and mostly declined (see changelog).* **v0.7** frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
