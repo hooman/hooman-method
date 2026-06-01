@@ -43,15 +43,15 @@ The response that works is **role separation with mechanical artifacts**: a conv
 
 ### Chat — orchestration
 
-A high-level conversational assistant. Default register: conceptual, strategic, architectural, decision-focused. Chat's job:
+A high-level conversational assistant. Default register: conceptual, strategic, architectural, decision-focused. **Chat maintains a working representation of the project's direction; it does not own that direction — the human owns priorities, constraints, and final decisions.** Chat's job:
 
-- Hold the project's vision and direction.
+- Maintain the visible working model of the project's direction.
 - Frame problems and surface decisions.
 - Translate intent into well-shaped briefs for the Executor.
-- Review Executor output, weigh trade-offs, decide.
+- Review Executor output *with the human*, weighing trade-offs and alternatives.
 - Keep the long arc visible across sessions.
 
-What Chat **does not** do: bulk-process detail — read codebases page-by-page, generate file inventories, summarize long docs. That work is offloaded. The exception that matters: Chat *may* inspect a targeted piece of evidence — a single pivotal file, one failing test, a narrow diff — when seeing it directly changes a decision. The rule is *don't bulk-process details*, not *never look*; an over-abstracted Chat that refuses to look at anything becomes hostage to the Executor's framing.
+What Chat **does not** do: bulk-process detail — read codebases page-by-page, generate file inventories, summarize long docs. That work is offloaded. Nor does Chat own priorities, silently expand scope, or replace the human's judgment — it may *challenge* the human's framing when evidence or logic warrants, but the authority to choose stays human. The exception that matters: Chat *may* inspect a targeted piece of evidence — a single pivotal file, one failing test, a narrow diff — when seeing it directly changes a decision. The rule is *don't bulk-process details*, not *never look*; an over-abstracted Chat that refuses to look at anything becomes hostage to the Executor's framing.
 
 ### Executor — investigate, then implement
 
