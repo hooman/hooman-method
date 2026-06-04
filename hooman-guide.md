@@ -2,7 +2,7 @@
 
 *How to run the method. The reasoning, provenance, and references live in the companion: **`hooman-notes.md`** (same gist).*
 
-**Status:** Draft v0.7.1 (2026-06-01). *v0.7.1 — consistency fix: Chat maintains a working representation of the project's direction but the human owns it; a proposed v0.8 package was considered and mostly declined (see changelog).* **v0.7** frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
+**Status:** Draft v0.7.2 (2026-06-02). *v0.7.2 — adds the **Global references** section: some governing docs (the method itself, the design stances) are cross-project and live upstream, projected into each workspace via `references/` as a downstream copy that is never forked.* *v0.7.1 — consistency fix: Chat maintains a working representation of the project's direction but the human owns it; a proposed v0.8 package was considered and mostly declined (see changelog).* **v0.7** frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -158,6 +158,7 @@ A workspace is a parent directory holding one or more repos as flat siblings, pl
 ├── HANDBOOK.md            # human-leaning navigation
 ├── GLOSSARY.md            # project vocabulary
 ├── anchors/               # durable reference docs (often inside a workspace-tooling repo)
+├── references/            # projected global docs (method + design stances) — read-only, never forked
 ├── roadmap/               # feature work, one file per track
 ├── session-starters/      # Chat→Executor briefs, including audit-driven cycles
 ├── audits/                # audit reports, mechanically linked to cycles
@@ -224,6 +225,21 @@ Pair this with whatever **persistent user memory** your LLM platform offers. Mem
 **The six-month test.** If a fact will still be true six months from now, it belongs in the project context file. If it's the current state of a cycle, it belongs in memory. Borderline cases lean toward memory; promote to the context file only when stability is demonstrated. (The test is a heuristic, not a law — its job is to keep a stable, low-maintenance partition, not to second-guess the platform's own retrieval.)
 
 **Visible artifacts beat opaque memory.** Platform memory is convenient but often opaque, non-auditable, and silently mutated by the platform — a mismatch with an otherwise inspectable, artifact-centric system. So treat memory as a *convenience cache, not a source of truth*: if a fact matters for re-entry and the platform's memory can't be reliably inspected, exported, or corrected, that fact belongs in a **visible artifact** — the roadmap's next-action line, a `STATUS` header, or a session-close summary — and the visible artifact wins on any conflict.
+
+---
+
+## Global references
+
+The method has described the project workspace as self-contained. It is not quite: some governing documents are cross-project and live upstream of any single project.
+
+**Two layers of governance:**
+
+- **Project-local** — roadmap, decisions, parking lot, session-starters, anchors/invariants, the repo(s). These belong to one project and live in its workspace.
+- **Global / upstream** — the method itself, and the design-stance docs (`design-stance-universal.md`; per-language stances such as `design-stance-swift.md`). Shared across all projects; a single upstream source of truth, version-controlled, outside any one project.
+
+**Projection into a workspace.** Each workspace carries a `references/` folder that projects the relevant global docs in, so both Chat and the Executor can read them in-context. `references/` is a *downstream projection, not a source of truth* — the upstream copy is canonical; changes flow upstream→down; a project must never fork a global doc locally.
+
+**Mechanism (being finalized — its own pass).** Candidates: symlinks from `references/` to the upstream location (Executor / filesystem side); pulling the upstream repo into project knowledge (Chat side — e.g. uploading the global docs as platform project files). The exact setup — a dotfiles-style installer, repo layout, sync cadence — is a deferred design task. What is settled now is the concept: a global layer, projected via `references/`, kept downstream of one upstream source.
 
 ---
 
