@@ -2,7 +2,7 @@
 
 *How to run the method. The reasoning, provenance, and references live in the companion: **`hooman-notes.md`** (same gist).*
 
-**Status:** Draft v0.7.3 (2026-06-04). *v0.7.3 — adds Post-implementation passes to the cycle-brief protocol: retrofittable concerns (formatting, lint, doc comments, naming, consistency) are factored out of the implementation pass into dedicated mechanical and semantic passes, the semantic (documentation) pass doubling as a lightweight correctness review.* *v0.7.2 — adds the **Global references** section: some governing docs (the method itself, the design stances) are cross-project and live upstream, projected into each workspace via `references/` as a downstream copy that is never forked.* *v0.7.1 — consistency fix: Chat maintains a working representation of the project's direction but the human owns it; a proposed v0.8 package was considered and mostly declined (see changelog).* **v0.7** frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
+**Status:** Draft v0.7.4 (2026-06-04). *v0.7.4 — renames `overlays/` to `aside/` and broadens it from repo-belonging symlink storage to a deliberate catch-all for workspace-scoped material without a better home (the symlink-storage role retained as one accepted kind), governed by a promotion rule and the kill criteria so it stays a waystation, not a graveyard.* *v0.7.3 — adds Post-implementation passes to the cycle-brief protocol: retrofittable concerns (formatting, lint, doc comments, naming, consistency) are factored out of the implementation pass into dedicated mechanical and semantic passes, the semantic (documentation) pass doubling as a lightweight correctness review.* *v0.7.2 — adds the **Global references** section: some governing docs (the method itself, the design stances) are cross-project and live upstream, projected into each workspace via `references/` as a downstream copy that is never forked.* *v0.7.1 — consistency fix: Chat maintains a working representation of the project's direction but the human owns it; a proposed v0.8 package was considered and mostly declined (see changelog).* **v0.7** frames the method as an **escalation protocol** (explore informally below the threshold; add structure only once re-entry / delegation / review / mutation-safety begin to bite); moves *scale-to-stakes* to the front as the first decision; adds a **scope-intake gate** (name the smallest useful slice or decompose — *big is allowed, undefined is not*), **kill criteria** for the friction audit, a **process-as-avoidance** failure mode, and a **visible-artifacts-over-opaque-memory** rule. A compress-and-clarify pass, not new machinery. Full changelog in the companion.
 
 **Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>. Local copies may lag; treat the gist as authoritative.
 
@@ -133,7 +133,7 @@ A line limit without a pruning order invites arbitrary cuts. When AGENTS.md grow
 
 ### Context-file precedence
 
-When multiple context files exist (AGENTS.md, CLAUDE.md, user-level memory, per-folder rules, overlays), they can contradict each other. Agents resolve such conflicts arbitrarily by default. Pick an explicit precedence rule for your workspace and document it in the handbook.
+When multiple context files exist (AGENTS.md, CLAUDE.md, user-level memory, per-folder rules, aside), they can contradict each other. Agents resolve such conflicts arbitrarily by default. Pick an explicit precedence rule for your workspace and document it in the handbook.
 
 Typical default: **user-level < workspace-level < repo-level < per-folder; later overrides earlier**. Whatever you choose, write it down — a sleeping precedence ambiguity is a future hour of debugging.
 
@@ -162,7 +162,7 @@ A workspace is a parent directory holding one or more repos as flat siblings, pl
 ├── roadmap/               # feature work, one file per track
 ├── session-starters/      # Chat→Executor briefs, including audit-driven cycles
 ├── audits/                # audit reports, mechanically linked to cycles
-├── overlays/              # workspace-tracked storage for files that don't belong in any single repo
+├── aside/                 # catch-all for workspace material without a better home (incl. symlink storage
 └── <project>-context.md   # portable orientation; also loaded as a platform-level project file
 ```
 
@@ -206,11 +206,19 @@ cycle:  session-starters/<repo>-<topic>-<YYYY-MM-DD>/
 
 The cycle is "the work the audit produced." Audits never get invented from imagination — they come from running an audit pass (manual, scripted, or LLM-driven).
 
-### Overlays — workspace-tracked side storage
+### Aside — catch-all side storage
 
-A directory at the workspace root whose contents are tracked as part of the workspace (synced across machines, version-controlled). Holds files that logically belong inside a project repo but shouldn't be tracked by that repo. The actual files live in `overlays/`; symlinks in the project repos point to them, preserving the logical location while keeping the physical storage workspace-scoped.
+A workspace-root directory whose contents are tracked as part of the workspace (synced across machines, version-controlled). It holds material that has no better home *and* isn't big or frequent enough to earn its own location yet. One designated catch-all prevents the two failures of the alternative: misfits accumulating ad-hoc in whatever folder is nearest, and a new folder spawned per misfit (premature structure). It is the anti-bureaucracy guardrail made physical.
 
-Use cases: migrating a legacy project into the workspace structure while preserving its untracked in-flight artifacts; development-transient files whose natural location is inside a repo but where repo-tracking is wrong.
+Three accepted kinds:
+
+- **Repo-belonging files, stored out-of-repo via symlink.** Files that logically belong inside a project repo but shouldn't be tracked by it: the file lives in `aside/`, a symlink in the repo points to it, preserving the logical location while keeping the physical storage workspace-scoped. *(The original role. Use cases: migrating a legacy project while preserving its untracked in-flight artifacts; development-transient files whose natural location is in a repo but where repo-tracking is wrong.)*
+- **Parked decisions and parking lots** — deferred decisions, triage records, design-space explorations not yet promoted to a roadmap track.
+- **Low-frequency working docs** with no dedicated home of their own.
+
+**Promotion, not accumulation.** When one kind grows big or frequent enough to warrant it, it graduates to its own location — the same *earn-its-place* rule that governs every artifact. The aside is a waystation, not a destination.
+
+**Hygiene.** It is subject to the kill criteria and the friction audit: periodically promote what earned a home, discard what's dead. A catch-all without a promote-or-discard discipline becomes the graveyard the method otherwise guards against — that discipline is the price of the convenience.
 
 ### Glossary — project vocabulary
 
@@ -476,7 +484,7 @@ You are here because the work crossed the escalation threshold (see *When to inv
 5. **Seed the glossary on demand** — entries as terminology negotiations arise.
 6. **Start a Chat session** with the context loaded, frame the first cycle brief together, dispatch to the Executor, review the feedback, iterate.
 
-The folders (`anchors/`, `roadmap/`, `session-starters/`, `audits/`, `overlays/`) and the remaining root files appear when the work calls for them. The structure that survives partial adoption is the structure that gets adopted.
+The folders (`anchors/`, `roadmap/`, `session-starters/`, `audits/`, `aside/`) and the remaining root files appear when the work calls for them. The structure that survives partial adoption is the structure that gets adopted.
 
 ---
 
