@@ -1,6 +1,6 @@
 # Workspace shape & artifact rules
 
-Draft v0.8 (2026-06-11) · part of the `hooman` skill · load just-in-time: when creating artifacts, bootstrapping a project, or realigning one. Not needed for ordinary cycles.
+Draft v0.8 (2026-06-11) · part of the `hooman-assistant` skill · load just-in-time: when creating artifacts, bootstrapping a project, or realigning one. Not needed for ordinary cycles.
 
 ## Tree
 

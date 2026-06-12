@@ -1,6 +1,6 @@
 # Hooman — Companion: Rationale, Provenance & References
 
-*The why behind the operating set: why the method exists, the reasoning each prescription leans on, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. The operating set itself is `hooman-contract.md` (the principal's self-contract) and the `hooman` skill (`SKILL.md` + `contracts.md` + `workspace.md`, the assistants' ground rules). Read those to operate; read this when you want the reasoning. Never needed in an agent's working context.*
+*The why behind the operating set: why the method exists, the reasoning each prescription leans on, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. The operating set itself is `hooman-contract.md` (the principal's self-contract) and the `hooman-assistant` skill (`SKILL.md` + `contracts.md` + `workspace.md`, the assistants' ground rules). Read those to operate; read this when you want the reasoning. Never needed in an agent's working context.*
 
 **Canonical version:** <https://github.com/hooman/hooman-method>.
 
@@ -19,7 +19,7 @@ The name does double duty. It quietly encodes the method's premise — a *human*
 - **homer** — the author's old dial-up-BBS handle. Rejected as the primary name: dominated by Homer Simpson and the Greek poet, and already used by existing dev tools (a self-hosted dashboard; a SIP-capture tool). Kept only as a sentimental nod here.
 - **"Chat-First Project Development with LLMs"** — the descriptive working title through v0.4. Retired as the primary name. It still describes the method accurately and could serve as a public descriptive subtitle if the method is ever published for others.
 
-**The doc set** (since v0.8): `hooman-guide.md` is retired. Its self-directed discipline became `hooman-contract.md`; its agent-operational rules became the `hooman` skill; its rationale lives here. The migration map for that split is a one-time review artifact, not part of the canonical set.
+**The doc set** (since v0.8): `hooman-guide.md` is retired. Its self-directed discipline became `hooman-contract.md`; its agent-operational rules became the `hooman-assistant` skill; its rationale lives here. The migration map for that split is a one-time review artifact, not part of the canonical set.
 
 ### Role labels: "Code" → "Executor" (v0.6)
 
@@ -257,4 +257,4 @@ Two bindings remain deliberately *not* built, logged so the decision is explicit
 
 ---
 
-*Companion to the operating set (`hooman-contract.md` + the `hooman` skill). Distilled from the Heddle project's practice plus a May 2026 ecosystem survey. An evolving draft — refine in place.*
+*Companion to the operating set (`hooman-contract.md` + the `hooman-assistant` skill). Distilled from the Heddle project's practice plus a May 2026 ecosystem survey. An evolving draft — refine in place.*

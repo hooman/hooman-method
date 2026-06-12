@@ -1,6 +1,6 @@
 # Output contracts — schemas
 
-Draft v0.8 (2026-06-11) · part of the `hooman` skill · load when writing a brief or producing/validating feedback.
+Draft v0.8 (2026-06-11) · part of the `hooman-assistant` skill · load when writing a brief or producing/validating feedback.
 
 A brief names exactly one contract (brief.2). The feedback file copies that contract's skeleton verbatim — wrappers, tags, and mandatory lines included. The structure is load-bearing: it is what makes feedback validatable on receipt and sweepable later. Sections that are empty stay present, marked `none` — absence is a signal, never an omission.
 
