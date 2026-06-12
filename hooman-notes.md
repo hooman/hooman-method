@@ -1,8 +1,10 @@
 # Hooman — Companion: Rationale, Provenance & References
 
-*The why behind the operating guide (**`hooman-guide.md`**, same gist): why the method exists, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. Read the guide to operate; read this when you want the reasoning.*
+*The why behind the operating set: why the method exists, the reasoning each prescription leans on, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. The operating set itself is `hooman-contract.md` (the principal's self-contract) and the `hooman` skill (`SKILL.md` + `contracts.md` + `workspace.md`, the assistants' ground rules). Read those to operate; read this when you want the reasoning. Never needed in an agent's working context.*
 
-**Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>.
+**Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985> *(repo graduation in design — see Open questions).*
+
+**Status:** Draft v0.8 (2026-06-11). Changelog at the end.
 
 ---
 
@@ -10,20 +12,20 @@
 
 **Hooman** is eponymous — named for its author (GitHub: `hooman`) — because it is, for now, a single-user method, not a universal standard. Naming it after the author is honest about that scope.
 
-The name does double duty. It quietly encodes the method's premise — a *human* in the director's seat, directing AI executors ("Hooman" ≈ "human", and the human-in-the-loop is the whole point). And it sidesteps two collision problems at once: the crowded ecosystem vocabulary (*workflow, skill, agent, constitution* are all taken) and the method's own internal terms (*brief, cycle, offload*). It namespaces the entire toolkit: the `hooman` skill, the future `hooman-workspace` repo, this gist.
+The name does double duty. It quietly encodes the method's premise — a *human* in the director's seat, directing AI executors ("Hooman" ≈ "human", and the human-in-the-loop is the whole point). And it sidesteps two collision problems at once: the crowded ecosystem vocabulary (*workflow, skill, agent, constitution* are all taken) and the method's own internal terms (*brief, cycle, offload*). It namespaces the entire toolkit: the `hooman` skill, the upstream repo in design, this gist.
 
-**Rejected alternatives** (per naming rule 7):
+**Rejected alternatives** (per the naming gate):
 
 - **homer** — the author's old dial-up-BBS handle. Rejected as the primary name: dominated by Homer Simpson and the Greek poet, and already used by existing dev tools (a self-hosted dashboard; a SIP-capture tool). Kept only as a sentimental nod here.
-- **"Chat-First Project Development with LLMs"** — the descriptive working title through v0.4. Retired as the primary name. It still describes the method accurately and could serve as a public descriptive subtitle if the method is ever published for others (e.g. *Hooman: Chat-First Project Development with LLMs*).
+- **"Chat-First Project Development with LLMs"** — the descriptive working title through v0.4. Retired as the primary name. It still describes the method accurately and could serve as a public descriptive subtitle if the method is ever published for others.
+
+**The doc set** (since v0.8): `hooman-guide.md` is retired. Its self-directed discipline became `hooman-contract.md`; its agent-operational rules became the `hooman` skill; its rationale lives here. The migration map for that split is a one-time review artifact, not part of the canonical set.
 
 ### Role labels: "Code" → "Executor" (v0.6)
 
-The role labels are **Chat** (orchestration) and, as of v0.6, **Executor** (the tool-equipped agent). The executor role was renamed from "Code" because the distinction that actually matters between the two roles is **embodiment** — a tool-equipped agent with filesystem and execution access versus a conversational assistant — *not* subject matter. "Code" implied the work was always software; in practice the same role drafts bills of materials, structures analytical briefs, and runs research, not just source code. "Executor" names the function across domains. The tool that fills the role is still usually a coding agent (Claude Code); role and tool are distinct.
+The role labels are **Chat** (orchestration) and, as of v0.6, **Executor** (the tool-equipped agent). The executor role was renamed from "Code" because the distinction that actually matters between the two roles is **embodiment** — a tool-equipped agent with filesystem and execution access versus a conversational assistant — *not* subject matter. "Code" implied the work was always software; in practice the same role drafts bills of materials, structures analytical briefs, and runs research. "Executor" names the function across domains. The tool that fills the role is still usually a coding agent (Claude Code); role and tool are distinct.
 
-*Rejected alternatives:* **Synthesizer** (too drafting-specific — undersells implementation and execution); **Agent** (overloaded across the ecosystem, per naming rule 1); **Worker** (vague, says nothing about embodiment). **Chat** is retained — accurate for the orchestration role and not overloaded in this context.
-
-The **reconnaissance / mutation** split *within* the Executor role is also new in v0.6. It reflects that the role bundles two functions with different safety profiles — read-only investigation versus real writes — which the cycle-brief protocol already separated as phases (plan-mode R1 vs show-diff implementation) but the old single "Code" label obscured.
+*Rejected alternatives:* **Synthesizer** (too drafting-specific); **Agent** (overloaded across the ecosystem); **Worker** (vague, says nothing about embodiment). **Chat** is retained — accurate for the orchestration role and not overloaded in this context.
 
 ---
 
@@ -37,133 +39,222 @@ The conventional response — "use a more capable model" or "use a coding agent"
 
 That framing explains choices that otherwise read as overbuilt. The artifact system is not ceremony; it is **externalized working memory** for someone who may touch a project once a month between fabrication deadlines, family obligations, and IT emergencies. The roadmap, anchors, session summaries, glossary, and findings inbox are what make a three-week gap survivable.
 
-Stated as design properties, the method optimizes for: fast re-entry after context gaps; clear delegation boundaries; persistent decision memory; low ceremony during active work; high recoverability when work stalls; protection from agent-generated sprawl; and separation between unrelated efforts (work systems, hobby projects, civic/parental research, personal curiosity). The *scale-to-stakes* rule in the guide's bootstrap section is the operational expression of that last property — not every effort earns the full apparatus.
+Stated as design properties, the method optimizes for: fast re-entry after context gaps; clear delegation boundaries; persistent decision memory; low ceremony during active work; high recoverability when work stalls; protection from agent-generated sprawl; and separation between unrelated efforts. The *scale-to-stakes* rule (contract, *Before invoking*) is the operational expression of that last property — not every effort earns the full apparatus.
+
+---
+
+## The shape the problem forces
+
+*(Absorbed from the retired guide's two-role narrative; the operational residue is skill role.1–7.)*
+
+The response that works is **role separation with mechanical artifacts**: a conversational assistant that holds strategy, a tool-equipped agent that investigates and implements, and artifacts in the project tree that survive across sessions and across handoffs to entirely new agents. The human stays in the seat that can't be delegated — priorities, constraints, final decisions — and pushes reconnaissance, implementation, inventory, and cleanup outward.
+
+**Why reconnaissance and mutation are separate modes, not phases.** The Executor bundles two functions with different safety profiles: read-only investigation and real writes. Reconnaissance is the mode most users underuse — the Executor is a remarkably effective design partner when the brief asks it to think, not to type. Treating the two as one undifferentiated "do the work" role is the most common way unreviewed writes slip through; the method separates them by brief type and, where the tool allows, by enforcement (plan mode for reconnaissance, show-diff for mutation).
+
+**Why output contracts, and why the evidence map is the one to keep.** Scarce attention makes *review cost* the real bottleneck, not execution. Vague delegated output forces the principal to reconstruct context just to judge it — the exact cost the method exists to avoid. So every brief names what "done enough to decide quickly" looks like. The evidence map (*inspected / inferred / unverified*) is the load-bearing field because agents reliably produce plausible plans that under-report what they never actually looked at; the tag forces that distinction into the open. v0.8 closes the map's own honesty gap — the tags travel the same self-report channel as the failure they police — with two mechanisms: coverage counts that make under-inspection visible at a glance, and a spot-check rule (skill review.3) that samples `[inspected]` claims against what was actually read. A false `[inspected]` is at least a falsifiable lie rather than a vague one.
+
+**Why the principal gets guarded twice.** The method routes all judgment to one person and would otherwise never check it — for a solo operator, one's own framing is the unguarded single point of failure. Two guards now exist, deliberately asymmetric. The **direction check** (contract, *Before dispatching*) is self-administered: three questions on the brief's framing, adopted on its own friction trigger. The **contract watch** (skill conduct.8 + the contract's standing triggers) is assistant-administered: the assistant may name a trigger by id when it sees the pattern, once, without arguing. Only the standing triggers are assistant-visible by design; whether the direction check should also become assistant-administered is an open question below, gated on the same friction as everything else.
+
+---
+
+## Why each artifact earns its place
+
+*(Absorbed rationale; the operational rules are skill canon.\*, ws.\*, inbox.1, and the contract's rituals.)*
+
+- **Anchors as constitution.** Briefs cannot quietly override them: a plan that implies changing what an anchor states is a deliberate anchor revision, not a side effect of implementation. Propose-then-commit is the gate, and the friction of committing by hand is the feature — it is what keeps the canonical docs canonical (see *Deferred bindings*).
+- **Glossary as a gated artifact.** The hardest moments in a project tend to be naming negotiations, renames, and terms whose meanings have drifted. A disciplined glossary prevents most of them and shortens the rest; the naming gate runs *before* a term is added, and deprecated names are kept, dated, and pointed forward so old material keeps resolving.
+- **The findings inbox.** Sessions regularly notice issues in passing — dead links, drifted facts, undocumented behavior. Without somewhere to drop them, findings die when the session ends; with somewhere too heavy, capturing them derails the session. One append-only line each is the equilibrium, and it doubles as the capture-and-return move for the principal's own tangents (contract T1).
+- **Roadmap next-action-first, because re-entry is a deciding problem.** After a long gap, the facts being *available* is necessary but not sufficient — a status dump still leaves you to decide what to do next, and for intermittent work the deciding is itself the cost. So the re-entry surface leads with the single next concrete action; you read one line and move. A re-entry surface that opens with a wall of state has lost the point of the method.
+- **Session close, and why it needed a trigger.** The close ritual makes discarded context productive — but it is also the discipline most likely to be skipped under exactly the conditions the method is built for (interruption, fatigue). The v0.7 failure map assigned the stale-next-action failure to the very ritual whose lapse causes it. T6 breaks that circle: when a session is being cut off, the next-action line is the one thing that may not die, and it costs thirty seconds.
+- **`aside/` — one designated catch-all.** Misfit material otherwise fails in one of two ways: accumulating ad-hoc in whatever folder is nearest, or spawning a new folder per misfit (premature structure). One catch-all with a promotion rule and kill-criteria hygiene is the anti-bureaucracy guardrail made physical — a waystation, not a graveyard. (The `overlays/` → `aside/` rename rationale is recorded in the v0.7.4 changelog entry.)
+- **`references/` and the global layer.** The first *second* project forced the recognition that some governing documents are cross-project: the method itself, the design stances, the conventions indexes. They live upstream of any workspace and project *into* each one as a downstream copy that is never forked — one source of truth, many readers. The projection mechanism was deliberately deferred at v0.7.2; it is now the subject of the repo-graduation design track.
+- **Visible artifacts over opaque memory.** Platform memory is convenient but often non-auditable and silently mutated — a mismatch with an otherwise inspectable system. Memory is a cache; if a fact matters for re-entry, it lives in a visible artifact, and the artifact wins any conflict. The six-month test keeps the partition stable: durable shape goes to the context file, temporal state to memory, borderline cases lean toward memory until stability is demonstrated.
+
+---
+
+## Why the method is an escalation protocol
+
+The failure the method most has to guard against is not premature invocation; it is **scope gravity** — a large, interesting effort entering the system as fog. Hence the threshold (work informally below it), the scope-intake gate at the moment of escalation (*big is allowed, undefined is not*), and scale-to-stakes as the first operational decision rather than a bootstrap afterthought. Positioning the method as escalation-not-universal-workflow is also what keeps its apparatus from reading as bloat: below the line the apparatus is overhead; above it, its absence is.
+
+The same logic runs backwards as the **anti-bureaucracy guardrail**: every rule, template, convention, and artifact must name the specific friction it solved, and — since v0.7's kill criteria — must keep earning its place to survive. Adoption needs observed friction; survival needs it too.
+
+The named failure mode this guards is **process-as-avoidance**: building or refining the method substituting for doing the work. The method's own history supplies the observed friction — the v0.5–v0.7 stretch shipped eight releases in ten days against roughly two days of real use, a ratio the failure map says to watch — and that episode is what T2 and T8 in the contract now exist to catch, with the contract watch (conduct.8) making the catch assistant-administered rather than purely self-policed.
+
+---
+
+## Doc-audience layering — and the v0.8 split
+
+Project documents serve different audiences, and mixing audiences in one document leads to bloat and to docs nobody fully reads. The method distinguishes agent-specific docs (lean, operational, pointer-heavy), human-leaning docs (narrative, navigational), and hybrids — under one principle: **every persistent context file is a table of contents, not a textbook**, because every line in an auto-loading file claims a slice of every reader's attention budget, every session.
+
+One anti-pattern deserves its rationale spelled out: **"docs AIs read but humans don't."** Files written entirely in agent-pleasing telegraphic style accrete around AI-heavy projects and quietly displace the human-readable doc surface. The resolution is not "no agent docs" — it is that a telegraphic agent doc is acceptable only while the human surface stays alive and primary, and while a human still authors and commits every change to it (propose-then-commit makes the human the write path, so hostility to human readers is a tax collected at every edit).
+
+v0.8 applied this rule to the method's own documents, which had drifted into exactly the hybrid bloat the rule warns about: one guide serving two audiences, 527 lines, over its own budgets, with one drift incident (v0.7.1) already on record. The split's disciplines:
+
+- **Partition, not projection.** Every rule has exactly one canonical home — operational rules in the skill, personal discipline in the contract, rationale here — with pointers and never restatement. Restatement is how two-doc drift happens.
+- **Structure points at outputs, not at the rulebook.** Models need unambiguous imperative rules more than they need markup, but they *echo* a given structure very reliably — and structured feedback is validatable on receipt and sweepable later. So the contract skeletons and the evidence map are strict; the rules stay disciplined Markdown; XML islands appear only at boundaries that must never blur (precedence, don't-touch).
+- **Budgets are declared per file**, which is what makes the doc linter (now an adopted binding, below) checkable rather than aspirational.
+- **Design the agent doc for the weakest model actually used as Chat** — structure's payoff scales inversely with model capability.
+
+---
+
+## Failure map
+
+The happy path is the easy case to document. These are the failures that actually bite, each mapped to the mechanism that catches it — now by rule id. If a failure recurs and *no* mechanism catches it, that is the friction that justifies a new rule.
+
+| Failure | Symptom | Caught by |
+|---|---|---|
+| Stale Executor context | Plan references code or conventions that have changed | Reconnaissance + evidence map (review.1) |
+| Over-confident feedback | Plausible plan, unstated unknowns | Coverage counts + spot-check (review.3); Skeptic/Omission lenses (review.2) |
+| Over-scoped plan | Executor proposes more than the brief asked | Scope lens (review.2); locked-scope briefs (brief.3) |
+| Hallucinated conventions | Executor invents repo patterns that don't exist | Evidence map (review.1); Invariant lens (review.2) |
+| Wrong target, well executed | Clean cycle, wrong question | Direction check (contract, *Before dispatching*) |
+| Duplicate artifacts | Second doc or term for an existing concept | Naming gate (canon.3); handbook as locational index (ws.3) |
+| Glossary overgrowth | Low-value terms accumulate | Add-trigger (canon.4) |
+| Anchor conflict | A plan quietly implies changing an invariant | Precedence P3; Invariant lens (review.2) |
+| Silent artifact drift | An agent edits a canonical doc without review | DT1–DT2 + show-diff (role.5) — honestly: the net is human attention on the diff, which is why the scoped-allowlist binding stays queued |
+| Premature binding | Tooling encodes a rule before friction proved the need | T5; friction audit |
+| Method leakage | Full apparatus applied to a small effort | Scale-to-stakes (contract, *Before invoking*) |
+| Re-entry stall | Context present but the session won't start | Next-action-first (conduct.7; ws.4) |
+| Process-as-avoidance | Refining the method substitutes for the work | T2/T8; contract watch (conduct.8) |
+| Stale next action | The re-entry line points at a done step | T6; ws.4 |
+| Memory ⊥ artifacts | Platform memory contradicts the repo | P2 — visible artifacts win |
+
+---
+
+## Session modes
+
+Descriptive of current practice, not prescriptive; whether modes deserve their own brief templates or context-loading recipes remains open — though v0.8 gives the recipes question a concrete substrate (which skill files load per mode: review sessions want `contracts.md`, artifact-creating sessions want `workspace.md`).
+
+| Mode | When | Output |
+|---|---|---|
+| **Vision / strategy** | Long-arc direction, new bets, positioning | Roadmap entries, anchor updates |
+| **Track scoping** | Turning an intent into a defined feature track | `roadmap/<track>.md` |
+| **Cycle opening** | Translating a need into an Executor investigation brief | `session-starters/<brief>.md` |
+| **Review** | Processing Executor feedback, weighing trade-offs | Decisions committed to roadmap, anchors, or a next-round brief |
+| **Architecture decision** | Committing to a design with documented rationale | An ADR or equivalent decision record |
+| **Audit triage** | Reading audit findings, deciding what becomes a cycle | A maintenance-cycle scaffold |
+| **Realignment** | Restructuring an existing project to fit this methodology | A migration plan, new anchors, retroactive roadmap |
 
 ---
 
 ## What's distinctive here
 
-Most of this method is novel framing of patterns the LLM-tooling ecosystem has converged on independently: the orchestrator/executor split, plan-then-implement, project-root agent files, structured note-taking, sub-agent context isolation. What's genuinely distinctive — worth naming as contributions rather than reinventions:
+Most of this method is novel framing of patterns the LLM-tooling ecosystem has converged on independently. What's genuinely distinctive — worth naming as contributions rather than reinventions:
 
-- **The anti-bureaucracy guardrail.** Most methodologies accrete templates; very few have an explicit "must solve a real friction" rule as a precondition for adoption. Its operational complement, **scale-to-stakes** (choose the smallest shape that keeps re-entry cheap and delegation clean), is what stops the apparatus from colonizing every effort.
+- **The anti-bureaucracy guardrail**, with **kill criteria**: most methodologies accrete templates; very few require observed friction to adopt a rule *and* to keep it. Scale-to-stakes is its operational complement.
 - **The offload test.** "Does this produce content / inventory / details? → Executor. Does it produce direction? → conversational role." Sharper than the implicit splits in most multi-agent frameworks.
-- **Output contracts by task type**, including the **evidence map** (every R1 claim tagged *inspected / inferred / unverified*). A sharpening rather than a wholly novel idea, but rarely stated: it targets *review cost* directly, which is the real bottleneck for a time-scarce principal, and it forces the under-reported-unknowns failure of agent plans into the open.
-- **The direction check** — an adversarial gate pointed at the *director's own framing*, not only the executor's plan. Novel as far as the survey found: most methods guard the agent's output and leave the single principal's judgment unchecked, which for a solo operator is the actual single point of failure.
-- **The reconnaissance / mutation factoring** of the executor role — treating read-only investigation and real writes as two modes with distinct review profiles rather than two phases of one undifferentiated role.
-- **Hooman as an escalation protocol**, with a **scope-intake gate** at the threshold. The method explicitly does not govern sub-threshold work, and its guard is aimed at *scope gravity* — large, interesting efforts entering as fog — rather than at premature use: *big is allowed, undefined is not*. Positioning the method as escalation-not-universal-workflow is what keeps its growing apparatus from reading as bloat.
-- **Glossary discipline as a gated artifact**, with naming rules that apply before a term is added.
-- **The findings inbox** as an explicit standing log for drive-by observations, swept on schedule.
-- **Doc-audience layering**, particularly the agent / human-leaning / hybrid split and the *entry-point docs are thin* companion rule.
+- **Output contracts by task type**, including the **evidence map** — and, since v0.8, coverage counts plus a spot-check rule that close the map's own self-report gap. It targets *review cost* directly, the real bottleneck for a time-scarce principal.
+- **The direction check** — an adversarial gate pointed at the *director's own framing*, not only the executor's plan. (Prior art in the decision literature: Klein's pre-mortem and the red-team-your-own-framing tradition; within LLM-method space the survey found nothing comparable.)
+- **The contract watch** (v0.8) — the principal's self-contract carries machine-citable trigger ids, and the assistant is licensed to name a trigger once when it sees the pattern. The solo principal's discipline gains an enforcement loop that doesn't depend on the principal's own moment-of-failure judgment.
+- **The reconnaissance / mutation factoring** of the executor role — two modes with distinct review profiles rather than two phases of one undifferentiated role.
+- **Hooman as an escalation protocol**, with a **scope-intake gate** aimed at *scope gravity*: big is allowed, undefined is not.
+- **Glossary discipline as a gated artifact**, with naming rules that run before a term is added.
+- **The findings inbox** as a standing log for drive-by observations, swept on schedule.
+- **Doc-audience layering**, including the *entry-point docs are thin* rule — now applied to the method's own doc set (v0.8).
 
-These are the parts most worth formalizing for reuse outside one project — and they are deliberately kept here, in the companion, so that personalizing the guide's framing (above) does not erode the generalizable spine.
+These are the parts most worth formalizing for reuse outside one project — and they are deliberately kept here, in the companion, so that personalizing the operational set does not erode the generalizable spine.
 
 ---
 
 ## What this is not
 
-- **Not a tooling spec.** It does not require any particular LLM, IDE, or platform. It works with whatever Chat-style assistant and whatever tool-equipped agent you have access to.
-- **Not a coding methodology.** It governs *how you collaborate with LLMs*, not *how you write code*. Pair it with whatever engineering practices your project already uses.
-- **Not a project-management methodology.** It is compatible with Agile, Shape Up, lazy-consensus, or whatever scheduling discipline you prefer. It governs the *content* and *handoff* of work, not its *cadence*.
-- **Not a team methodology.** v0.6 is explicitly single-principal. Multi-human adoption — brief ownership, feedback acceptance, glossary arbitration, deciding what pays its way — is an explicit non-goal, not an open question (see the guide's *Scope* and *Open questions* below).
-- **Not finished.** This is an evolving draft, distilled from one project's experience plus an ecosystem survey. Expect it to evolve.
+- **Not a tooling spec.** It requires no particular LLM, IDE, or platform.
+- **Not a coding methodology.** It governs *how you collaborate with LLMs*, not *how you write code*.
+- **Not a project-management methodology.** Compatible with Agile, Shape Up, or whatever cadence you prefer; it governs the *content* and *handoff* of work, not its scheduling.
+- **Not a team methodology.** Single-principal by design; multi-human adoption is an explicit non-goal of this version, not an unsolved part of it.
+- **Not finished.** An evolving draft, distilled from one project's experience plus an ecosystem survey.
 
 ---
 
 ## Ecosystem positioning & survey
 
-The method was distilled from one project's practice (Heddle) plus a survey of the May 2026 AI-coding-agent ecosystem, triangulated across several independent LLM research tools to reduce single-source blind spots. Where it sits: it is a novel *framing* of patterns the ecosystem converged on independently — the orchestrator/executor split, plan-then-implement, project-root agent files (AGENTS.md), modular capability files (Skills / SKILL.md), the Model Context Protocol (MCP) for connecting agents to external systems, spec-driven tools (Spec-Kit, Kiro), and sub-agent context isolation. The distinctive contributions are listed under *What's distinctive*. The underlying research reports are kept in the author's archive, not published with the method.
+The method was distilled from one project's practice (Heddle) plus a survey of the May 2026 AI-coding-agent ecosystem, triangulated across several independent LLM research tools. Where it sits: a novel *framing* of patterns the ecosystem converged on independently — the orchestrator/executor split, plan-then-implement, project-root agent files (AGENTS.md), modular capability files (Skills / SKILL.md), MCP, spec-driven tools (Spec-Kit, Kiro), and sub-agent context isolation. The distinctive contributions are listed above. The underlying research reports are kept in the author's archive, not published with the method.
 
-*Source-integrity note:* the survey's distinct inputs were fewer than they appeared — verify source independence before treating any cross-tool "consensus" as strong. Lean on the *Verified references* below, which are checked against primary sources, rather than on the survey reports.
+*Source-integrity note:* the survey's distinct inputs were fewer than they appeared — verify source independence before treating any cross-tool "consensus" as strong. Lean on the *Verified references* below.
 
-*On review independence (v0.6).* That caution generalizes beyond the survey. This revision was shaped partly by independent reviews from several frontier models, blind and context-aware; their recommendations converged strongly. Treat that convergence the same way. Frontier models share training data and house-style priors — they gravitate toward "personalize it, add a taxonomy, automate the loop" — so cross-model review consensus is lower-independence than it looks. The convergence flagged the changes worth *examining*; it did not by itself justify them. Each change in v0.6 was kept only where it survived the method's own tests (notably: did it solve real friction, and did it respect anti-premature-binding). Where the loudest recommendation failed those tests — e.g. "build the dispatch loop and auto-synthesis now" — it was declined; see *Deferred bindings*.
+*On review independence (v0.6, reaffirmed v0.8).* That caution generalizes beyond the survey. Revisions of this method have been shaped by reviews from frontier models, blind and context-aware; their recommendations converge strongly. Treat that convergence the same way: frontier models share training data and house-style priors — they gravitate toward "personalize it, add a taxonomy, automate the loop" — so cross-model review consensus is lower-independence than it looks. Convergence flags changes worth *examining*; each change is kept only where it survives the method's own tests. (v0.8's reviewer applied the rule to itself: the split it endorsed was subtractive, and the maximal-XML lockdown it declined was the house-prior-shaped half.)
 
 ---
 
 ## Verified references
 
-The ecosystem claims this method leans on were checked against primary sources (**verified as of May 2026**). These are current, public facts that will decay — re-check before relying on them — and they are **positioning, not load-bearing**: the method works whether or not they hold. This section resolves the former open question "Verification of ecosystem claims."
+Ecosystem claims checked against primary sources (**verified as of May 2026**). These are current, public facts that will decay — re-check before relying on them — and they are **positioning, not load-bearing**.
 
 - **AGENTS.md is a Linux-Foundation-stewarded open standard.** *Verified.* The Linux Foundation formed the **Agentic AI Foundation (AAIF)** in December 2025, anchored by founding contributions: **MCP** (Anthropic), **goose** (Block), and **AGENTS.md** (OpenAI). Sources: [Linux Foundation press release](https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation), [OpenAI](https://openai.com/index/agentic-ai-foundation/), [agents.md](https://agents.md/).
-- **Adoption: 60,000+ open-source projects.** This is the figure stated by the AAIF / agents.md — consistent across sources, but **self-reported, not independently audited**. Cite it as such.
-- **SKILL.md is cross-tool portable.** *Verified, with nuance.* The **Agent Skills** specification ([agentskills.io](https://agentskills.io/specification)) was released by Anthropic as an open standard (December 2025) and is compatible across Claude Code, OpenAI Codex CLI, Gemini CLI, OpenClaw, and OpenAI's Skills tool. Skills that adhere to the core SKILL.md format (YAML frontmatter `name` + `description`, plus a markdown body, with progressive disclosure of bundled files) are portable across tools without modification; tool-specific extensions are not guaranteed to carry over.
+- **Adoption: 60,000+ open-source projects.** The figure stated by the AAIF / agents.md — consistent across sources, but **self-reported, not independently audited**. Cite it as such.
+- **SKILL.md is cross-tool portable.** *Verified, with nuance.* The **Agent Skills** specification ([agentskills.io](https://agentskills.io/specification)) was released by Anthropic as an open standard (December 2025) and is compatible across Claude Code, OpenAI Codex CLI, Gemini CLI, OpenClaw, and OpenAI's Skills tool. Skills adhering to the core format (YAML frontmatter `name` + `description`, markdown body, progressive disclosure) are portable without modification; tool-specific extensions are not guaranteed to carry over.
 
-Also confirmed in passing: **MCP** was likewise contributed to the AAIF / Linux Foundation; the spec-driven tools **Spec-Kit** (GitHub: *constitution → specify → plan → tasks → implement*) and **Kiro** (AWS: `requirements.md` / `design.md` / `tasks.md`, with requirements in **EARS** notation — `WHEN <condition> THE SYSTEM SHALL <behavior>`) match the method's escalation shape and its use of anchors as a "constitution."
+Also confirmed in passing: **MCP** was likewise contributed to the AAIF; the spec-driven tools **Spec-Kit** (GitHub: *constitution → specify → plan → tasks → implement*) and **Kiro** (AWS: `requirements.md` / `design.md` / `tasks.md`, EARS notation) match the method's escalation shape and its use of anchors as a "constitution."
 
 ---
 
 ## From methodology to tooling — candidate bindings
 
-Some concepts in the guide may eventually earn a **tool binding** — the encoded form that lets a rule run automatically rather than by discipline. Not every rule wants embodiment. These are **candidate** bindings: each is adopted only when its own trigger fires. The mapping fills in as the method matures.
+Some concepts may eventually earn a **tool binding** — the encoded form that runs a rule automatically rather than by discipline. Each is adopted only when its own trigger fires.
 
-| Concept | Candidate binding | Friction solved | Adoption trigger |
+| Concept | Candidate binding | Friction solved | Adoption trigger / status |
 |---|---|---|---|
-| Session modes | Auto-loadable instruction packs (Claude Skills, `agents.md`-compatible equivalents) | Mode context re-pasted by hand; mode discipline drifts | Mode context retyped across ≥3 sessions, or discipline visibly slipping |
-| Cycle-brief R1 | Plan mode / read-only constraint | Executor starts implementing during R1 | First time R1 produces unrequested writes |
-| Cycle-brief implement | Show-diff hooks, scoped tool allowlists | Unreviewed writes; scope creep via broad access | First unreviewed write that should have been caught |
-| Sub-agent roles | Configured sub-agent definitions with tight tool scopes | Ad-hoc dispatch, inconsistent isolation | Sub-agent failure traced to missing/over-broad scope |
-| Output contracts | Brief templates per task type with the evidence-map field built in | Review cost high; unknowns under-reported | Review repeatedly stalls reconstructing what the Executor checked |
-| Direction check | A pre-dispatch checklist (skill or brief preamble) | A cycle answers the wrong question | A well-executed cycle comes back aimed at the wrong target |
-| Findings inbox | A standing log today; eventually a structured-note tool | Drive-by findings lost; conversation drift | Findings lost despite the log, or the log outgrows one-liners |
-| Glossary discipline | A gate that runs the naming rules before any term is added | Naming-rule checks applied inconsistently | Terms landing without rule checks; glossary drift |
-| Audit cycles | Scheduled agent runs against narrow-slice auditors | Audits skipped indefinitely | Audits not happening without a schedule |
-| Chat→Executor dispatch | An MCP server exposing the Executor as a callable tool | Human-as-messenger overhead | **Deferred** — cost-based (see *Closure mechanics* and *Deferred bindings*) |
-
-The method defines the rules and shapes; the binding makes them executable. **Adopt bindings only when the manual discipline shows friction.** Premature binding produces bureaucracy that drifts from the rules it was meant to encode — the rules become aspirational while the encoded version runs out of alignment with them.
-
-A cross-cutting binding *not* to build: **auto-writing canonical artifacts**. Where manual upkeep of the glossary or anchors slips under time pressure, the sanctioned mechanism is **propose-then-commit** — an agent drafts entries, the human commits them in-session — which cuts the compilation cost without surrendering the write path to the docs that are supposed to be canonical (see *Deferred bindings*).
-
----
-
-## Closure mechanics (future)
-
-Today, briefs are produced as files (in a cloud VM or in Chat output), saved to the workspace manually, and the Executor is pointed at them. An end-state where Chat dispatches Executor briefs directly via an MCP-style tool and reads the feedback inline is a natural evolution — it closes the human-as-messenger loop.
-
-**When to build it.** The earlier statement of the trigger was by *count*: a single session that needs more than two rounds of human transcription. A vanilla R1 → R2 → implementation cycle already consumes two transcriptions; the count-trigger fires when a normal cycle no longer fits and the human keeps shuttling.
-
-The real variable, though, is **cost per transcription, not count.** For an operator whose every context-switch carries a high cognitive tax, a single shuttle costs more than the count implies, and the threshold to build the dispatch tooling is correspondingly lower. Re-express the trigger as cost, and expect it to fire sooner for a high-cost operator than the generic count suggests — *without* discarding the trigger logic and building ahead of friction. Below the threshold the manual loop is fast enough; above it the dispatch tooling starts paying its cost. Build on observed friction, not anticipated friction.
-
----
-
-## Deferred bindings (explicit)
-
-Two bindings are deliberately *not* built in this version, logged here so the decision is explicit rather than quietly forgotten. Both were recommended by reviewers; both were declined on the method's own terms.
-
-- **Chat→Executor MCP dispatch** — the zero-transcription loop. Deferred per the anti-premature-binding rule; the trigger is cost-based (see *Closure mechanics*). Attractive, but building it before the friction lands produces tooling that drifts from the rules it encodes.
-- **Auto-synthesis of canonical artifacts** — having an agent extract decisions and definitions at session end and write them straight into anchors and the glossary. Deferred not merely on the friction rule but on a stronger ground: **auto-writing the project's constitution destroys the curation that makes it canonical.** The atrophy problem it would solve — manual upkeep slipping under time pressure — is real and worth taking seriously; the sanctioned answer is **propose-then-commit** (agent drafts, human commits in-session), which cuts the compilation cost without handing an agent the write path to the canonical docs.
+| Session modes | Auto-loadable instruction packs | Mode context re-pasted by hand | Mode context retyped across ≥3 sessions |
+| Cycle-brief R1 | Plan mode / read-only constraint | Executor implements during R1 | First unrequested write in R1 |
+| Cycle-brief implement | Show-diff hooks, scoped tool allowlists | Unreviewed writes; anchor edits slipping through large diffs | First unreviewed write that should have been caught |
+| Sub-agent roles | Configured sub-agent definitions, tight scopes | Ad-hoc dispatch, inconsistent isolation | Sub-agent failure traced to scope — *bound downstream in `heddle-workspace` (reviewer/architect subagents); upstream generalization is part of the repo-design track* |
+| Output contracts | Brief templates with the schema built in | Review cost; under-reported unknowns | **Adopted v0.8** — `contracts.md` skeletons + Chat-side validation |
+| Doc discipline | Linter: budgets, unique rule ids, skeleton validation | Budget breaches and drift unnoticed | **Adopted v0.8** — trigger fired (the guide blew its own budgets); build queued as the first cycle run through the new docs |
+| Direction check | Pre-dispatch checklist (skill or brief preamble) | A cycle answers the wrong question | A well-executed cycle aimed at the wrong target |
+| Findings inbox | Standing log; eventually a structured-note tool | Drive-by findings lost | Findings lost despite the log |
+| Glossary discipline | A gate running the naming rules on add | Rule checks applied inconsistently | Terms landing without rule checks |
+| Audit cycles | Scheduled agent runs against narrow-slice auditors | Audits skipped indefinitely | *Bound downstream in `heddle-workspace` (audit-runner → planner → implementer → coordinator); upstream generalization is part of the repo-design track* |
+| Chat→Executor dispatch | An MCP server exposing the Executor as a callable tool | Human-as-messenger overhead | **Deferred** — cost-based (see *Closure mechanics*) |
 
 The general principle: a binding that removes *friction* is a candidate; a binding that removes *curation* is a hazard.
 
 ---
 
+## Closure mechanics (future)
+
+Today, briefs are produced as files, saved to the workspace manually, and the Executor is pointed at them. An end-state where Chat dispatches Executor briefs directly via an MCP-style tool and reads the feedback inline is a natural evolution — it closes the human-as-messenger loop.
+
+**When to build it.** The earlier trigger was by *count*: a session needing more than two rounds of human transcription. The real variable is **cost per transcription, not count**. For an operator whose every context-switch carries a high cognitive tax, a single shuttle costs more than the count implies, and the threshold is correspondingly lower — *without* discarding the trigger logic and building ahead of friction. Below the threshold the manual loop is fast enough; above it the dispatch tooling starts paying its cost.
+
+---
+
+## Deferred bindings (explicit)
+
+Two bindings remain deliberately *not* built, logged so the decision is explicit rather than quietly forgotten. Both were recommended by reviewers; both were declined on the method's own terms.
+
+- **Chat→Executor MCP dispatch** — the zero-transcription loop. Deferred per the anti-premature-binding rule; the trigger is cost-based (above).
+- **Auto-synthesis of canonical artifacts** — an agent extracting decisions at session end and writing them straight into anchors and the glossary. Deferred on a stronger ground than friction: **auto-writing the project's constitution destroys the curation that makes it canonical.** The atrophy problem it would solve is real; the sanctioned answer is **propose-then-commit** — the agent drafts, the human commits in-session — which cuts the compilation cost without surrendering the write path.
+
+---
+
 ## Open questions for iteration
 
-Areas where the method is least settled and most likely to refine with use:
-
-- **Session modes.** The mode list is descriptive of current practice, not prescriptive. Whether modes deserve their own brief templates, system-prompt variants, or context-loading recipes is open.
-- **Trust calibration.** v0.6 says to track informally where the Executor is reliable and shift review weight accordingly, and to keep the record lightweight until it earns more. Whether a useful calibration can stay informal — or whether it inevitably wants a structured reliability record without becoming its own bureaucracy — is unproven.
-- **Direction-check efficacy.** The director-side gate is new. Whether a pre-dispatch check on one's own framing reliably catches mis-framing, or mostly adds ceremony, is unproven; v0.6 gates its adoption on observed friction (a well-executed cycle aimed at the wrong target).
-- **Closure of the Chat→Executor loop.** Today the human is the messenger. MCP-style direct dispatch is the obvious end-state but the design isn't settled, and it is deliberately deferred (see *Closure mechanics* and *Deferred bindings*).
-- **Multi-project user.** The within-project memory/context split is operational via the six-month test. The remaining question for users running several projects: what content legitimately belongs in account-scoped user memory rather than per-project context? Likely candidates are durable cross-project preferences (working style, tool defaults), but those are also the easiest to over-claim into memory. Worth a separate audit as the multi-project case grows (Cap'n-Proto-for-Swift is the first second project). This is the *memory* axis; the parallel cross-project axis for *governing documents* — the method and the design stances — is now addressed by **Global references** (v0.7.2): they live upstream and project into each workspace via `references/`, with the projection mechanism still to be finalized.
-- **Anti-bureaucracy in practice.** The friction audit (now with explicit **kill criteria**, v0.7) is described as a practice but hasn't been run against an actual artifact set. The remaining question is empirical: do the deletion triggers reliably distinguish pay-its-way artifacts from drift, and what cadence works? A useful first test would be this method's own doc set — now larger, which makes the test more pointed.
-- **~~Team adoption.~~** *Out of scope (v0.6)* — see the guide's *Scope* and *What this is not*. Listed here only so the boundary is explicit rather than mistaken for an unsolved problem.
-- **~~Role labels.~~** *Resolved (v0.6)* — "Code" → "Executor"; "Chat" retained. See *The name*.
+- **Session modes.** Descriptive, not prescriptive; whether modes earn templates or context-loading recipes is open. v0.8's file split supplies the substrate if they do.
+- **Trust calibration.** Whether useful calibration can stay informal, or inevitably wants a structured record without becoming its own bureaucracy, is unproven.
+- **Direction-check efficacy — and administration.** Whether a pre-dispatch self-check reliably catches mis-framing is unproven; adoption stays gated on a well-executed cycle hitting the wrong target. v0.8 surfaced, and declined for now, promoting it to assistant-administered (Chat asking the three questions whenever it drafts an R1 brief): same gate, same friction trigger.
+- **Closure of the Chat→Executor loop.** Deliberately deferred; see above.
+- **Multi-project user.** The within-project memory/context split is operational via the six-month test. What legitimately belongs in account-scoped user memory rather than per-project context remains worth a dedicated audit as the multi-project case grows. The parallel *governing-documents* axis is now in motion: the global layer projects via `references/`, and the projection mechanism is the subject of the repo-graduation design track.
+- **Upstream/downstream seam with `heddle-workspace`.** The Heddle toolkit already field-runs several of the method's patterns as tooling (adapter symlinks into agent discovery directories, an umbrella-repo workspace lifecycle, the audit→cycle pipeline as a four-agent chain). What of that is method-generic and extracts upstream, versus Heddle-specific and stays — and whether the upstream repo ships tooling at all or stays docs-plus-skill pointing at a reference implementation — is the central question of the repo-design track.
+- **Anti-bureaucracy in practice.** The friction audit's first real run effectively happened as the v0.8 split (this doc set was the artifact set under audit). Open: the cadence, and the first run against a downstream *project* workspace.
+- **~~Team adoption.~~** *Out of scope (v0.6)* — an explicit non-goal.
+- **~~Role labels.~~** *Resolved (v0.6).*
 - **~~Verification of ecosystem claims.~~** *Resolved* — see *Verified references*.
 
 ---
 
 ## Changelog
 
-- **v0.7.4 (2026-06-04)** — Renamed `overlays/` → `aside/` and broadened it from repo-belonging symlink-storage into a deliberate **catch-all**: workspace-scoped material that has no better home *and* isn't big or frequent enough to earn its own location yet. Three accepted kinds — (a) repo-belonging files stored out-of-repo via symlink (the original role, retained); (b) parked decisions / parking lots; (c) low-frequency working docs — with a **promotion rule** (a kind graduates to its own location once it earns one) and a **hygiene rule** (subject to the kill criteria / friction audit, so it stays a waystation, not a graveyard). Prompted by observed friction, not anticipation: the narrow `overlays/` definition left no home for parked/misc working docs, so they accumulated in it off-label — the catch-all is the anti-bureaucracy guardrail made physical (one designated home for not-yet-earned-a-home material, rather than a folder spawned per misfit). **Renamed, not just redefined,** because `overlays` actively mis-signals a catch-all; `aside` is the neutral generalization of the prior "side storage" framing and covers both the durable symlink kind and the transient misc kinds. *Rejected `unfiled` and `misc` — both lean toward "disposable junk" and mis-describe the durable symlink occupants; the supersession record lives here in the changelog, since the project glossary doesn't define method-standard folder names.*
-- **v0.7.3 (2026-06-04)** — Added Post-implementation passes to the cycle-brief protocol: concerns that would overload the implementation pass are factored into separate passes that run after it — mechanical (formatter/linter) and semantic (an agent re-reads under a focused mandate). The implementation pass carries only non-retrofittable constraints (platform, types, test framework, lifetimes, domain invariants); retrofittable concerns defer to the passes. The semantic pass doubles as a lightweight correctness review — articulating intent surfaces intent-vs-code mismatches — and reconstructs intent skeptically so it doesn't rubber-stamp. Prompted by observed friction: a separate doc-review pass that both improved maintainability and found bugs.
-- **v0.7.2 (2026-06-02)** — Added a **Global references** section to the guide: some governing documents are cross-project and live upstream of any single workspace — the method itself and the design-stance docs — and project *into* each workspace via a `references/` folder as a downstream copy that is never forked. Prompted by observed friction, not anticipation: the first *second* project (Cap'n-Proto-for-Swift) needed the method and stance docs shared across workspaces, so the cross-project governance layer earned naming under the anti-bureaucracy rule. The projection *mechanism* — symlinks vs. pulling the upstream repo into project knowledge; installer, repo layout, sync cadence — is deferred to its own pass; only the concept is settled. Also added `references/` to the project-tree diagram, and noted the docs-vs-memory axis distinction under the *Multi-project user* open question.
-- **v0.7.1 (2026-06-01)** — Consistency fix: in the Chat role, Chat *maintains a working representation of* the project's direction but the human *owns* it (the prior "hold the project's vision and direction" read as ownership). A proposed v0.8 package (artifact-lifecycle table, a "minimal first run" section, findings sweep-triggers, glossary-gate rewrite, ecosystem reinforcement) was **considered and mostly declined** — most of it either duplicated v0.7 or codified *anticipated* friction on a method with ~2 days of real use, against the anti-bureaucracy rule (build on observed friction). To be reconsidered per-item if the friction actually appears in use. Only the direction-ownership clarification was a present defect rather than anticipated friction, so only it was taken.
-- **v0.7 (2026-05-29)** — Framed the method explicitly as an **escalation protocol**: a new *When to invoke* section up front states that Hooman does not govern sub-threshold work (explore informally first) and gives a two-of-five entry threshold; *scale-to-stakes* moved from the bootstrap tail to the front as the first operational decision. Added the **scope-intake gate** ("name the smallest independently useful slice, the exclusion zone, and the first decision, or decompose — *big is allowed, undefined is not*"), framed as the direction check fired at escalation and aimed at **scope gravity** as the dominant risk for this principal. Added **kill criteria** (deletion triggers) to the friction audit; a **visible-artifacts-over-opaque-memory** rule to *Project context*; and three failure-mode rows (**process-as-avoidance**, stale next-action, memory⊥artifacts). Centered the **evidence map** as the contract to keep if only one is kept. Softened "every rule has an eventual binding" → "some rules may earn one." Dated the ecosystem claims *verified as of* and marked them non-load-bearing. Prompted by a second external review, but per the *review-independence* note its **additions were mostly declined** (no third "minimum" doc, no Tier-0/1 machinery, no day-count inbox aging); only changes that survived the method's own tests were kept. A compress-and-clarify pass.
-- **v0.6 (2026-05-29)** — Reframed the method's optimization target around a single principal doing intermittent, high-stakes, multi-domain work, with **re-entry** as the dominant cost (rewrote *Why this exists* and the guide's two-role-split opener). Renamed the executor role **Code → Executor** (embodiment, not subject matter) and split it into **reconnaissance / mutation** modes with distinct review profiles. Added **output contracts** by task type with the **evidence map** (*inspected / inferred / unverified*); a **direction check** (adversarial gate on the director's own framing); **trust calibration**; a **failure-modes** map; a **Re-entry** section (re-entry surface leads with the single next action); an AGENTS.md **pruning order**; and a tightened glossary add-trigger. Made **bootstrap incremental** under a **scale-to-stakes** rule (absorbing the effort-class idea as descriptive examples). Softened the Chat/Executor split (Chat may inspect targeted, decision-changing evidence). Introduced **propose-then-commit** for anchors and glossary. Demoted **team adoption** to an explicit non-goal. Converted the tooling table to **candidate bindings** with per-row triggers; added a **Deferred bindings** section (MCP dispatch; auto-synthesis) and re-expressed the dispatch trigger in **cost** terms. Added the **review-independence** note. Preserved the *What's distinctive* spine in the companion so the guide's personalization doesn't erode it.
-- **v0.5 (2026-05-29)** — Named the method **Hooman** (retiring the "Chat-First Project Development" working title). Split the single document into this companion plus the operating guide (`hooman-guide.md`): motivation, what's distinctive, what-it-is-not, ecosystem positioning, the tool-binding roadmap, closure-mechanics, and open questions moved here; the guide keeps the operational content with its inline reasons. Added *The name*, *Ecosystem positioning & survey*, and *Verified references* (resolving the ecosystem-claims open question against primary sources).
-- **v0.4 (2026-05-26)** — Updated from v0.3 with: "table of contents, not textbook" maxim for persistent context files; offload-test extended with a contextual-weight axis; six-month test for the memory-vs-project-context split; degrees-of-freedom calibrated across cycle rounds; operational trigger for the MCP-dispatch closure; adversarial review gate with four lenses (Skeptic/Invariant/Scope/Omission); positive sub-agent interface specification (receives/returns/discards); nested-AGENTS.md pattern formalized; *Session close* section; anchors named as the project's constitution with cycle-brief precedence; "Friction solved" column added to the methodology-to-tooling table; Spec-Kit and Kiro shapes mapped to the escalation pattern; friction audit added as the retrospective form of the anti-bureaucracy guardrail.
+- **v0.8 (2026-06-11)** — Split the operating guide by audience, per the method's own doc-audience layering rule: `hooman-contract.md` (the principal's self-contract — escalation threshold, scope intake, direction check, kill criteria, and standing triggers T1–T8 as WHEN→THEN pairs) and the `hooman` skill (assistant ground rules in Agent Skills format: `SKILL.md` core on a 120-line budget · `contracts.md` output schemas · `workspace.md` just-in-time artifact rules). `hooman-guide.md` retired. Partition rule: every rule has one canonical home; pointers, never restatement. Structure was pointed at outputs rather than the rulebook — contract skeletons with mandatory sections, evidence-map coverage counts, a Chat-side validate-then-bounce rule — with XML islands confined to precedence, don't-touch, and contract wrappers. New mechanisms: the **contract watch** (conduct.8; assistant cites trigger ids), the **evidence-map spot-check** (review.3; closes the self-report gap), **T6** (non-circular catch for stale next-actions), and per-file budgets. This companion absorbed the rationale stripped from the guide (role/contract reasoning, artifact rationale, escalation framing, layering — including the v0.8 split's own story), repointed all guide references, rewired the failure map to rule ids, and recorded two bindings as adopted (output contracts; doc linter — trigger fired) and two as bound-downstream in `heddle-workspace` pending the repo-design track. Prompted by observed friction: the guide had outgrown its own attention-budget rules while serving two audiences at once; the assistant-side set was reader-tested against the split's target before commit.
+- **v0.7.4 (2026-06-04)** — Renamed `overlays/` → `aside/` and broadened it from repo-belonging symlink-storage into a deliberate **catch-all**: workspace-scoped material that has no better home *and* isn't big or frequent enough to earn its own location yet. Three accepted kinds — (a) repo-belonging files stored out-of-repo via symlink (the original role, retained); (b) parked decisions / parking lots; (c) low-frequency working docs — with a **promotion rule** and a **hygiene rule** (subject to the kill criteria / friction audit). Prompted by observed friction: the narrow `overlays/` definition left no home for parked/misc working docs, so they accumulated in it off-label. **Renamed, not just redefined,** because `overlays` actively mis-signals a catch-all; *rejected `unfiled` and `misc`* — both lean toward "disposable junk" and mis-describe the durable symlink occupants.
+- **v0.7.3 (2026-06-04)** — Added Post-implementation passes to the cycle-brief protocol: retrofittable concerns factor out of the implementation pass into dedicated mechanical and semantic passes; the semantic pass doubles as a lightweight correctness review and reconstructs intent skeptically. Prompted by observed friction: a separate doc-review pass that both improved maintainability and found bugs.
+- **v0.7.2 (2026-06-02)** — Added **Global references**: cross-project governing documents live upstream and project into each workspace via `references/` as a downstream copy that is never forked. Prompted by observed friction: the first *second* project (Cap'n-Proto-for-Swift) needed the method and stance docs shared across workspaces. The projection *mechanism* deferred to its own pass.
+- **v0.7.1 (2026-06-01)** — Consistency fix: Chat *maintains a working representation of* the project's direction but the human *owns* it. A proposed v0.8 package was **considered and mostly declined** — most of it codified *anticipated* friction on a method with ~2 days of real use, against the anti-bureaucracy rule.
+- **v0.7 (2026-05-29)** — Framed the method as an **escalation protocol** with a two-of-five entry threshold; added the **scope-intake gate**, **kill criteria**, a **visible-artifacts-over-opaque-memory** rule, and three failure-mode rows including **process-as-avoidance**. Centered the **evidence map**. Prompted by a second external review whose additions were mostly declined; a compress-and-clarify pass.
+- **v0.6 (2026-05-29)** — Reframed the optimization target around a single principal with **re-entry** as the dominant cost. Renamed **Code → Executor**; split **reconnaissance / mutation**. Added **output contracts** with the **evidence map**, the **direction check**, **trust calibration**, a **failure-modes** map, a **Re-entry** section, an AGENTS.md **pruning order**, a tightened glossary add-trigger, **propose-then-commit**, and the **review-independence** note. Demoted team adoption to a non-goal.
+- **v0.5 (2026-05-29)** — Named the method **Hooman**; split the single document into companion + operating guide. Added *The name*, *Ecosystem positioning & survey*, and *Verified references*.
+- **v0.4 (2026-05-26)** — "Table of contents, not textbook"; six-month test; degrees-of-freedom across cycle rounds; adversarial gate; sub-agent interface; nested AGENTS.md; *Session close*; anchors as constitution; friction audit.
 - **earlier** — see the gist's revision history.
 
 ---
 
-*Companion to the operating guide (**`hooman-guide.md`**). Distilled from the Heddle project's practice plus a May 2026 ecosystem survey. An evolving draft — refine in place.*
-
+*Companion to the operating set (`hooman-contract.md` + the `hooman` skill). Distilled from the Heddle project's practice plus a May 2026 ecosystem survey. An evolving draft — refine in place.*
