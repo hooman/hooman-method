@@ -1,6 +1,6 @@
 # Hooman — the contract with myself
 
-Draft v0.8 (2026-06-11) · canonical: <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985>
+Draft v0.8 (2026-06-11) · canonical: <https://github.com/hooman/hooman-method>
 Audience: me. The assistant reads only **Standing triggers**, and only to apply conduct.8. Rationale: `hooman-notes.md`. Budget: 90 lines.
 
 This document works at decision moments or not at all. It is organized by *when*, not by topic.

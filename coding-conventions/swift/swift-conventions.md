@@ -1,6 +1,6 @@
 # Swift Conventions — Coding Guidelines Index
 
-> Global / upstream doc, projected into each workspace via `references/` (a downstream copy — never forked; the upstream gist is canonical). Sibling to `design-stance-swift.md`, which it cites for the *why* (forward-feature orientation). A lean index: it points at rules, it does not restate them.
+> Global / upstream doc, projected into each workspace via `references/` (a downstream copy — never forked; the upstream repo is canonical). Sibling to `design-stance-swift.md`, which it cites for the *why* (forward-feature orientation). A lean index: it points at rules, it does not restate them.
 >
 > **v0.1 · 2026-06-02 · draft** — seeded from observed friction; categories accrete as friction appears, not by anticipation.
 

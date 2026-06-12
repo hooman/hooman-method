@@ -2,7 +2,7 @@
 
 *The why behind the operating set: why the method exists, the reasoning each prescription leans on, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. The operating set itself is `hooman-contract.md` (the principal's self-contract) and the `hooman` skill (`SKILL.md` + `contracts.md` + `workspace.md`, the assistants' ground rules). Read those to operate; read this when you want the reasoning. Never needed in an agent's working context.*
 
-**Canonical version:** <https://gist.github.com/hooman/5811ee3bb7c235573299400167403985> *(repo graduation in design — see Open questions).*
+**Canonical version:** <https://github.com/hooman/hooman-method>.
 
 **Status:** Draft v0.8 (2026-06-11). Changelog at the end.
 
