@@ -1,6 +1,6 @@
 # Design Stance — Universal (all projects)
 
-> Companion to the working method (`hooman-guide.md`). **Scope:** every project, any language or domain. **Binds:** both Chat and the Executor. **Home:** `references/`. **v0.2 · 2026-06-04.**
+> Companion to the working method (`hooman-contract.md` + `hooman-assistant`). **Scope:** every project, any language or domain. **Binds:** both Chat and the Executor. **Home:** `references/`. **v0.2 · 2026-06-04.**
 >
 > This governs *what to build and when*. Language- and domain-specific stances layer on top (e.g. `design-stance-swift.md`).
 

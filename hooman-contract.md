@@ -1,7 +1,7 @@
 # Hooman — the contract with myself
 
 Draft v0.8 (2026-06-11) · canonical: <https://github.com/hooman/hooman-method>
-Audience: me. The assistant reads only **Standing triggers**, and only to apply conduct.8. Rationale: `hooman-notes.md`. Budget: 90 lines.
+Audience: me. The assistant reads only **Before invoking**, **At escalation**, and **Standing triggers**, only to apply conduct.8 / conduct.10. Rationale: `hooman-notes.md`. Budget: 90 lines.
 
 This document works at decision moments or not at all. It is organized by *when*, not by topic.
 

@@ -1,12 +1,12 @@
 ---
 name: hooman-assistant
-description: Operating ground rules for any AI assistant (Chat or Executor) working inside a Hooman-method workspace. Read at the start of every session in such a workspace, before framing problems, writing or answering briefs, touching files, proposing terms, or summarizing state. Covers role boundaries, brief discipline, output contracts, canonical-document rules, and the findings protocol.
+description: Operating ground rules for any AI assistant (Chat or Executor) in a Hooman-method workspace, or when a session is explicitly about Hooman escalation, workspace bootstrap, durable multi-session work, delegated Executor work, costly mistakes, or audit-trail needs. Read before framing problems, writing or answering briefs, touching files, proposing terms, summarizing state, or suggesting escalation/workspace setup. Bias against auto-loading on ordinary one-off tasks.
 ---
 
 # Hooman — assistant ground rules
 
 Draft v0.8 (2026-06-11) · canonical: <https://github.com/hooman/hooman-method>
-Rules only. Rationale lives in `hooman-notes.md` — never needed to operate. The human's own discipline lives in `hooman-contract.md` — read it only when conduct.8 fires.
+Rules only. Rationale lives in `hooman-notes.md` — never needed to operate. The human's own discipline lives in `hooman-contract.md` — read only the named sections needed for conduct.8 / conduct.10.
 Body budget: 120 lines. Over budget → prune per `workspace.md` ws.10 before adding anything.
 
 <precedence id="P">
@@ -37,6 +37,7 @@ Body budget: 120 lines. Over budget → prune per `workspace.md` ws.10 before ad
 - conduct.7 — Any status, summary, or session close leads with the single next concrete action; supporting state follows.
 - conduct.8 — Contract watch: when the human's behavior matches a Standing trigger in `hooman-contract.md`, name it once, cite the trigger id, and continue. Do not argue it; do not repeat it.
 - conduct.9 — Persistence gate: a line added to any auto-loading file (AGENTS.md, project context, this skill) must earn its per-session attention cost. Prefer a pointer to a just-in-time doc.
+- conduct.10 — Escalation watch: when current session + memory clearly meet the `hooman-contract.md` escalation threshold, suggest escalation once and ask for the three scope-intake answers. The human escalates; the assistant only flags. Prefer silence to false positives.
 
 ## Briefs
 
@@ -82,6 +83,6 @@ Body budget: 120 lines. Over budget → prune per `workspace.md` ws.10 before ad
 
 - `contracts.md` — when writing a brief, or producing or validating feedback. The three contract skeletons live there.
 - `workspace.md` — when creating artifacts, bootstrapping a project, or realigning one. Tree, artifact rules, budgets.
-- `hooman-contract.md` — only when conduct.8 fires. It is the human's document.
+- `hooman-contract.md` — only the sections needed for conduct.8 or conduct.10. It is the human's document.
 - `hooman-notes.md` — rationale and provenance; never needed to operate.
 - `<project>-context.md` — always, for the active project; it wins conflicts per P4.

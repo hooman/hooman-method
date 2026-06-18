@@ -12,15 +12,20 @@ This repository is the **global tier**: the versioned, taggable home for the met
 
 ## Contents
 
-- `hooman-contract.md` — the principal's contract with themselves (assistants read it only to apply `conduct.8`).
+- `hooman-contract.md` — the principal's contract with themselves (assistants read narrow sections only for contract/escalation watch).
 - `hooman-notes.md` — companion: rationale, provenance, references. Never needed to operate.
 - `skills/hooman-assistant/` — the assistant ground rules as an Agent Skill: `SKILL.md` (core) plus `references/contracts.md` (output schemas) and `references/workspace.md` (artifact rules).
 - `design-stance/` — design stances; `universal/` applies everywhere, with per-language overlays alongside (`swift/`).
 - `coding-conventions/` — coding-guideline indexes, per language (`swift/`).
+- `tools/check-docs.py` — local doc-discipline check: budgets, unique rule ids, and contract skeletons.
 
 ## Using it downstream (projection v0)
 
-Consumers copy the docs they need, pinned to a release tag, and record the source in a `references/UPSTREAM` marker (source repo, pinned tag, refresh date, refresh instruction). Refresh = re-copy at a newer tag. No submodules, no symlinks — the copy rides the consuming repo's own git. The assistant skill installs by copying `skills/hooman-assistant/` into the consumer's skill-discovery directory.
+Consumers copy the docs they need, pinned to a release tag, and record the source in a `references/UPSTREAM` marker (source repo, pinned tag, refresh date, refresh instruction). Refresh = re-copy at a newer tag. No submodules, no symlinks — the copy rides the consuming repo's own git. The assistant skill installs by copying `skills/hooman-assistant/` into the consumer's skill-discovery directory. The workspace is governed only after a root `AGENTS.md` or `<project>-context.md` says so explicitly; `references/UPSTREAM` confirms the projection, but folder shape alone is not a marker.
+
+## Checks
+
+Run `python3 tools/check-docs.py` before tagging a doc-set release.
 
 ## Versioning & license
 

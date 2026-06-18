@@ -30,6 +30,8 @@ Draft v0.8 (2026-06-11) · part of the `hooman-assistant` skill · load just-in-
 - ws.7 — `references/` is a downstream projection of upstream global docs (the method itself, design stances). The upstream copy is canonical; changes flow upstream→down only; a project never forks a global doc locally.
 - ws.8 — The project context file: 1–2 pages, durable shape only — platform, audience, discipline, operating rules. Refresh on shape changes, not per release. Temporal state lives in roadmap next-action lines and platform memory, and visible artifacts win conflicts (P2).
 - ws.12 — Glossary structure: categorized, not flat (personas, process, architecture, repos/artifacts, industry, deprecated); alphabetical within category. An entry whose term has a natural home doc is one or two sentences plus a pointer; a term too small for a home doc gets a self-contained entry. Renames are never deleted — mark `superseded by X (YYYY-MM-DD)` so old material keeps resolving.
+- ws.13 — Workspace recognition is explicit: the nearest root `AGENTS.md` or `<project>-context.md` must say the workspace is governed by Hooman Method. `references/UPSTREAM` confirms projection from this repo; matching folder names alone do not.
+- ws.14 — If recognition markers are absent but escalation may be warranted, apply conduct.10. Do not treat the directory as governed until the human escalates and the marker exists.
 
 ## AGENTS.md discipline
 
