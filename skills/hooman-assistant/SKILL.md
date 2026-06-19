@@ -5,7 +5,7 @@ description: Operating ground rules for any AI assistant (Chat or Executor) in a
 
 # Hooman — assistant ground rules
 
-Draft v0.8 (2026-06-11) · canonical: <https://github.com/hooman/hooman-method>
+Draft v0.8.1 (2026-06-17) · canonical: <https://github.com/hooman/hooman-method>
 Rules only. Rationale lives in `hooman-notes.md` — never needed to operate. The human's own discipline lives in `hooman-contract.md` — read only the named sections needed for conduct.8 / conduct.10.
 Body budget: 120 lines. Over budget → prune per `workspace.md` ws.10 before adding anything.
 
