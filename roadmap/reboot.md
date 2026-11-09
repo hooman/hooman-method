@@ -1,6 +1,6 @@
 # Hooman reboot
 
-**Next action:** Run read-only entry assessments for Hooman, Heddle, and NAIMOR Knowledge Vaults; review the three mode decisions together; then clear one substantial T2 pilot tranche.
+**Next action:** Fold the [2026-11-09 revision](#revision-2026-11-09-the-environment-moved) into the specification (four axes, design sessions, context boundaries); then run read-only entry assessments for Hooman, Heddle, and NAIMOR Knowledge Vaults; review the three mode decisions together; then clear one substantial T2 pilot tranche.
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
@@ -51,3 +51,52 @@ Observed friction justifying this track:
 ## Exclusion zone
 
 No custom dashboard, cross-project rollout, unattended external mutation, automatic canonical-document editing, A2A dependency, or wholesale artifact migration belongs in the first implementation slice.
+
+## Revision 2026-11-09: the environment moved
+
+Decided by the principal, 2026-11-08/09, from a review run in the Heddle workspace. **The reboot continues, and absorbs this revision.** When it ships, the method text is a reset: it is written fresh around the axes below, and carries no version or change history over from v0.8.x.
+
+### What changed since 2026-08
+
+- **Frontends merged.** Chat and Cowork are merging in Claude Desktop (from 2026-09-16), with Cowork running in the cloud by default (from 2026-10-06). Claude Code can be driven remotely from the apps and the web, and tasks can be dispatched from a phone. Every surface now has tools, so "a chat surface without tools" no longer exists.
+- **Sessions talk to each other.** A session can list other sessions, including ones on other machines or on the web, and send them messages. Hand-offs no longer need a person to carry a brief between products.
+- **Planning and recurring work are products.** Cloud planning runs parallel exploration with a critique pass; scheduled tasks run cloud sessions on a schedule or a repository event.
+- **Agent memory curates itself.** "Dreaming" is an offline job that checks an agent's notes against its transcripts, corrects them, builds linked wikis and decides what is preloaded next time. It writes a new store and leaves the old one untouched, and has no human review step.
+- **The human role is moving from approving actions to setting intent and reviewing outcomes.** People make most planning decisions and agents most execution decisions; supervision effort concentrates in planning; and the reasons behind a delegation must be stated up front.
+
+This confirms the reboot's direction (frontend neutrality, bounded autonomy, artifacts over memory) and adds to it.
+
+### The four axes (accepted)
+
+The method is organised around four axes instead of a split by product surface:
+
+| Axis | Meaning | Where the reboot already has it |
+|---|---|---|
+| **Stances:** explore, decide, build, review | A session or tranche declares its stance; any frontend can take any stance. Reconnaissance and mutation survive as the build stance's permission level | Entry modes and execution tranches cover *build*; *explore* and *decide* are new |
+| **Context boundaries** | Each session states what it may and may not know. A clean room, where a session must not have read certain sources, is the general case, not a special one | Security's "access limited to sources the envelope requires" covers tools; this extends it to knowledge |
+| **Decision rights** | One-way calls go to the principal, asked plainly: the question, one real example, what each option does, at most five at a time. Reversible work is done and then logged | The mandatory stops; "exceptions ask one decision-oriented question" |
+| **Records** | The repository is truth. Agent memory, dreams and transcripts are caches, and change the repository only through reviewed changes | "Visible project artifacts override platform memory"; checkpoints |
+
+### Exploration and design sessions
+
+The reboot specifies execution tranches; design work needs its own shape:
+
+1. **Frame.** The principal states the question and what a good answer would let them decide.
+2. **Diverge.** Parallel explorers, each with a deliberately different brief or set of sources. Research is a delegated step with sources cited.
+3. **Critique.** A separate agent whose only job is the opposing case.
+4. **Converge.** One round of calls to the principal.
+5. **Record.** A track entry or decision in the repository, in the principal's words where the call was theirs.
+
+### Recurring checks: repository dreaming
+
+The milestone "exception-driven recurring checks" gets its first candidate. A scheduled routine reads what merged across a project's repositories, finds written claims those changes made false, and proposes corrections as pull requests. It never rewrites directly, reads repository records only (never session transcripts), and an independent review agent checks each pull request before the principal merges. The Heddle workspace is designing it as its multi-repository pilot.
+
+### Sources
+
+- Anthropic, "The components of agent memory" (2026-11-06): <https://www.anthropic.com/research/components-of-agent-memory>
+- Anthropic, "Measuring AI agent autonomy in practice": <https://www.anthropic.com/research/measuring-agent-autonomy>
+- Anthropic, "How Claude Code is used in practice": <https://www.anthropic.com/research/claude-code-expertise>
+- "The Work Behind Delegation: A Framework for Supervising AI Coding Agents", arXiv 2609.24234: <https://arxiv.org/abs/2609.24234>
+- "Anticipatory Human Oversight of Agentic AI", arXiv 2609.24242: <https://arxiv.org/pdf/2609.24242>
+- Claude Code scheduled tasks: <https://code.claude.com/docs/en/routines>
+- Frontend changes (secondary): <https://www.clickforest.com/en/blog/claude-desktop-explained>; <https://simonwillison.net/2026/Feb/25/claude-code-remote-control/>; <https://claudefa.st/blog/guide/mechanics/cross-session-messaging>
