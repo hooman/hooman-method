@@ -34,34 +34,24 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
 
 ## Entry
 
-- entry.1 — A re-entry answer fits one screen, in this order:
-  1. the next action
-  2. the state that matters for it
-  3. the constraints that bind that next action: invariants, guarded paths, and what must not
-     be touched
+- entry.1 — A re-entry answer fits one screen, in this order: (1) the next action; (2) the state
+  that matters for it; (3) the constraints that bind that next action: invariants, guarded
+  paths, and what must not be touched.
 - entry.2 — Check that the request still fits the project's direction. If it conflicts with an
   in-flight track, a decision, or an open PR, surface that before acting.
 
 ## Stances
 
-- stance.1 — Every session is in one stance: explore, decide, build, or review. Name the stance
-  when it changes.
-  - Explore and review do not change shared state.
-  - Decide produces calls for the principal (decisions.1).
-  - Build works on a branch in an isolated checkout.
+- stance.1 — Every session is in one stance: explore, decide, build, or review; name it when it
+  changes. Explore and review do not change shared state. Decide produces calls for the
+  principal (decisions.1). Build works on a branch in an isolated checkout.
 
 ## Decision rights
 
-- decisions.1 — One-way calls go to the principal:
-  - identity, direction, or priority
-  - anything made public or externally visible
-  - permissions, credentials, or access
-  - irreversible actions
-  - material scope change
-  - canonical documents
-
-  Ask plainly: the question, what each option does, and your recommendation, at most five
-  questions at a time. Use a structured question tool where there is one.
+- decisions.1 — One-way calls go to the principal: identity, direction or priority; anything
+  made public or externally visible; permissions, credentials or access; irreversible actions;
+  material scope change; canonical documents. Ask plainly: the question, what each option does,
+  and your recommendation, at most five at a time, with a structured question tool if there is one.
 - decisions.2 — Reversible work inside the cleared outcome needs no question: do it, then
   report it.
 - decisions.3 — Reopen a call when new evidence changes its trade-off, and say what changed.
