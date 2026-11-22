@@ -1,6 +1,12 @@
 # Hooman reboot
 
-**Next action:** Stage acceptance scenarios A3 (cold re-entry by a fresh agent) and A8 (a session killed mid-tranche, then resumed) on `capnproto-swift`, and record the results. Then add the agent merge guard for guarded documents and record a failed self-merge attempt. Then write the v1.0 text for Git and code projects. See the [2026-11-21 design session](../session-starters/hooman-method-reboot-2026-08-03/design-session-2026-11-21.md).
+**Next action:** Write the v1.0 text for Git and code projects, fresh, from the 2026-11-21 calls and the two acceptance runs. It should cover:
+
+- a re-entry convention that restates the constraints binding the next step (from A3)
+- "the draft PR is the checkpoint": design before code, a checkpoint after every step, and the resuming agent re-verifies what the checkpoint claims (from A8)
+- a "what replaces a gate" section, applied to v1.0's own text
+
+Then amend `spec.md` where the calls changed it. Results: [A3](../session-starters/hooman-method-reboot-2026-08-03/acceptance-a3-cold-reentry-2026-11-21.md) passed 13/18; [A8](../session-starters/hooman-method-reboot-2026-08-03/acceptance-a8-interruption-2026-11-21.md) passed.
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
@@ -102,6 +108,37 @@ recorded that evidence and the principal's calls ("proposed on all"):
 - C3: install once per machine through the dotfiles; drop `references/` projections. Revised after the critique: each project's `AGENTS.md` names the method revision it expects.
 - C4: pull requests for canonical documents. Revised after the critique: the local guard stays, and a merge guard for agents is added, until a failed self-merge attempt is recorded.
 - C5: an independent critique agent reviews the calls before v1.0 text is written.
+
+### Agent merge guard (2026-11-21): revised C4, step 1
+
+- **Hook:** `~/.claude/hooks/guard-merge.sh`, kept in the principal's dotfiles and
+  registered as a user-level `PreToolUse` hook on `Bash|mcp__.*`. It blocks an agent from:
+  - merging a PR: `gh pr merge`, the REST merge endpoint, or an MCP merge tool
+  - pushing to the default branch when the push touches a path listed in the repository's
+    `.agents/guarded-paths`
+
+  It matches only what would execute: heredoc bodies and quoted strings are removed first,
+  and `gh` or `git` must sit where a command starts. It fails closed only for merge-like
+  or push-like commands.
+- **Tests:** 22 of 22 pipe-test cases pass. They include text that merely mentions a merge
+  (commit messages, heredocs, `echo`), which must pass, and a push that follows a heredoc
+  commit, which must be blocked.
+- **False positive found and fixed:** the first version blocked the working agent's own
+  commit, because the commit message and a heredoc mentioned the merge command. That is
+  why quoted text and heredocs are now removed before matching.
+- **Recorded failed self-merge attempt:** on 2026-11-21 the working agent ran a real
+  `gh pr merge 99999 -R hooman/hooman-method --squash` through its own Bash tool, against
+  both versions of the hook. Both times it was denied: "Agent merge guard: 'gh pr merge' is
+  the principal's act (Hooman C4)." The PR number did not exist, so a failure of the guard
+  could not have merged anything.
+- **Guarded paths declared:**
+  - this repository: the canonical method documents and `.agents/*`
+  - the `capnproto-swift` workspace: mirrors its commit guard
+- **What it is:** an accident-catcher, not a security boundary. The agent still shares the
+  principal's credentials, so the stronger fix, a separate agent identity with no merge
+  rights, remains open.
+- **Retiring the workspace commit guard** is now allowed by C4, and stays the principal's
+  call.
 
 ### Sources
 

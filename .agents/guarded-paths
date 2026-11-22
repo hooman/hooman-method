@@ -1,0 +1,9 @@
+# Canonical method documents: the principal commits them by merging a PR.
+# Read by ~/.claude/hooks/guard-merge.sh (Hooman C4); an agent's push of these to main is blocked.
+hooman-contract.md
+hooman-notes.md
+hooman-method-context.md
+skills/*
+design-stance/*
+coding-conventions/*
+.agents/*
