@@ -4,9 +4,10 @@ v1.0.0 (2026-11-21) · part of the `hooman-assistant` skill · load when setting
 under the method, or realigning one.
 
 A governed project needs very little: the repository's own records, gates that enforce what must
-hold, and a short `AGENTS.md`. Add an artifact only when friction demands it. Acceptance run A3
-(2026-11-21) showed a cold agent re-entering correctly from just a next-action line, the
-decisions, and git state.
+hold, and a short `AGENTS.md`. Add an artifact only when friction demands it. In one acceptance
+run (A3, 2026-11-21: one model, a simulated gap, 13/18) a cold agent found the right next action
+from the next-action line, the decisions, and git state. It missed the binding constraints;
+entry.1 now asks for them.
 
 ## Required
 
@@ -29,16 +30,18 @@ decisions, and git state.
 - proj.5 — **`.agents/guarded-paths`:** one glob per line for the canonical files (`AGENTS.md`,
   anchors, the decision log, the context file, agent configuration). The user-level merge guard
   blocks an agent's push of these to the default branch; they change through a PR the principal
-  merges.
+  merges. Keep any project commit guard that already blocks agent commits of them. The guard is
+  removed only by the principal's call.
 
 ## When it earns it
 
 - proj.6 — Anchors (what this is and is not for; whom it serves) once a decision needs them.
   A glossary once a term is ambiguous and recurs.
-- proj.7 — Public repositories: `CONTRIBUTING.md` with DCO sign-off and an AI-assistance policy,
-  a required DCO check, branch and tag rulesets, and release automation with provenance.
+- proj.7 — Public repositories, when the principal takes one beyond a hobby: consider
+  `CONTRIBUTING.md` with DCO sign-off and an AI-assistance policy, a required DCO check, branch and
+  tag rulesets, and release automation with provenance. These are options, not requirements.
 - proj.8 — Findings that are off the current task: one line in the project's findings list, or
-  an issue in a public repository. Never a detour from the tranche.
+  once the principal clears it, an issue in a public repository. Never a detour from the tranche.
 
 ## Not part of v1.0
 

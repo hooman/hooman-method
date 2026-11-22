@@ -6,7 +6,9 @@ reviewing a tranche of delegated work (tranche.1–5).
 A tranche is one outcome. Its checkpoint is a **draft pull request**, opened before any code is
 written. Its description holds the envelope and a checklist. The PR is what survives when a
 session ends without warning. A cold agent must be able to find it, judge how far it got, and
-finish it on the same branch. Acceptance run A8 (2026-11-21) showed this working on stock GitHub.
+finish it on the same branch. In one acceptance run (A8, 2026-11-21: one model, the cut right
+after a checkpoint push) a cold agent did exactly that on stock GitHub. A cut in the middle of a
+push is untested.
 
 ## Description template
 
@@ -36,7 +38,8 @@ Copy it verbatim. Leave no section empty: write `none`.
   before writing code. The design is the expensive thinking; it must survive.
 - cp.2 — After each step: commit, push, then tick the box, with a one-line evidence note under it
   (commit, command, or log line). Never tick a box ahead of its push.
-- cp.3 — Only pushed state counts. A lost local checkout costs at most the step in progress.
+- cp.3 — Only pushed state counts. Push often enough that a lost local checkout costs at most the
+  step in progress.
 - cp.4 — **Resuming:**
   - find the PR from durable state: open draft PRs, branches, the next-action line
   - re-verify what the ticked boxes claim before building on them
