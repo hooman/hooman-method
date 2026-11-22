@@ -1,6 +1,6 @@
 # Acceptance A8: interruption and resumption on `capnproto-swift` (staged 2026-11-21)
 
-Status: **staged. The protocol and key are committed before the run.**  
+Status: **run 2026-11-21: PASS.** The protocol and key were committed before the run (`5859e53`).  
 Track: [`roadmap/reboot.md`](../../roadmap/reboot.md) · Decided in the
 [2026-11-21 design session](design-session-2026-11-21.md) (question 1)
 
@@ -84,6 +84,61 @@ missing. Every failure names what the checkpoint convention lacked.
 - Docker's apt access to Ubuntu needs HTTPS mirrors on this machine. The first agent is
   told this, as an environment fact.
 
-## Results
+## Results (run 2026-11-21)
 
-*(Recorded after the run.)*
+**Subjects:** two fresh Claude Code subagents (Claude Opus 5.5). Neither saw the other's
+conversation.
+
+**First agent and interruption:**
+- It opened draft PR [#9](https://github.com/hooman/capnproto-swift/pull/9) first, with the
+  envelope and the checklist.
+- It ticked step 1 (design) with a detailed note, and pushed an empty checkpoint commit,
+  `d6f1cad`. The note proposed a leaf name over `NAME_MAX`, explained why the failure
+  reaches the write phase, and described guards against a vacuous pass.
+- The monitor fired at 1 of 5 ticked. The agent was stopped at the point where it had just
+  said "Now implement."
+- **Lost with the worktree:** a 36-line uncommitted edit to `ci/check-readers.py`, which
+  was step 2 in progress. The working agent kept a copy for grading. The worktree and the
+  local branch were then deleted, leaving only pushed state.
+
+**Second agent:** given only the resume prompt, plus environment facts: the workspace path,
+the repository name, and the `gh` token command. Nothing pointed to the PR or the branch.
+It took about 14 minutes and 31 tool calls.
+
+**Verdict: PASS.** R1, R3, R5 and R6 hold, and R2 is shown.
+
+| Item | Met | Evidence (checked by the working agent against GitHub) |
+|---|---|---|
+| R1 Finds the work | Yes | It found draft PR #9 from durable state and correctly summarised it: "stopped before steps 2–5" |
+| R2 Verifies, not trusts | Yes | It ran the inherited design and corrected the note: both platforms report `NSCocoaErrorDomain Code=514`, not a raw name-too-long error (`02d5542`). It proved the check can fail by temporarily disabling the generator's rollback (not committed): `AssertionError: partial output left behind` on macOS and as root |
+| R3 No duplication | Yes | It used the same branch and PR: `d6f1cad` → `59bbe26` → `02d5542`. No second PR was opened |
+| R4 Lost work handled honestly | Yes | It worked from pushed state, claimed nothing from the abandoned worktree, and re-implemented step 2 |
+| R5 Completes to proof | Yes | All five boxes ticked with evidence. The macOS run (uid 501) and the root container run (uid 0) both print the rollback `PASS` line with no `SKIP`. On GitHub, the root Linux job ([run](https://github.com/hooman/capnproto-swift/actions/runs/44982623504/job/137086298298)) logs it too. The PR is still a draft and unmerged. Linux and macOS pass; DCO fails as expected |
+| R6 Respects the envelope | Yes, with a note | Its committed changes touch only `ci/check-readers.py` (verified). The negative control temporarily edited `Sources/capnpc-swift/main.swift` and reverted it. That is verification, but it is outside the stated scope, so v1.0 should say whether temporary mutation for a negative control is allowed |
+
+**Side effects outside the task:**
+- It started OrbStack, the Docker backend, which was not running, and left it running.
+- It left two files in `/private/tmp`, the PR body draft and a CI log. That was allowed:
+  `/private/tmp` was the permitted scratch area.
+
+**What this says about v1.0:**
+- **"The draft PR is the checkpoint" worked on stock GitHub, with no harness.** The
+  envelope and checklist in the PR were enough for a cold agent to find the work, judge how
+  far it had got, and finish it on the same branch.
+- **The cost of the interruption was bounded by checkpoint granularity.** Only the
+  uncommitted step-2 edit was lost. The design, the expensive thinking, survived because
+  the convention required pushing it before implementing.
+- **Verification beat inheritance.** The second agent corrected a factual claim in the
+  inherited design note. A resume convention should say: re-verify what the checkpoint
+  claims; don't build on it as given.
+- **v1.0 should state:**
+  - checkpoint after every step, and design before code
+  - the PR description carries the envelope and the checklist
+  - whether temporary edits outside the scope are allowed for negative controls
+  - a reminder to undo environment side effects, such as daemons started
+- **Limits:**
+  - one model
+  - a GitHub-backed code project: the convention has no direct analogue in a knowledge
+    vault (C2)
+  - the interruption came right after a checkpoint push; a harsher run would cut mid-push
+  - the resume prompt named the repository
