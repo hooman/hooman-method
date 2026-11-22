@@ -1,11 +1,12 @@
 # Hooman reboot
 
-**Next action:** The principal reviews [PR #5](https://github.com/hooman/hooman-method/pull/5), the v1.0 text, and makes the calls on the five proposed `hooman-contract.md` changes and the four dropped v0.8.1 rules marked "principal to confirm" in the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md). Then, in order:
+**Next action:** After the v1.0 contract revision merges (accepted 2026-11-21 as proposed in PR #5):
 
-1. revise the contract from those answers
-2. tag `v1.0.0`
-3. install v1.0 (the synced claude.ai `hooman-assistant` still serves v0.8)
-4. migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on
+1. tag `v1.0.0`
+2. install v1.0 (the synced claude.ai `hooman-assistant` still serves v0.8)
+3. migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on
+
+Still open for the principal: whether to restore any dropped v0.8.1 rule groups (see the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md)), and a date by which the frozen harness is either retired or revived.
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
