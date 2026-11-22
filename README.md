@@ -53,5 +53,6 @@ Run `python3 tools/check-docs.py` before tagging a release.
 
 ## Versioning & license
 
-Releases are tagged. v1.0.0 is a reset: it carries no rules over from v0.8.x, whose history
-remains in git. Docs are licensed **CC BY 4.0** (see `LICENSE`).
+Releases are tagged. In v1.0.0 the agent rules and references are a reset, carrying no rules
+over from v0.8.x, whose history remains in git. The principal's contract (`hooman-contract.md`)
+is still the v0.8.1 text, and will be revised separately. Docs are licensed **CC BY 4.0** (see `LICENSE`).
