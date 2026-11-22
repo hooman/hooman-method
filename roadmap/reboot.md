@@ -1,6 +1,6 @@
 # Hooman reboot
 
-**Next action:** Record the independent critique in the [2026-11-21 design session](../session-starters/hooman-method-reboot-2026-08-03/design-session-2026-11-21.md) and settle any call it reopens. Then write the v1.0 text for Git and code projects from the converged calls, fresh, with no version history carried over.
+**Next action:** Stage acceptance scenarios A3 (cold re-entry by a fresh agent) and A8 (a session killed mid-tranche, then resumed) on `capnproto-swift`, and record the results. Then add the agent merge guard for guarded documents and record a failed self-merge attempt. Then write the v1.0 text for Git and code projects. See the [2026-11-21 design session](../session-starters/hooman-method-reboot-2026-08-03/design-session-2026-11-21.md).
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
@@ -99,9 +99,8 @@ recorded that evidence and the principal's calls ("proposed on all"):
 
 - C1: freeze `hooman-harness`; run the pilots on stock platforms.
 - C2: v1.0 covers Git and code projects first; the knowledge vault comes next.
-- C3: install once per machine through the dotfiles; drop `references/` projections and
-  pinning.
-- C4: pull requests replace the local commit guard for canonical documents.
+- C3: install once per machine through the dotfiles; drop `references/` projections. Revised after the critique: each project's `AGENTS.md` names the method revision it expects.
+- C4: pull requests for canonical documents. Revised after the critique: the local guard stays, and a merge guard for agents is added, until a failed self-merge attempt is recorded.
 - C5: an independent critique agent reviews the calls before v1.0 text is written.
 
 ### Sources

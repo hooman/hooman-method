@@ -1,6 +1,6 @@
 # Design session 2026-11-21: what v1.0 should be, given a working day without the harness
 
-Status: **converged 2026-11-21; independent critique recorded; three questions open**  
+Status: **closed 2026-11-21: calls converged and revised after the independent critique**  
 Track: [`roadmap/reboot.md`](../../roadmap/reboot.md) · Spec: [`spec.md`](spec.md) · Shape: the
 design-session sequence from the [2026-11-09 revision](../../roadmap/reboot.md#exploration-and-design-sessions)
 (frame, diverge, critique, converge, record).
@@ -248,12 +248,32 @@ comparing inodes. The principal did not catch either.
 2. How a project records which method revision it expects (C3).
 3. What actually stops an agent from merging a guarded-doc PR (C4).
 
+**Principal's answers (2026-11-21), each the proposed option:**
+
+1. **Stage the hard scenarios first.** Before any v1.0 text is written, two tests run on
+   `capnproto-swift`:
+   - A3: a fresh agent with no memory re-enters the project cold.
+   - A8: a session is killed mid-tranche and then resumed.
+
+   v1.0 is written from what they show.
+2. **C3, revised: `AGENTS.md` names the method revision.** Each project's short `AGENTS.md`
+   states the method revision it expects and links the canonical text on GitHub, so cloud
+   sessions and outside contributors can read it. The entry check reports a mismatch with
+   what is installed.
+3. **C4, revised: keep the hook until a stop is proven.** The local commit guard stays
+   alongside PRs. A merge guard is added for agents that blocks `gh pr merge` and pushes
+   to `main` on guarded paths. The hook is retired only after a recorded, failed
+   self-merge attempt.
+
 ## 10. Record
 
-After the critique:
-- record the principal's answers to the three open questions, and any call they revise
-- rewrite the track's next-action line
-- write the v1.0 text from the converged answer, with no version history carried over
+Next:
+- stage A3 and A8 on `capnproto-swift`
+- add the agent merge guard, and record a failed self-merge attempt
+- write the v1.0 text for Git and code projects, including a "what replaces a gate"
+  section applied to v1.0's own text
+- amend `spec.md` where the calls changed it (A9 and A10 become open questions, and the
+  harness no longer owns checkpointing)
 
 Until then, nothing in `hooman-contract.md`, `skills/hooman-assistant/`, or the design
 stances changes.
