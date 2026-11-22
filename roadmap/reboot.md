@@ -1,12 +1,11 @@
 # Hooman reboot
 
-**Next action:** Write the v1.0 text for Git and code projects, fresh, from the 2026-11-21 calls and the two acceptance runs. It should cover:
+**Next action:** The principal reviews [PR #5](https://github.com/hooman/hooman-method/pull/5), the v1.0 text, and makes the calls on the five proposed `hooman-contract.md` changes and the four dropped v0.8.1 rules marked "principal to confirm" in the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md). Then, in order:
 
-- a re-entry convention that restates the constraints binding the next step (from A3)
-- "the draft PR is the checkpoint": design before code, a checkpoint after every step, and the resuming agent re-verifies what the checkpoint claims (from A8)
-- a "what replaces a gate" section, applied to v1.0's own text
-
-Then amend `spec.md` where the calls changed it. Results: [A3](../session-starters/hooman-method-reboot-2026-08-03/acceptance-a3-cold-reentry-2026-11-21.md) passed 13/18; [A8](../session-starters/hooman-method-reboot-2026-08-03/acceptance-a8-interruption-2026-11-21.md) passed.
+1. revise the contract from those answers
+2. tag `v1.0.0`
+3. install v1.0 (the synced claude.ai `hooman-assistant` still serves v0.8)
+4. migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
