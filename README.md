@@ -1,55 +1,58 @@
 # hooman-method
 
-This is a personal operating method for using LLMs on work that matters, pauses for weeks, and cannot safely live only in chat history.
+A personal operating method for LLM-assisted work that matters, pauses for weeks, and cannot
+safely live only in chat history.
 
-The **Hooman method** is built for a single principal whose attention is split across projects, operational responsibilities, family, civic work, and long gaps between sessions. Its main problem is re-entry: when I come back to a project, I need to know what was decided, what is next, what must not be touched, and what can be delegated without losing judgment.
+The **Hooman Method** is built for one principal whose attention is split across many projects,
+responsibilities, and long gaps between sessions. Attention is the scarce resource. The method's
+job is to spend it only on judgement: setting intent, making one-way calls, and reviewing and
+merging outcomes. Agents do the work in between and prove it.
 
-The method separates three roles:
+**v1.0** (2026-11-21) is a fresh start for Git and code projects. Agents now work autonomously
+across many steps, on tooled surfaces, with pull requests, CI, and hooks available. The method
+leans on those instead of a hand-carried relay of briefs. v1.0 rests on two acceptance runs
+(cold re-entry, and interruption with resumption) and a recorded design session. Their records
+are under [`session-starters/hooman-method-reboot-2026-08-03/`](session-starters/hooman-method-reboot-2026-08-03/).
 
-- **Human** — owns priorities, constraints, and final decisions.
-- **Chat** — frames the work, watches the long arc, drafts briefs, and reviews output with the human.
-- **Executor** — investigates or mutates files under a narrow brief, with persistent artifacts as the source of truth.
-
-It is not meant to turn every task into a process. It is an escalation protocol: below the threshold, work informally; above it, create just enough durable structure that the work survives interruption, delegation, and review.
-
-This repository is the **global tier**: the versioned, taggable home for the method's operating documents and assistant skill. Downstream consumers project from a pinned tag; they never fork these docs.
-
-## Who this is for
-
-This may look unusually formal because the circumstances are unusually shaped: one person, many unrelated obligations, intermittent project attention, high context-switch cost, and increasing delegation to AI tools. Some parts are broadly recognizable to anyone doing serious LLM-assisted work; the full apparatus is intentionally personal and should be scaled down unless the same pressures are present.
-
-## The three-tier model
-
-- **Global** *(this repo)* — the method itself: the principal's self-contract, the assistant ground-rules skill, design stances, and coding-convention indexes.
-- **Family commons** — a shared layer for a family of related workspaces. Reference implementation: `heddle-workspace`; second field sample: `dev-commons`.
-- **Workspace** — an individual project: a `references/` projection of the global docs (a downstream copy, never forked) plus its own anchors, briefs, and findings.
+It stays an escalation protocol. Below the threshold, work informally. Above it, keep just
+enough durable structure for the work to survive interruption, delegation, and review.
 
 ## Contents
 
-- `hooman-contract.md` — the principal's contract with themselves (assistants read narrow sections only for contract/escalation watch).
-- `hooman-notes.md` — companion: rationale, provenance, references. Never needed to operate.
-- `skills/hooman-assistant/` — the assistant ground rules as an Agent Skill: `SKILL.md` (core) plus `references/contracts.md` (output schemas) and `references/workspace.md` (artifact rules).
-- `design-stance/` — design stances; `universal/` applies everywhere, with per-language overlays alongside (`swift/`).
-- `coding-conventions/` — coding-guideline indexes, per language (`swift/`).
-- `tools/check-docs.py` — local doc-discipline check: budgets, unique rule ids, and contract skeletons.
+- [`skills/hooman-assistant/SKILL.md`](skills/hooman-assistant/SKILL.md): the agent rules,
+  organised around four axes: stances, context boundaries, decision rights, and records.
+  - [`references/checkpoint.md`](skills/hooman-assistant/references/checkpoint.md): the draft
+    PR as checkpoint.
+  - [`references/project.md`](skills/hooman-assistant/references/project.md): the minimal
+    shape of a governed project.
+- [`hooman-contract.md`](hooman-contract.md): the principal's contract with themselves. Agents
+  read only its standing triggers.
+- [`design-stance/`](design-stance/) and [`coding-conventions/`](coding-conventions/): design
+  stances and coding-guideline indexes.
+- [`hooman-notes.md`](hooman-notes.md): rationale and provenance from v0.x. Historical; never
+  needed to operate.
+- [`tools/check-docs.py`](tools/check-docs.py): document checks (budgets, unique rule ids, the
+  checkpoint template, consistent revisions, and links).
+- [`roadmap/reboot.md`](roadmap/reboot.md): the current track and its next action.
 
-## Using it downstream (projection v0)
+## Using it
 
-Consumers copy the docs they need, pinned to a release tag, and record the source in a `references/UPSTREAM` marker:
-
-- source repo
-- pinned tag
-- refresh date
-- refresh instruction
-
-Refresh means re-copying at a newer tag. No submodules, no symlinks; the copy rides the consuming repo's own git. The assistant skill installs by copying `skills/hooman-assistant/` into the consumer's skill-discovery directory.
-
-A workspace is governed only after a root `AGENTS.md` or `<project>-context.md` says so explicitly. `references/UPSTREAM` confirms the projection, but folder shape alone is not a marker.
+- **Install once per machine,** not per project. The skill goes where the agent discovers
+  skills, and the principal's dotfiles manage that.
+- **Each project's `AGENTS.md` names the revision it expects** and links to that revision's
+  text here, so cloud sessions and outside contributors can read it
+  ([`project.md`](skills/hooman-assistant/references/project.md), proj.1). There is no
+  `references/` copy and no tag pinning by copy.
+- **Canonical documents,** here and in governed projects, change only through pull requests the
+  principal merges. A user-level merge guard stops agents from merging, or from pushing guarded
+  paths to the default branch.
 
 ## Checks
 
-Run `python3 tools/check-docs.py` before tagging a doc-set release.
+Run `python3 tools/check-docs.py` before tagging a release.
 
 ## Versioning & license
 
-Doc-set releases are tagged; latest is `v0.8.1`, and `v0.8.0` was the first repository release, with provenance running back to v0.4 in history. Docs are licensed **CC BY 4.0** (see `LICENSE`). Graduated from the method's founding gist, which remains in place as a redirect.
+Releases are tagged. In v1.0.0 the agent rules and references are a reset, carrying no rules
+over from v0.8.x, whose history remains in git. The principal's contract (`hooman-contract.md`)
+is still the v0.8.1 text, and will be revised separately. Docs are licensed **CC BY 4.0** (see `LICENSE`).

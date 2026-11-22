@@ -98,7 +98,7 @@ conversation.
 - The monitor fired at 1 of 5 ticked. The agent was stopped at the point where it had just
   said "Now implement."
 - **Lost with the worktree:** a 36-line uncommitted edit to `ci/check-readers.py`, which
-  was step 2 in progress. The working agent kept a copy for grading. The worktree and the
+  was step 2 in progress. The working agent kept a copy in session scratch space for grading only; it was not preserved. The worktree and the
   local branch were then deleted, leaving only pushed state.
 
 **Second agent:** given only the resume prompt, plus environment facts: the workspace path,
