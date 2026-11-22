@@ -1,6 +1,6 @@
 # Design session 2026-11-21: what v1.0 should be, given a working day without the harness
 
-Status: **converged 2026-11-21; independent critique pending**  
+Status: **converged 2026-11-21; independent critique recorded; three questions open**  
 Track: [`roadmap/reboot.md`](../../roadmap/reboot.md) · Spec: [`spec.md`](spec.md) · Shape: the
 design-session sequence from the [2026-11-09 revision](../../roadmap/reboot.md#exploration-and-design-sessions)
 (frame, diverge, critique, converge, record).
@@ -187,10 +187,71 @@ In the principal's words: **"proposed on all."**
 | C4 | **Pull requests replace the commit guard** for anchors, decisions, and context files. Agents open the PR, and the principal's merge is the act of committing. The hook stays only where there is no remote review. |
 | C5 | **One independent critique agent.** It works in a clean room, reading only this document and `spec.md`, and argues against this converged answer before any v1.0 text is written. |
 
-## 9. Record
+## 9. Independent critique (C5)
+
+A separate agent ran in a clean room: it read only this document (through §8) and
+`spec.md`, and could not write. Its findings, condensed:
+
+- **C1 (freeze the harness):**
+  - "Revive on friction" may never fire, because warm code pilots do not produce the
+    friction the harness exists for.
+  - spec.md still assigns checkpointing and T2 to the harness.
+  - *Safeguard:* stage A3 and A8 deliberately, and set a date by which "freeze" becomes
+    "retire" or "revive".
+- **C2 (code projects first):**
+  - §8 quietly moved the "what replaces a gate" section from v1.0 into the vault slice.
+  - Code projects have prose with no compiler too: anchors, decisions, and the method
+    itself.
+  - *Safeguard:* write the gate-substitute section in v1.0, and apply it to v1.0's own
+    text.
+- **C3 (install once per machine):**
+  - It fixes staleness by giving up reproducibility. Nothing records which method revision
+    a session ran under.
+  - It leaves gaps for cloud sessions without `~/.config/agents`, for machines that drift
+    apart, and for outside contributors' agents.
+  - *Safeguard:* each project's `AGENTS.md` names the method revision it expects, the
+    entry check reports a mismatch, and one cloud-session test runs before v1.0.
+- **C4 (PRs instead of the commit guard):**
+  - If the agent can merge its own PR or bypass the ruleset, C4 removes the one control
+    that worked (§4.2).
+  - A PR queue can go stale exactly like the patch queue did (§4.1).
+  - *Safeguard:* CODEOWNERS on guarded paths, no bypass on them, and a recorded failed
+    self-merge attempt. Keep the hook until then.
+- **What §6 softened:**
+  - It never argued against C3 or C4.
+  - It scored A4 "partly" when it was a miss: the system did not surface the in-flight
+    reboot.
+  - It under-used the other-vendor model ignoring `CLAUDE.md`, which threatens the premise
+    that installed method text governs behavior.
+- **Evidence stretched:**
+  - Decision rights worked under the v0.8.1 text, which says nothing about v1.0.
+  - A6 counted the public release, which is not reversible, while isolation went
+    untested.
+  - A7 lacked a mid-tranche checkpoint and the "exactly one decision" the spec requires.
+  - "Gates caught every defect" counts only the defects gates caught.
+- **Dropped from the spec without amending it:**
+  - A2 (freshness of external sources), A5 (path drift), A8 (interruption), and Recovery
+    mode
+  - the execution envelope, and "every material action attributable to an envelope"
+  - scenario evals and recorded routing reasons
+  - A9 and A10, which C1 demoted while the spec still requires them
+
+**Fact check by the working agent (2026-11-21).** The C4 risk is real, not hypothetical.
+The agent runs under the principal's `gh` identity, which has admin rights, and pushed to
+`main` all day through the admin bypass. Nothing today stops it from merging its own PR.
+On §4.5, the working agent caught both false claims itself, by checking records: the
+"no briefs" claim by reading the 2026-11-20 commits, and the path-drift claim by
+comparing inodes. The principal did not catch either.
+
+**Open questions put to the principal:**
+1. When to stage A3 (cold start) and A8 (interruption) relative to writing v1.0.
+2. How a project records which method revision it expects (C3).
+3. What actually stops an agent from merging a guarded-doc PR (C4).
+
+## 10. Record
 
 After the critique:
-- record its result here, along with any call the principal revises because of it
+- record the principal's answers to the three open questions, and any call they revise
 - rewrite the track's next-action line
 - write the v1.0 text from the converged answer, with no version history carried over
 
