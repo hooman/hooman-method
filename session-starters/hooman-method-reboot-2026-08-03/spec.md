@@ -4,6 +4,33 @@ Status: **proposed working specification**
 Track: [`roadmap/reboot.md`](../../roadmap/reboot.md)  
 Evidence: [`reboot-baseline-audit-2026-08-03.md`](../../audits/hooman-method-audits/reboot-baseline-audit-2026-08-03.md)
 
+## Amendments 2026-11-21
+
+These amendments come from the [design session](design-session-2026-11-21.md) and from acceptance
+runs [A3](acceptance-a3-cold-reentry-2026-11-21.md) and [A8](acceptance-a8-interruption-2026-11-21.md).
+Where they conflict with the text below, they win.
+
+- **The harness is frozen (C1).** The behaviours this spec assigns to "the harness" are carried
+  by conventions on stock platforms:
+  - entry assessment: SKILL.md entry.1–2
+  - the execution envelope and checkpoints: the draft PR, in `references/checkpoint.md`
+  - stops: decisions.1 and tranche.4
+
+  The identity decision's "T2 calibration is the next tranche" in `hooman-harness` is
+  superseded.
+- **Scope is Git and code projects first (C2).** The knowledge vault is the next slice.
+- **A9 (voice) and A10 (host replacement) are open questions, not acceptance requirements.**
+- **Acceptance status:**
+  - A3 passed, 13 of 18, on 2026-11-21.
+  - A8 passed on 2026-11-21, with the draft PR as checkpoint.
+  - A1, A6 and A7 were exercised in working sessions.
+  - A2, A5 and Recovery mode are untested, and stay requirements.
+- **Scenario evals and recorded routing reasons** (Nonfunctional) are replaced by the gate
+  substitutes in SKILL.md subst.1–5: an answer key first, clean-room critique, traceability,
+  preservation checks, and provenance. A maintained eval suite is deferred.
+- **Distribution (C3, revised):** the method is installed once per machine. Each project's
+  `AGENTS.md` names the revision it expects (`references/project.md`, proj.1).
+
 ## Scope intake
 
 - **Smallest independently useful slice:** from a selected or named project, determine the appropriate entry mode; recover only the required context; construct and clear a suitably substantial execution tranche; execute it through validation and checkpointing; return the outcome, evidence, exceptions, and next recommended tranche.
