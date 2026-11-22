@@ -1,6 +1,6 @@
 # Hooman reboot
 
-**Next action:** Fold the [2026-11-09 revision](#revision-2026-11-09-the-environment-moved) into the specification (four axes, design sessions, context boundaries); then run read-only entry assessments for Hooman, Heddle, and NAIMOR Knowledge Vaults; review the three mode decisions together; then clear one substantial T2 pilot tranche.
+**Next action:** Stage acceptance scenarios A3 (cold re-entry by a fresh agent) and A8 (a session killed mid-tranche, then resumed) on `capnproto-swift`, and record the results. Then add the agent merge guard for guarded documents and record a failed self-merge attempt. Then write the v1.0 text for Git and code projects. See the [2026-11-21 design session](../session-starters/hooman-method-reboot-2026-08-03/design-session-2026-11-21.md).
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
@@ -90,6 +90,18 @@ The reboot specifies execution tranches; design work needs its own shape:
 ### Recurring checks: repository dreaming
 
 The milestone "exception-driven recurring checks" gets its first candidate. A scheduled routine reads what merged across a project's repositories, finds written claims those changes made false, and proposes corrections as pull requests. It never rewrites directly, reads repository records only (never session transcripts), and an independent review agent checks each pull request before the principal merges. The Heddle workspace is designing it as its multi-repository pilot.
+
+### Calls 2026-11-21: converged in a design session
+
+A working day on `capnproto-swift` took the project to a public, verified `0.1.0` without
+the harness. The [design session](../session-starters/hooman-method-reboot-2026-08-03/design-session-2026-11-21.md)
+recorded that evidence and the principal's calls ("proposed on all"):
+
+- C1: freeze `hooman-harness`; run the pilots on stock platforms.
+- C2: v1.0 covers Git and code projects first; the knowledge vault comes next.
+- C3: install once per machine through the dotfiles; drop `references/` projections. Revised after the critique: each project's `AGENTS.md` names the method revision it expects.
+- C4: pull requests for canonical documents. Revised after the critique: the local guard stays, and a merge guard for agents is added, until a failed self-merge attempt is recorded.
+- C5: an independent critique agent reviews the calls before v1.0 text is written.
 
 ### Sources
 
