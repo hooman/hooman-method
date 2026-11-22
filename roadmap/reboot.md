@@ -6,7 +6,7 @@
 2. install v1.0 (the synced claude.ai `hooman-assistant` still serves v0.8)
 3. migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on
 
-Still open for the principal: whether to restore any dropped v0.8.1 rule groups (see the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md)), and a date by which the frozen harness is either retired or revived.
+**Dated decision: 2027-02-21. Revive or archive `hooman-harness`** (principal, 2026-11-21). Revive it only if a pilot hit friction it would fix; otherwise archive the repository. Dropped v0.8.1 rule groups: none restored for now; each returns on first friction (see the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md)).
 
 Lifecycle: **in-flight**  
 Started: 2026-08-03  
