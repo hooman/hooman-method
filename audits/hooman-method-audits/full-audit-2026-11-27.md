@@ -89,6 +89,14 @@ was compared byte for byte with the repository. **Inspected** marks what I check
   - **Inspected:** the skill's description says "(v1.0, Git and code projects)", which no check compared with the revision stamp.
   - **Fix:** the packer checks that it agrees with the stamp's major.minor.
 
+- **A-23 — The roadmap's milestones and success measures, scored.** kept.
+  - **Inspected:** of the open milestones, "pilot against a method project, a multi-repository software project, and a non-Git knowledge project" is two-thirds under way. This repository is the method pilot, and the capnproto-swift workspace (four repositories) is the software pilot, at `0.3.0` released. The knowledge vault has not started; C2 puts it next.
+  - **Inspected:** "canonical identity documents never change as a side effect of automation" held in this audit. Auto mode refused the agent's commit of `.agents/guarded-paths`, so that commit is the principal's.
+  - **Inferred:** the measures need no rewording yet.
+- **A-24 — A version string nothing checks.** fixed.
+  - **Inspected:** `hooman-method-context.md` named the revision in prose, outside both checks.
+  - **Fix:** it now points to the stamp in `SKILL.md`, as `AGENTS.md` does.
+
 ### The comment standard drafted in this PR
 
 - **A-22 — The comment standard has not been tested yet.** **question Q3**.
@@ -116,6 +124,8 @@ That project is private and unpublished. Only general patterns are taken, with n
 ## Questions for the principal
 
 1. **Q1 — Version.** This PR adds files and changes reference documents, but no agent rule. My recommendation is `v1.1.0`, proposed in the stamps commit.
+   - **What depends on the number,** so a different answer is one commit: the stamp lines in the three skill files, the description's `(v1.1, …)`, the `CHANGELOG.md` heading, and README's "each release from `v1.1.0`".
+   - **The contract stays at `v1.0.0` on purpose:** it is revised separately, and its text did not change.
 2. **Q2 — Design-stance roles.** The proposed mapping:
    - "Chat surfaces candidates as a design forms" becomes "in the explore and decide stances, the session surfaces candidates".
    - "The Executor's R1 output names candidates" becomes "in the build stance, the draft PR's design step (checklist step 1) names the candidates noticed and whether each meets the threshold".

@@ -80,7 +80,7 @@ Before writing code, find the **task-type** below and read the linked rules. The
 - **Names and literals carry meaning.**
 - **Short enough to see whole.**
 
-The aim is fewer lines of *code* and more words of *reason*. A fluency pass and a literate pass together can make a file longer, and that is fine.
+The aim is fewer lines of *code* and more words of *reason*. A fluency pass and a literate pass together can make a file longer, and that is fine. *Evidence:* in a private project's file-system layer, a fluency pass cut a 31-line `open` to 13 lines, and every system call became one readable line. The literate pass then made the files longer again, almost all of it comments carrying intent and evidence [V: 2026-10].
 
 ---
 *When this outgrows an inline index, it becomes a Skill: this file as the `SKILL.md` router, each note a small bundled detail doc loaded on demand. Accrete, don't proliferate.*
