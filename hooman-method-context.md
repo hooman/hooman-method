@@ -1,6 +1,6 @@
 # Hooman Method — project context
 
-This repository is governed by the Hooman Method, revision `v1.0.0`
+This repository is governed by the Hooman Method, revision `v1.1.0`
 ([`SKILL.md`](skills/hooman-assistant/SKILL.md)). It is the global, versioned source for the
 method: the agent rules, the principal's self-contract, and the cross-project design stances. It
 is not the home of a runtime.

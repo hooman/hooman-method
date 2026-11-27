@@ -8,6 +8,8 @@ workflow requires an entry headed `## [X.Y.Z] - YYYY-MM-DD`.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-27
+
 ### Added
 - **`coding-conventions/swift/comment-standard.md`:** what a comment must carry (`cm.*`), the
   Swift assumption classes with the failure each came from (`ca.*`), and the comment-review pass

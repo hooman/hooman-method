@@ -68,7 +68,7 @@ was compared byte for byte with the repository. **Inspected** marks what I check
 
 - **A-14 — No `AGENTS.md`.** fixed.
   - **Inspected:** proj.1 requires `AGENTS.md` at the root, naming the revision and the gate commands. This repository has `hooman-method-context.md` (the v0.8 "context file"), which names no gates.
-  - **Fix:** a short `AGENTS.md` is added and guarded.
+  - **Fix:** a short `AGENTS.md` is added. Adding it to `.agents/guarded-paths` is a principal commit: an edit to the oversight list itself, delivered as a patch with a one-command apply script.
 - **A-15 — No gate runs in CI.** fixed.
   - **Inspected:** there is no `.github/` directory. `check-docs.py` runs only by hand, "before tagging a release" (README). verify.1 and verify.2 prefer executable gates.
   - **Fix:** a `check` workflow on every PR and push.
