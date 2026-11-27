@@ -1,0 +1,98 @@
+name: release
+
+# Cut a release from the current `main`. Validate the version against CHANGELOG.md and every
+# skill's revision stamps, run the checks on that exact commit, then pack each skill into a
+# .skill file, attest it (Sigstore build provenance), and create the tag `vX.Y.Z` and the GitHub
+# Release with the .skill files attached, in one step. The principal dispatches it; agents
+# never do (decisions.1).
+#
+# Run: gh workflow run release.yml -R hooman/hooman-method -f version=1.1.0
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, without a leading v (e.g. 1.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate version, changelog and stamps
+    runs-on: ubuntu-24.04
+    outputs:
+      sha: ${{ steps.check.outputs.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: check
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          [ "$GITHUB_REF" = "refs/heads/main" ] || { echo "::error::Release from main only (got $GITHUB_REF)"; exit 1; }
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] \
+            || { echo "::error::'$VERSION' is not X.Y.Z without a leading v"; exit 1; }
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "::error::Tag v$VERSION already exists"; exit 1
+          fi
+          grep -qE "^## \[$VERSION\] - [0-9]{4}-[0-9]{2}-[0-9]{2}$" CHANGELOG.md \
+            || { echo "::error::CHANGELOG.md has no '## [$VERSION] - YYYY-MM-DD' entry"; exit 1; }
+          python3 tools/package-skill.py --check --version "$VERSION"
+          echo "sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
+  check:
+    name: Checks
+    needs: validate
+    uses: ./.github/workflows/check.yml
+
+  publish:
+    name: Pack, attest, tag and release
+    needs: [validate, check]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write       # create the tag and the release
+      id-token: write       # Sigstore signing identity for the attestation
+      attestations: write   # store the attestation
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.validate.outputs.sha }}
+      - name: Pack every skill
+        env:
+          VERSION: ${{ inputs.version }}
+        run: python3 tools/package-skill.py --version "$VERSION" --out dist
+      - name: Release notes from CHANGELOG.md
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          [ -s notes.md ] || { echo "::error::Empty CHANGELOG entry for $VERSION"; exit 1; }
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: dist/*.skill
+      - name: Create tag and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+          SHA: ${{ needs.validate.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh release create "v$VERSION" \
+            --target "$SHA" \
+            --title "v$VERSION" \
+            --notes-file notes.md \
+            dist/*.skill dist/*.skill.sha256

@@ -32,13 +32,20 @@ enough durable structure for the work to survive interruption, delegation, and r
 - [`hooman-notes.md`](hooman-notes.md): rationale and provenance from v0.x. Historical; never
   needed to operate.
 - [`tools/check-docs.py`](tools/check-docs.py): document checks (budgets, unique rule ids, the
-  checkpoint template, consistent revisions, and links).
+  checkpoint template, consistent revisions, and links in every Markdown file).
+- [`tools/package-skill.py`](tools/package-skill.py): packs each skill into a reproducible
+  `.skill` file, after validating it.
+- [`CHANGELOG.md`](CHANGELOG.md), [`AGENTS.md`](AGENTS.md), and the dated
+  [`audits/`](audits/hooman-method-audits/).
 - [`roadmap/reboot.md`](roadmap/reboot.md): the current track and its next action.
 
 ## Using it
 
 - **Install once per machine,** not per project. The skill goes where the agent discovers
-  skills, and the principal's dotfiles manage that.
+  skills, and the principal's dotfiles manage that. Each release from `v1.1.0` attaches
+  `hooman-assistant.skill`: upload it as a skill in Claude, or unzip it into a skills folder.
+  Check it first with
+  `gh attestation verify hooman-assistant.skill -R hooman/hooman-method`.
 - **Each project's `AGENTS.md` names the revision it expects** and links to that revision's
   text here, so cloud sessions and outside contributors can read it
   ([`project.md`](skills/hooman-assistant/references/project.md), proj.1). There is no
@@ -49,7 +56,24 @@ enough durable structure for the work to survive interruption, delegation, and r
 
 ## Checks
 
-Run `python3 tools/check-docs.py` before tagging a release.
+`python3 tools/check-docs.py` and `python3 tools/package-skill.py --check`. The `check` workflow
+runs both on every PR and on `main`, and uploads the packed `.skill` files as an artifact.
+
+## Releasing
+
+The principal releases; agents prepare the release PR.
+
+1. In a PR, turn `## [Unreleased]` in `CHANGELOG.md` into `## [X.Y.Z] - YYYY-MM-DD`. Set the
+   revision stamp `vX.Y.Z (YYYY-MM-DD)` in every skill file, and the `(vX.Y, …)` in the
+   skill's description, to match. `package-skill.py --check --version X.Y.Z` must pass.
+2. Merge it, then run `gh workflow run release.yml -R hooman/hooman-method -f version=X.Y.Z`.
+   From `main`, the workflow:
+   - checks the version, the changelog entry and the stamps
+   - runs the checks on that commit
+   - packs each skill and attests the `.skill` files
+   - creates the tag `vX.Y.Z` and the release, with the files attached, in one step
+3. Install from the release asset, and update any project `AGENTS.md` that should move to the
+   new revision.
 
 ## Versioning & license
 
