@@ -97,8 +97,16 @@ def check_versions(errors: list[str]) -> None:
         errors.append(f"skill files disagree on revision: {versions}")
 
 
+def markdown_files() -> list[str]:
+    """Every Markdown file in the repository. A relative link anywhere can break, and a
+    roadmap link into a sibling repository did, unseen, while only five files were checked."""
+    return sorted(
+        str(p.relative_to(ROOT)) for p in ROOT.rglob("*.md") if ".git" not in p.parts
+    )
+
+
 def check_relative_links(errors: list[str]) -> None:
-    for path in [SKILL, CHECKPOINT, PROJECT, "README.md", "hooman-method-context.md"]:
+    for path in markdown_files():
         base = (ROOT / path).parent
         for target in LINK_RE.findall(text(path)):
             if not (base / target).exists():

@@ -1,6 +1,6 @@
 # Hooman reboot
 
-**Next action:** Install v1.0. The synced claude.ai `hooman-assistant` skill still serves v0.8; update it from `skills/hooman-assistant/` at tag `v1.0.0` (released 2026-11-21: <https://github.com/hooman/hooman-method/releases/tag/v1.0.0>). Then migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on: its `AGENTS.md` names `v1.0.0`, and its `references/` copy is retired. Off-track and open: a draft Swift comment standard (`coding-conventions/swift/comment-standard.md`, branch `conventions/swift-comments`), awaiting the principal's call on where it lives.
+**Next action:** the principal reviews hooman-method PR #8 (full audit, stale-doc fixes, Swift conventions and comment standard, `.skill` release mechanism) and answers its questions, then releases with `gh workflow run release.yml -R hooman/hooman-method -f version=<X.Y.Z>`. v1.0 is installed: the synced `hooman-assistant` skill was byte-identical to `v1.0.0` on 2026-11-27, and the capnproto-swift workspace names `v1.0.0` with no `references/` copy.
 
 **Dated decision: 2027-02-21. Revive or archive `hooman-harness`** (principal, 2026-11-21). Revive it only if a pilot hit friction it would fix; otherwise archive the repository. Dropped v0.8.1 rule groups: none restored for now; each returns on first friction (see the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md)).
 
@@ -27,7 +27,7 @@ Observed friction justifying this track:
 - [Specification](../session-starters/hooman-method-reboot-2026-08-03/spec.md)
 - [Plan](../session-starters/hooman-method-reboot-2026-08-03/plan.md)
 - [Tasks](../session-starters/hooman-method-reboot-2026-08-03/tasks.md)
-- [HumanLayer candidate assessment](../../hooman-harness/aside/humanlayer-evaluation-2026-08-04.md)
+- HumanLayer candidate assessment: `aside/humanlayer-evaluation-2026-08-04.md` in the private, frozen `hooman/hooman-harness` repository
 
 ## Milestones
 

@@ -1,5 +1,7 @@
 # Hooman — Companion: Rationale, Provenance & References
 
+> **Historical (v0.8.1).** This describes the v0.8 operating set (`contracts.md`, `workspace.md`, the Chat/Executor relay), which v1.0.0 retired. It is kept as written for its rationale and provenance. The current rules are [`skills/hooman-assistant/`](skills/hooman-assistant/SKILL.md).
+
 *The why behind the operating set: why the method exists, the reasoning each prescription leans on, what's distinctive, where it sits in the ecosystem, verified references, the candidate-binding roadmap, and open questions. The operating set itself is `hooman-contract.md` (the principal's self-contract) and the `hooman-assistant` skill (`SKILL.md` + `contracts.md` + `workspace.md`, the assistants' ground rules). Read those to operate; read this when you want the reasoning. Never needed in an agent's working context.*
 
 **Canonical version:** <https://github.com/hooman/hooman-method>.

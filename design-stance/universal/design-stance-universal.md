@@ -1,6 +1,6 @@
 # Design Stance — Universal (all projects)
 
-> Companion to the working method (`hooman-contract.md` + `hooman-assistant`). **Scope:** every project, any language or domain. **Binds:** both Chat and the Executor. **Home:** `references/`. **v0.2 · 2026-06-04.**
+> Companion to the working method (`hooman-contract.md` + `hooman-assistant`). **Scope:** every project, any language or domain. **Binds:** every session, in every stance. **Home:** this repository; projects name the revision they follow (`project.md`, proj.1). **v0.3 · 2026-11-27.**
 >
 > This governs *what to build and when*. Language- and domain-specific stances layer on top (e.g. `design-stance-swift.md`).
 
@@ -30,7 +30,7 @@ The installed toolchain — compilers, formatters, linters, CLIs, package and to
 
 Separate two duties:
 
-- **Surfacing is unconditional.** Never treat the installed environment as self-justifying. When a newer or cleaner tool or version would be better *for the case at hand*, name it — as a decision point, with its tradeoff — the same way Chat surfaces a structural candidate.
+- **Surfacing is unconditional.** Never treat the installed environment as self-justifying. When a newer or cleaner tool or version would be better *for the case at hand*, name it — as a decision point, with its tradeoff — the same way a structural candidate is surfaced.
 - **Adoption follows control.** Where the operator owns the environment, a surfaced improvement is adoptable; where a separate authority owns it, the improvement is surfaced as information, not pretended away. Surfacing does not depend on being able to act; the duty is to make the better option *visible*.
 
 The governor is the certainty process, exactly as for language constructs: **better for the case, not newest-for-its-own-sake** — reflexive toolchain churn is the over-engineering failure in a different costume. Two costs pull the other way and must be weighed: a continuously shifting environment fights **re-entry** (returning to a toolchain that moved under you) and **fluency** (learning needs a stable surface). So modernize in **deliberate, discrete moves** — adopt, record the decision where re-entry will find it, let it settle — not continuously. Surface always; adopt deliberately.
@@ -39,8 +39,8 @@ A claim that a newer version or tool exists must be **verified current, not reca
 
 ## Scouting — who watches for candidates
 
-- **Chat** surfaces emerging candidates *as a design forms*, names them, and brings them to adjudication. Chat challenges any design that under-uses what is available, or that defers something domain-certain — at the moment it forms, not in hindsight.
-- **The Executor** includes, in every reconnaissance (R1) output, a section naming **structural and environment candidates it noticed and whether each meets the threshold** — structures the domain implies, *and* tooling improvements observed while working (a newer or cleaner toolchain, formatter, build or package tool), per *The environment is a candidate, not a constraint*. An R1 that touches the environment **evaluates** what is installed, rather than merely accepting it. The Executor is an active scout, not only an implementer of settled decisions.
+- **In the explore and decide stances,** the session surfaces emerging candidates *as a design forms*, names them, and brings them to adjudication. It challenges any design that under-uses what is available, or that defers something domain-certain — at the moment it forms, not in hindsight.
+- **In the build stance,** the draft PR's design step (checklist step 1) includes a section naming **structural and environment candidates it noticed and whether each meets the threshold** — structures the domain implies, *and* tooling improvements observed while working (a newer or cleaner toolchain, formatter, build or package tool), per *The environment is a candidate, not a constraint*. A design step that touches the environment **evaluates** what is installed, rather than merely accepting it. The builder is an active scout, not only an implementer of settled decisions.
 
 ## When a candidate is adjudicated
 
