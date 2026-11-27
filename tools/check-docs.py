@@ -13,10 +13,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = "skills/hooman-assistant/SKILL.md"
 CHECKPOINT = "skills/hooman-assistant/references/checkpoint.md"
 PROJECT = "skills/hooman-assistant/references/project.md"
+COMMENTS = "coding-conventions/swift/comment-standard.md"
 
 LINE_BUDGETS = {
     "hooman-contract.md": 90,
     SKILL: 120,
+    COMMENTS: 110,
 }
 
 # Rule ids must be unique within a file and across files.
@@ -25,6 +27,7 @@ RULE_FILES = {
     SKILL: r"^-\s+([a-z]+\.\d+)\s+—",
     CHECKPOINT: r"^-\s+(cp\.\d+)\s+—",
     PROJECT: r"^-\s+(proj\.\d+)\s+—",
+    COMMENTS: r"^-\s+((?:cm|ca|cr)\.\d+)\s+—",
 }
 
 # The checkpoint template is load-bearing: a resuming agent relies on these fields.

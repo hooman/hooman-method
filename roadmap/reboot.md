@@ -1,6 +1,6 @@
 # Hooman reboot
 
-**Next action:** Install v1.0. The synced claude.ai `hooman-assistant` skill still serves v0.8; update it from `skills/hooman-assistant/` at tag `v1.0.0` (released 2026-11-21: <https://github.com/hooman/hooman-method/releases/tag/v1.0.0>). Then migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on: its `AGENTS.md` names `v1.0.0`, and its `references/` copy is retired.
+**Next action:** Install v1.0. The synced claude.ai `hooman-assistant` skill still serves v0.8; update it from `skills/hooman-assistant/` at tag `v1.0.0` (released 2026-11-21: <https://github.com/hooman/hooman-method/releases/tag/v1.0.0>). Then migrate the `capnproto-swift` workspace to proj.1 and proj.5 the next time it is worked on: its `AGENTS.md` names `v1.0.0`, and its `references/` copy is retired. Off-track and open: a draft Swift comment standard (`coding-conventions/swift/comment-standard.md`, branch `conventions/swift-comments`), awaiting the principal's call on where it lives.
 
 **Dated decision: 2027-02-21. Revive or archive `hooman-harness`** (principal, 2026-11-21). Revive it only if a pilot hit friction it would fix; otherwise archive the repository. Dropped v0.8.1 rule groups: none restored for now; each returns on first friction (see the [traceability table](../session-starters/hooman-method-reboot-2026-08-03/v1.0-traceability-2026-11-21.md)).
 

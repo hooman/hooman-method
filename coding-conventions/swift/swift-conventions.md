@@ -1,6 +1,6 @@
 # Swift Conventions — Coding Guidelines Index
 
-> Global / upstream doc, projected into each workspace via `references/` (a downstream copy — never forked; the upstream repo is canonical). Sibling to `design-stance-swift.md`, which it cites for the *why* (forward-feature orientation). A lean index: it points at rules, it does not restate them.
+> Global / upstream doc, installed with the method; projects name the revision they follow (v1.0 `proj.1`; the `references/` projection is retired). Sibling to `design-stance-swift.md`, which it cites for the *why* (forward-feature orientation). A lean index: it points at rules, it does not restate them.
 >
 > **v0.1 · 2026-06-02 · draft** — seeded from observed friction; categories accrete as friction appears, not by anticipation.
 
@@ -23,7 +23,7 @@ Before writing code, identify the **task-type** below and read the linked rules.
 | Imports | coding-time | Canonical baseline → **note B**. Foundation-free core where Embedded-clean is required: the project's `INVARIANTS.md`. |
 | Generics | coding-time | Prefer constraints over existentials; reach for `any P` only deliberately. A hard "never `any P`" is a project invariant where it applies. |
 | Naming & API design | coding-time + doc-pass | Swift API Design Guidelines — <https://www.swift.org/documentation/api-design-guidelines/>. |
-| Doc comments | doc-pass | DocC markup + articulation rules → **note C**. |
+| Comments & doc comments | coding-time + doc-pass | DocC markup + articulation rules → **note C**; what a comment must carry and the comment-review pass → [`comment-standard.md`](comment-standard.md). |
 | Formatting | tool | `swift format` against a committed `.swift-format` (Apple's formatter, bundled in the Swift 6 toolchain). |
 | Lint | tool | SwiftLint — *deliberately* (third-party; its rules don't port off-platform). Not a default. |
 | Section markers | coding-time | `// MARK:` / `// TODO:` / `// FIXME:` (Xcode-recognized). |
@@ -36,7 +36,7 @@ Before writing code, identify the **task-type** below and read the linked rules.
 
 **B — Currency types & imports.** In portable code prefer `FoundationEssentials` over `Foundation`, and `[UInt8]` / `Span` over `Data`; choose the integer width and signedness the data actually needs. Where Embedded-clean is required, the core imports no Foundation at all — that hard line is the project's `INVARIANTS.md`, not this doc.
 
-**C — Doc-comment articulation** (enforced in the documentation pass). Follow DocC markup (`///`, `- Parameters:`, `- Returns:`, `- Throws:`). Don't explain the obvious; name the standard pattern or algorithm used; state the rationale for non-obvious choices. Reconstruct intent from the code rather than restating it — and flag rationale you genuinely can't infer rather than inventing it (uninferable rationale lives in the project's `DECISIONS.md`).
+**C — Doc-comment articulation** (enforced in the documentation pass). Follow DocC markup (`///`, `- Parameters:`, `- Returns:`, `- Throws:`). Don't explain the obvious; name the standard pattern or algorithm used; state the rationale for non-obvious choices. Reconstruct intent from the code rather than restating it — and flag rationale you genuinely can't infer rather than inventing it (uninferable rationale lives in the project's `DECISIONS.md`). The content rules, the Swift assumption classes and the comment-review pass are in [`comment-standard.md`](comment-standard.md); its findings cite rule ids (`cm.4`).
 
 ---
 *When this outgrows an inline index, it becomes a Skill: this file as the `SKILL.md` router, each note a small bundled detail doc loaded on demand. v0.1 inlines the few notes deliberately — accrete, don't proliferate.*
