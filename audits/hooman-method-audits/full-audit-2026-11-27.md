@@ -90,7 +90,7 @@ was compared byte for byte with the repository. **Inspected** marks what I check
   - **Fix:** the packer checks that it agrees with the stamp's major.minor.
 
 - **A-23 — The roadmap's milestones and success measures, scored.** kept.
-  - **Inspected:** of the open milestones, "pilot against a method project, a multi-repository software project, and a non-Git knowledge project" is two-thirds under way. This repository is the method pilot, and the capnproto-swift workspace (four repositories) is the software pilot, at `0.3.0` released. The knowledge vault has not started; C2 puts it next.
+  - **Inspected:** of the open milestones, "pilot against a method project, a multi-repository software project, and a non-Git knowledge project" is two-thirds under way. This repository is the method pilot, and the capnproto-swift workspace (three repositories of its own) is the software pilot, at `0.3.0` released. The knowledge vault has not started; C2 puts it next.
   - **Inspected:** "canonical identity documents never change as a side effect of automation" held in this audit. Auto mode refused the agent's commit of `.agents/guarded-paths`, so that commit is the principal's.
   - **Inferred:** the measures need no rewording yet.
 - **A-24 — A version string nothing checks.** fixed.
