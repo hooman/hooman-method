@@ -8,6 +8,16 @@ workflow requires an entry headed `## [X.Y.Z] - YYYY-MM-DD`.
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-28
+
+Fixes found by a chat-side review of `v1.1.0` (audit addendum, A-25 to A-28). The rules are unchanged.
+
+### Fixed
+- **The `.skill` now includes the principal's contract** as `references/hooman-contract.md`, so contract.1 works in a session without the repository. The packer reads it from the repository root (one copy), and its revision stamp is checked with the skill's.
+- **decisions.4** no longer states that a merge guard exists: it backs the rule where installed, and an agent never assumes one.
+- **The contract's header** names only the section agents read (the standing triggers).
+- **Traceability:** the v1.0 table now lists the escalation watch (v0.8.1 conduct.10) among the rules dropped without an explicit call.
+
 ## [1.1.0] - 2026-11-27
 
 ### Added

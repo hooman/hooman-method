@@ -1,6 +1,6 @@
 # Project shape
 
-v1.1.0 (2026-11-27) · part of the `hooman-assistant` skill · load when setting up a project
+v1.1.1 (2026-11-28) · part of the `hooman-assistant` skill · load when setting up a project
 under the method, or realigning one.
 
 A governed project needs very little: the repository's own records, gates that enforce what must

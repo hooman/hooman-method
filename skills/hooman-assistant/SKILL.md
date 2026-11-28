@@ -5,7 +5,7 @@ description: Operating rules for an AI agent working in a project governed by th
 
 # Hooman Method: agent rules
 
-v1.1.0 (2026-11-27) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
+v1.1.1 (2026-11-28) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
 projects. Knowledge vaults are not covered yet. Budget: 120 lines.
 
 The Hooman Method serves one principal with many intermittent projects, for whom attention is
@@ -60,10 +60,10 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
 - decisions.3 — Reopen a call when new evidence changes its trade-off, and say what changed.
 - decisions.4 — Never merge a pull request. Merging is the principal's act, and canonical
   documents change only through PRs the principal merges, or, with no remote review, commits the
-  principal makes. Never add a `Signed-off-by` for the principal. A user-level merge guard and,
-  where present, a project commit guard back this rule; do not route around either.
+  principal makes. Never add a `Signed-off-by` for the principal. Where installed, a user-level
+  merge guard and a project commit guard back this rule; never assume one, never route around one.
 - contract.1 — When the principal's behaviour matches a standing trigger in
-  `hooman-contract.md`, name it once, cite its id, and continue.
+  `hooman-contract.md` (packed in `references/`), name it once, cite its id, and continue.
 
 ## Tranches and checkpoints
 
