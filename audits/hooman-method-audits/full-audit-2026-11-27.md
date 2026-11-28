@@ -145,3 +145,25 @@ That project is private and unpublished. Only general patterns are taken, with n
 
 6. **Q6 — Tag protection.** A ruleset that makes `v*` tags immutable, as capnproto-swift has.
 7. **Q7 — License for code.** For example, MIT for `tools/` and `.github/`, with CC BY 4.0 kept for the docs.
+
+## Addendum 2026-11-28: a chat-side review of `v1.1.0`
+
+After `v1.1.0` was installed, the principal asked a Claude chat session to judge how well the skill fits chat and other work sessions. It read the installed skill, which matches the tag, and this repository. Each claim below was checked against the `v1.1.0` tag.
+
+- **A-25 — The escalation watch was dropped without a record.** fixed in `v1.1.1`.
+  - **Inspected:** v0.8.1's conduct.10 (suggest escalation once, and ask for the three scope-intake answers) appears neither in v1.0 nor in the traceability table's list of rules dropped without an explicit call. That is a subst.3 miss.
+  - **Fix:** the table now lists it. Whether to restore it is **question Q9**.
+- **A-26 — The contract's header named sections no rule reads.** fixed in `v1.1.1`.
+  - **Inspected:** it said the assistant reads **Before invoking**, **At escalation** and **Standing triggers**. Only contract.1 reads the contract, and only its standing triggers. The README already said so.
+- **A-27 — contract.1 cited a file the package lacked.** fixed in `v1.1.1`.
+  - **Inspected:** `hooman-contract.md` is at the repository root, and the packer took only `skills/hooman-assistant/`. A session without the repository could not read the triggers.
+  - **Fix:** the packer adds the contract as `references/hooman-contract.md`, and the repository keeps the only copy. Its revision stamp is now checked with the skill's.
+- **A-28 — decisions.4 stated that a merge guard exists.** fixed in `v1.1.1`.
+  - **Inspected:** "A user-level merge guard … back[s] this rule". A cloud session has no user-level hooks.
+  - **Fix:** "Where installed, … never assume one, never route around one."
+
+**A third batch of questions:**
+
+8. **Q8 — Scope beyond Git.** The skill loads only when a project's `AGENTS.md` names the method, so it never loads in chat by itself. That conflicts with the roadmap's success measure (Codex, text chat, voice). Widening the trigger also means rules such as records.2 ("push") need a reading without Git. My recommendation: a minor version of its own, driven by a real non-Git project, not a patch.
+9. **Q9 — The escalation watch.** Restore conduct.10 in v1.x terms, or confirm it stays out under the 2026-11-21 rule (restore on first friction). The chat-side review is a candidate friction event.
+10. **Q10 — Outward actions beyond GitHub.** decisions.1's examples are GitHub ones (issues, comments, releases, settings). Generic equivalents would be sending messages, sharing documents, and creating calendar events. `SKILL.md` is at 118 of 120 lines, so this needs pruning first (A-20).
