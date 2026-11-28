@@ -4,7 +4,7 @@
 - **Who:** a fresh subagent. It did not write the standard, the fixture or the key.
 - **Inputs:** only the three fixture files: the standard at `5b51294`, with the redactions the key describes, and the two builder files at capnproto-swift `3255db7`. It had no git, repository or web access.
 - **When:** the key was committed first, at `d1cbf77`.
-- **Grading:** preliminary, by the session that prepared the run (the key forbids that session grading alone); **the principal confirms it.**
+- **Grading:** prepared by the session that set up the run (the key forbids that session grading alone), and **confirmed by the principal on 2026-11-28** (audit Q3).
 
 ## Recall: 2 of 2
 
@@ -19,7 +19,7 @@ F1 says it found K1 by cr.1: it tried to write the cm.4 justification for the tr
 
 | # | Finding | Preliminary verdict |
 |---|---|---|
-| F3 | After a failure, a list view reports `count == 0`, so a caller that loops over `list.count` adds nothing to `requiredByteCount`, and the retry still fails | **valid and new.** Confirmed in the code: `ListLayout.phantom` sets `count: 0`. It was not in the key and was unknown before the run |
+| F3 | After a failure, a list view reports `count == 0`, so a caller that loops over `list.count` adds nothing to `requiredByteCount`, and the retry still fails | **valid and new.** Confirmed in the code: `ListLayout.phantom` sets `count: 0`. It was not in the key and was unknown before the run. Fixed in capnproto-swift #22 (`2ed5436`) |
 | F4 | The `listTooLong` doc comment says lists "arrive in a later release" | valid; #22 had already fixed it |
 | F5 | Generic integer conversions have no ca.3 comment | taste. The Embedded gate passes, so they don't allocate, but saying why is in the spirit of ca.3 |
 | F6 | The header's "every pointer points forward" omits the zero-sized struct's offset −1 | valid, minor |
