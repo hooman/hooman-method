@@ -26,7 +26,7 @@ enough durable structure for the work to survive interruption, delegation, and r
   - [`references/project.md`](skills/hooman-assistant/references/project.md): the minimal
     shape of a governed project.
 - [`hooman-contract.md`](hooman-contract.md): the principal's contract with themselves. Agents
-  read only its standing triggers.
+  read only its standing triggers. The `.skill` file carries it as `references/hooman-contract.md`.
 - [`design-stance/`](design-stance/) and [`coding-conventions/`](coding-conventions/): design
   stances and coding-guideline indexes.
 - [`hooman-notes.md`](hooman-notes.md): rationale and provenance from v0.x. Historical; never

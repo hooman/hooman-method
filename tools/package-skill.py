@@ -12,6 +12,10 @@ anything else rather than guess at YAML. It adds the method's own checks:
   `--version` when one is given (the release tag)
 - a `(vX.Y` in the description agrees with the stamp's major.minor
 
+A skill can also carry files that live elsewhere in the repository (EXTRA_FILES), so a single
+source is kept and the package is still self-contained: the principal's contract is packed into
+`hooman-assistant/references/`, because contract.1 cites it.
+
 Archives are reproducible: entries in sorted order, fixed timestamps and permissions, so the
 attested release asset can be rebuilt from its tag and compared byte for byte.
 
@@ -41,6 +45,11 @@ ROOT_EXCLUDE_DIRS = {"evals"}
 EXCLUDE_FILES = {".DS_Store"}
 EXCLUDE_GLOBS = {"*.pyc"}
 
+# Repository files packed into a skill: {skill name: {path in the skill: path from ROOT}}.
+EXTRA_FILES = {
+    "hooman-assistant": {"references/hooman-contract.md": "hooman-contract.md"},
+}
+
 ALLOWED_KEYS = {"name", "description", "license", "allowed-tools", "metadata", "compatibility"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 STAMP_RE = re.compile(r"^v(\d+)\.(\d+)\.(\d+) \(\d{4}-\d{2}-\d{2}\)", re.M)
@@ -68,6 +77,24 @@ def packaged_files(skill: Path) -> list[Path]:
     return sorted(files, key=lambda p: p.as_posix())
 
 
+def sources(skill: Path) -> dict[str, Path]:
+    """Every archive entry under the skill folder, mapped to the file it is read from."""
+    entries = {rel.as_posix(): skill / rel for rel in packaged_files(skill)}
+    for rel, source in EXTRA_FILES.get(skill.name, {}).items():
+        entries.setdefault(rel, ROOT / source)
+    return dict(sorted(entries.items()))
+
+
+def extra_file_errors(skill: Path) -> list[str]:
+    errors = []
+    for rel, source in EXTRA_FILES.get(skill.name, {}).items():
+        if (skill / rel).exists():
+            errors.append(f"{skill}: {rel} exists in the skill and is also an extra file")
+        if not (ROOT / source).is_file():
+            errors.append(f"{skill}: extra file {source} is missing")
+    return errors
+
+
 def frontmatter(text: str) -> dict[str, str]:
     """Single-line `key: value` frontmatter. Raises ValueError for anything else."""
     match = re.match(r"^---\n(.*?)\n---\n", text, re.S)
@@ -93,8 +120,11 @@ def validate(skill: Path, version: str | None) -> list[str]:
     skill_md = skill / "SKILL.md"
     if not skill_md.is_file():
         return [f"{skill}: no SKILL.md"]
-    files = packaged_files(skill)
-    nested = [f.as_posix() for f in files if f.name == "SKILL.md" and f != Path("SKILL.md")]
+    errors.extend(extra_file_errors(skill))
+    if errors:
+        return errors
+    files = sources(skill)
+    nested = [rel for rel in files if Path(rel).name == "SKILL.md" and rel != "SKILL.md"]
     if nested:
         errors.append(f"{skill}: more than one SKILL.md would be packaged: {', '.join(nested)}")
 
@@ -121,11 +151,11 @@ def validate(skill: Path, version: str | None) -> list[str]:
         errors.append(f"{skill_md}: description cannot contain angle brackets")
 
     stamps = {}
-    for rel in files:
-        if rel.suffix == ".md":
-            match = STAMP_RE.search((skill / rel).read_text(encoding="utf-8"))
+    for rel, source in files.items():
+        if rel.endswith(".md"):
+            match = STAMP_RE.search(source.read_text(encoding="utf-8"))
             if match:
-                stamps[rel.as_posix()] = ".".join(match.groups())
+                stamps[rel] = ".".join(match.groups())
     if "SKILL.md" not in stamps:
         errors.append(f"{skill_md}: no 'vX.Y.Z (YYYY-MM-DD)' revision stamp")
     elif len(set(stamps.values())) > 1:
@@ -147,24 +177,24 @@ def build(skill: Path) -> bytes:
     """The archive's bytes: `<name>/<file>` entries, sorted, with fixed metadata."""
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-        for rel in packaged_files(skill):
-            info = zipfile.ZipInfo(f"{skill.name}/{rel.as_posix()}", date_time=FIXED_TIME)
+        for rel, source in sources(skill).items():
+            info = zipfile.ZipInfo(f"{skill.name}/{rel}", date_time=FIXED_TIME)
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o100644 << 16  # a regular file, rw-r--r--
             info.create_system = 3  # Unix, so the mode bits above are honoured
-            archive.writestr(info, (skill / rel).read_bytes())
+            archive.writestr(info, source.read_bytes())
     return buffer.getvalue()
 
 
 def round_trip(skill: Path, data: bytes) -> list[str]:
     """Unzip what was built and compare every entry with its source file."""
-    expected = {f"{skill.name}/{rel.as_posix()}": rel for rel in packaged_files(skill)}
+    expected = {f"{skill.name}/{rel}": source for rel, source in sources(skill).items()}
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
         names = archive.namelist()
         if sorted(names) != sorted(expected):
             return [f"{skill}: archive entries differ from the source files"]
-        for name, rel in expected.items():
-            if archive.read(name) != (skill / rel).read_bytes():
+        for name, source in expected.items():
+            if archive.read(name) != source.read_bytes():
                 return [f"{skill}: archive entry {name} differs from its source"]
     return []
 

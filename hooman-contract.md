@@ -1,7 +1,7 @@
 # Hooman — the contract with myself
 
-v1.0.0 (2026-11-21) · canonical: <https://github.com/hooman/hooman-method>
-Audience: me. The assistant reads only **Before invoking**, **At escalation**, and **Standing triggers**, only to apply contract.1 (`skills/hooman-assistant/SKILL.md`). Rationale: `hooman-notes.md`. Budget: 90 lines.
+v1.1.1 (2026-11-28) · canonical: <https://github.com/hooman/hooman-method>
+Audience: me. The assistant reads only **Standing triggers**, only to apply contract.1 (`skills/hooman-assistant/SKILL.md`; this file is packed with that skill). Rationale: `hooman-notes.md`. Budget: 90 lines.
 
 This document works at decision moments or not at all. It is organized by *when*, not by topic.
 

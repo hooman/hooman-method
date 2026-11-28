@@ -1,6 +1,6 @@
 # The draft PR as checkpoint
 
-v1.1.0 (2026-11-27) · part of the `hooman-assistant` skill · load when starting, resuming, or
+v1.1.1 (2026-11-28) · part of the `hooman-assistant` skill · load when starting, resuming, or
 reviewing a tranche of delegated work (tranche.1–5).
 
 A tranche is one outcome. Its checkpoint is a **draft pull request**, opened before any code is
