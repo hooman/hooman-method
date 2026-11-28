@@ -84,7 +84,7 @@ was compared byte for byte with the repository. **Inspected** marks what I check
   - **Inspected:** `LICENSE` is CC BY 4.0, and now covers `tools/*.py` and the workflows too. Creative Commons advises against its licenses for software.
 - **A-20 — `SKILL.md` has no room left.** **question Q4** for the candidate rules.
   - **Inspected:** it is 118 of its 120 lines, so no rule can be added without pruning.
-  - **Inferred:** practice since `v1.0.0` produced three candidates, each with its friction event, so they pass T4. They are listed under Q4.
+  - **Inferred:** practice since `v1.0.0` produced four candidates, each with its friction event, so they pass T4. They are listed under Q4. The fourth was added after the audit, when issue #1 was closed.
 - **A-21 — A second version string in the skill.** fixed.
   - **Inspected:** the skill's description says "(v1.0, Git and code projects)", which no check compared with the revision stamp.
   - **Fix:** the packer checks that it agrees with the stamp's major.minor.
@@ -139,6 +139,7 @@ That project is private and unpublished. Only general patterns are taken, with n
    - verify.3 also requires checking that the control actually applied. The friction: on 2026-11-27 a formatter reflow made a text-match control silently not apply.
    - evidence labels in subst.5.
    - checkpoint evidence that names the commit it read.
+   - a change to an existing test, or a deleted or weakened assertion, is its own commit with its reason, kept apart from the fix. A mechanical check could enforce it. The friction: on 2026-11-27, capnproto-swift #22 had to change an earlier answer key whose expected value was the bug itself (`09d1340`). Kept separate, the change could be reviewed; inside the fix, it would have hidden a weakened test. Issue #1 proposed the same check.
 5. **Q5 — Backfill.** Attach a `.skill` to the published `v1.0.0` release? It changes a published release; my recommendation is no, and let `v1.1.0` be the first release with one.
 **Later, a second batch** (decisions.1 asks at most five at a time):
 
