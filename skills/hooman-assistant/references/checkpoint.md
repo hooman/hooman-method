@@ -1,6 +1,6 @@
 # The draft PR as checkpoint
 
-v1.1.1 (2026-11-28) · part of the `hooman-assistant` skill · load when starting, resuming, or
+v1.2.0 (2026-11-28) · part of the `hooman-assistant` skill · load when starting, resuming, or
 reviewing a tranche of delegated work (tranche.1–5).
 
 A tranche is one outcome. Its checkpoint is a **draft pull request**, opened before any code is
@@ -37,7 +37,8 @@ Copy it verbatim. Leave no section empty: write `none`.
 - cp.1 — Open the draft PR first, from an isolated branch and checkout. Push the design (step 1)
   before writing code. The design is the expensive thinking; it must survive.
 - cp.2 — After each step: commit, push, then tick the box, with a one-line evidence note under it
-  (commit, command, or log line). Never tick a box ahead of its push.
+  that names the commit it checked (and the command or log line). Never tick a box ahead of its
+  push.
 - cp.3 — Only pushed state counts. Push often enough that a lost local checkout costs at most the
   step in progress.
 - cp.4 — **Resuming:**
@@ -52,3 +53,5 @@ Copy it verbatim. Leave no section empty: write `none`.
 - cp.7 — Projects that require DCO: the agent's commits are not signed off. The principal adds
   the sign-off after review (`git rebase --signoff`). The failing DCO check is expected until
   then.
+- cp.8 — A change to an existing test (an edited expectation, a deleted or weakened assertion)
+  is its own commit, with its reason in the message, never inside the fix it accompanies.

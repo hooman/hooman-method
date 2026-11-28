@@ -1,11 +1,11 @@
 ---
 name: hooman-assistant
-description: Operating rules for an AI agent working in a project governed by the Hooman Method (v1.1, Git and code projects). Read when the project's AGENTS.md says it follows the Hooman Method, before re-entering the project, planning, delegating or resuming work, opening or reviewing PRs, or touching canonical documents. Do not auto-load for ordinary one-off tasks outside such a project.
+description: Operating rules for an AI agent working in a project governed by the Hooman Method (v1.2, Git and code projects). Read when the project's AGENTS.md says it follows the Hooman Method, before re-entering the project, planning, delegating or resuming work, opening or reviewing PRs, or touching canonical documents. Do not auto-load for ordinary one-off tasks outside such a project.
 ---
 
 # Hooman Method: agent rules
 
-v1.1.1 (2026-11-28) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
+v1.2.0 (2026-11-28) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
 projects. Knowledge vaults are not covered yet. Budget: 120 lines.
 
 The Hooman Method serves one principal with many intermittent projects, for whom attention is
@@ -52,9 +52,10 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
 
 - decisions.1 — One-way calls go to the principal: identity, direction or priority; anything
   made public or externally visible beyond the tranche's own branch and draft PR (issues,
-  comments, releases, settings); permissions, credentials or access; irreversible actions;
-  material scope change; canonical documents. Ask plainly: the question, what each option does,
-  and your recommendation, at most five at a time, with a structured question tool if there is one.
+  comments, releases, settings; messages, shared documents, calendar events); permissions,
+  credentials or access; irreversible actions; material scope change; canonical documents. Ask
+  plainly: the question, what each option does, and your recommendation, at most five at a time,
+  with a structured question tool if there is one.
 - decisions.2 — Reversible work inside the cleared outcome needs no question: do it, then
   report it.
 - decisions.3 — Reopen a call when new evidence changes its trade-off, and say what changed.
@@ -85,9 +86,10 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
   tests, CI, compile-fail contracts, rulesets, and hooks. Every invariant names the gate that
   enforces it, or says that it is unenforced.
 - verify.2 — A recurring mistake becomes a gate, not a paragraph.
-- verify.3 — Show that a new check can fail (a negative control). An edit outside **In scope**
-  for this needs the envelope's **Authority** to name it: never commit it, revert it before the
-  next push, and report it. Otherwise it is a stop condition (tranche.4).
+- verify.3 — Show that a new check can fail (a negative control), and check from the diff that
+  the control applied. An edit outside **In scope** for this needs the envelope's **Authority**
+  to name it: never commit it, revert it before the next push, and report it. Otherwise it is a
+  stop condition (tranche.4).
 - verify.4 — Where no gate is possible, use the substitutes below. This covers prose, decisions,
   and this method itself.
 
@@ -101,8 +103,8 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
   in it or to an explicit "deferred".
 - subst.4 — **Preservation check:** diff a long edit to a durable document against what must not
   change.
-- subst.5 — **Provenance:** external facts carry a source and a date. For material claims, say
-  what you inspected and what you inferred.
+- subst.5 — **Provenance:** external facts carry a source and a date. Label each material claim
+  verified (with tool and date), primary source, or unverified.
 
 ## Context boundaries
 
@@ -112,7 +114,7 @@ between intent and outcome, and you prove it. References: [`checkpoint.md`](refe
 - context.3 — In every stance, never edit upstream reference clones, vendored copies, other
   people's accounts or files, or paths the project marks read-only.
 
-## Open questions (not covered by v1.0)
+## Open questions (not covered by v1.x)
 
-Knowledge vaults (no compiler-like gate); voice; replacing the host; a separate agent identity
-without merge rights, which would make decisions.4 a security boundary, not an accident-catcher.
+Knowledge vaults and other sessions without Git (audit Q8); voice; replacing the host; a
+separate agent identity without merge rights, which would make decisions.4 a security boundary.

@@ -1,6 +1,6 @@
 # Project shape
 
-v1.1.1 (2026-11-28) · part of the `hooman-assistant` skill · load when setting up a project
+v1.2.0 (2026-11-28) · part of the `hooman-assistant` skill · load when setting up a project
 under the method, or realigning one.
 
 A governed project needs very little: the repository's own records, gates that enforce what must
@@ -31,7 +31,9 @@ entry.1 now asks for them.
   anchors, the decision log, the context file, agent configuration). The user-level merge guard
   blocks an agent's push of these to the default branch; they change through a PR the principal
   merges. Keep any project commit guard that already blocks agent commits of them. The guard is
-  removed only by the principal's call.
+  removed only by the principal's call. A guarded change the agent drafts ships as a patch with a
+  one-command apply script, kept outside tracked files, that checks the branch, applies, commits
+  as the principal and pushes; it never merges.
 
 ## When it earns it
 

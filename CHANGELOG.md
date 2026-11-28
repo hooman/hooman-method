@@ -8,6 +8,25 @@ workflow requires an entry headed `## [X.Y.Z] - YYYY-MM-DD`.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-28
+
+The principal's answers to the 2026-11-27 audit (its "Decisions" section). Every rule change below comes from a friction event recorded in Q4.
+
+### Added
+- **cp.8:** a change to an existing test is its own commit, with its reason, never inside the fix.
+- **proj.5:** a guarded change the agent drafts ships as a patch with a one-command apply script.
+- **`LICENSE-CODE`:** MIT for `tools/` and `.github/`. The docs stay CC BY 4.0.
+
+### Changed
+- **verify.3:** also check from the diff that a negative control applied.
+- **subst.5:** label each material claim verified, primary source, or unverified.
+- **cp.2:** a step's evidence note names the commit it checked.
+- **decisions.1:** examples of outward actions now include messages, shared documents and calendar events.
+- **Open questions:** sessions without Git are named, pending their own version (Q8).
+
+### Fixed
+- **The comment-review eval's grade** is confirmed, and F3 is recorded as fixed in capnproto-swift #22.
+
 ## [1.1.1] - 2026-11-28
 
 Fixes found by a chat-side review of `v1.1.0` (audit addendum, A-25 to A-28). The rules are unchanged.

@@ -167,3 +167,22 @@ After `v1.1.0` was installed, the principal asked a Claude chat session to judge
 8. **Q8 — Scope beyond Git.** The skill loads only when a project's `AGENTS.md` names the method, so it never loads in chat by itself. That conflicts with the roadmap's success measure (Codex, text chat, voice). Widening the trigger also means rules such as records.2 ("push") need a reading without Git. My recommendation: a minor version of its own, driven by a real non-Git project, not a patch.
 9. **Q9 — The escalation watch.** Restore conduct.10 in v1.x terms, or confirm it stays out under the 2026-11-21 rule (restore on first friction). The chat-side review is a candidate friction event.
 10. **Q10 — Outward actions beyond GitHub.** decisions.1's examples are GitHub ones (issues, comments, releases, settings). Generic equivalents would be sending messages, sharing documents, and creating calendar events. `SKILL.md` is at 118 of 120 lines, so this needs pruning first (A-20).
+
+## Decisions, 2026-11-28
+
+The principal answered every question in three batches.
+
+| Q | Decision | Where it lands |
+|---|---|---|
+| Q1 | `v1.1.0`, settled by its release | — |
+| Q2 | Keep the design-stance mapping as merged in #8 | — |
+| Q3 | The comment standard stays here; DocC sections and documenting every public declaration are each project's choice; the eval grade is confirmed | `comment-review-1-results.md` |
+| Q4 | All five candidates adopted | the apply script → proj.5; the control applied → verify.3; test changes apart → cp.8; evidence labels → subst.5; checkpoint evidence names its commit → cp.2 |
+| Q5 | No backfill: `v1.1.0` is the first release with a `.skill` | — |
+| Q6 | A ruleset makes `v*` tags immutable | a repository setting, applied by the principal |
+| Q7 | MIT for `tools/` and `.github/`, CC BY 4.0 kept for the docs | `LICENSE-CODE`, README |
+| Q8 | Scope beyond Git waits for its own minor version, driven by a real non-Git project | `SKILL.md` open questions |
+| Q9 | The escalation watch stays out (restore on first friction) | — |
+| Q10 | Generic outward actions join decisions.1's examples | decisions.1 |
+
+To keep `SKILL.md` within its 120 lines, subst.5's "say what you inspected and what you inferred" became the three evidence labels, which carry the same distinction.
