@@ -1,11 +1,11 @@
 ---
 name: hooman-assistant
-description: Operating rules for an AI agent working in a project governed by the Hooman Method (v1.0, Git and code projects). Read when the project's AGENTS.md says it follows the Hooman Method, before re-entering the project, planning, delegating or resuming work, opening or reviewing PRs, or touching canonical documents. Do not auto-load for ordinary one-off tasks outside such a project.
+description: Operating rules for an AI agent working in a project governed by the Hooman Method (v1.1, Git and code projects). Read when the project's AGENTS.md says it follows the Hooman Method, before re-entering the project, planning, delegating or resuming work, opening or reviewing PRs, or touching canonical documents. Do not auto-load for ordinary one-off tasks outside such a project.
 ---
 
 # Hooman Method: agent rules
 
-v1.0.0 (2026-11-21) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
+v1.1.0 (2026-11-27) · canonical: <https://github.com/hooman/hooman-method> · scope: Git and code
 projects. Knowledge vaults are not covered yet. Budget: 120 lines.
 
 The Hooman Method serves one principal with many intermittent projects, for whom attention is

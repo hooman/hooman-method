@@ -1,6 +1,6 @@
 # Design Stance — Swift (Swift-language projects)
 
-> Layers on top of `design-stance-universal.md`. **Scope:** Swift-language projects only. **Binds:** Chat and the Executor. **Home:** `references/`. **v0.1 · 2026-06-01.**
+> Layers on top of `design-stance-universal.md`. **Scope:** Swift-language projects only. **Binds:** every session working on Swift. **Home:** this repository. **v0.2 · 2026-11-27.**
 
 ## Forward, not backward
 
@@ -27,7 +27,7 @@ Context: returning to Swift after years away, leapfrogging to current idiom with
 
 (Generalizes the per-project epistemic standard to all Swift work.)
 
-- Every claim about Swift behavior **names the toolchain context** — 5.10 / 6.0 / 6.1 / 6.2 / trunk differ meaningfully.
+- Every claim about Swift behavior **names the toolchain context** — 6.2 / 6.3 / 6.4 / `main` snapshots differ meaningfully (6.4.2 is current on 2026-11-27).
 - Feature claims **cite the SE proposal number and current status** (accepted / implemented / in review / returned).
 - For anything **post-5.x, verify rather than recall** — training-data recall is likely stale.
 - **Flag experimental features** (behind `-enable-experimental-feature`) explicitly as such.

@@ -1,0 +1,30 @@
+name: check
+
+# The repository's gates: document checks, and each skill packs into a valid, reproducible
+# .skill whose revision stamps agree. The packed files are uploaded as a workflow artifact,
+# so a PR's .skill can be inspected before release. The release workflow calls this too.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Docs and skill packaging
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Document checks
+        run: python3 tools/check-docs.py
+      - name: Pack every skill
+        run: python3 tools/package-skill.py --out dist
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: skills
+          path: dist/
+          if-no-files-found: error
